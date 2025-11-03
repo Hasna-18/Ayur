@@ -14,9 +14,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {signIn} from "better-auth/react";
+import { google, github, email } from "better-auth";
+import { createAuthClient } from "better-auth/react";
 
 export default function SignupPage() {
+    const auth = createAuthClient();
     const router = useRouter();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
@@ -55,7 +57,11 @@ export default function SignupPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <Button variant="outline" className="w-full" onClick={() => signIn("google")}>
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => auth.signIn.social({ provider: "google" })}
+        >
           Signup with Google
         </Button>
         <CardTitle>Signup</CardTitle>
