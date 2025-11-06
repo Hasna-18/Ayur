@@ -32,7 +32,7 @@ export async function POST(req) {
     const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
 
     await transporter.sendMail({
-      from: `"AyurMedi" <${process.env.GMAIL_USER}>`,
+      from: `"hasnaabida18@gmail.com" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: "Password Reset Request",
       html: `

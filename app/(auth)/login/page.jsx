@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { google, github, email } from "better-auth";
 import { createAuthClient } from "better-auth/react";
 
@@ -22,16 +22,11 @@ export default function SignupPage() {
     const router = useRouter();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
-    const [confirmpassword,setConfirmpassword] = useState("");
     const [error,setError] = useState("");
     const [loading,setLoading] = useState("");
 
   const handleSubmit = async (e) => {
   e.preventDefault();
-  if (password !== confirmpassword) {
-    setError("Passwords do not match");
-    return;
-  }
 
   try {
 
@@ -43,9 +38,9 @@ export default function SignupPage() {
     });
 
     const data = await res.json();
-
+    
     if (!res.ok) {
-      setError(data.error || "Signup failed");
+      setError(data.error || "Login failed");
     } else {
       router.push("/login");
     }
