@@ -8,7 +8,7 @@ export default function AdminAppointments() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch("/api/appointments");
+        const res = await fetch("/api/admin/appointments");
         const data = await res.json();
         setAppointments(data);
       } catch (error) {

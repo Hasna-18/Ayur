@@ -9,7 +9,7 @@ export async function GET() {
     });
     return NextResponse.json(slots);
   } catch (error) {
-    console.error("GET /api/availability error:", error);
+    console.error("GET /api/admin/availability error:", error);
     return NextResponse.json(
       { error: "Failed to fetch availability" },
       { status: 500 }
@@ -39,7 +39,7 @@ export async function POST(req) {
 
     return NextResponse.json(slot);
   } catch (error) {
-    console.error("POST /api/availability error:", error);
+    console.error("POST /api/admin/availability error:", error);
     return NextResponse.json(
       { error: "Failed to create slot" },
       { status: 500 }

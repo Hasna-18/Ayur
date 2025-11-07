@@ -10,7 +10,7 @@ export default function Patients() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/patients?page=${page}`)
+    fetch(`/api/admin/patients?page=${page}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch patients");
         return res.json();

@@ -9,7 +9,7 @@ export default function UpcomingAppointments() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/appointments/upcoming")
+    fetch("/api/admin/appointments/upcoming")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch upcoming appointments");
         return res.json();

@@ -11,7 +11,7 @@ export async function GET() {
     // Always return a valid JSON response (even if empty)
     return NextResponse.json(appointments);
   } catch (error) {
-    console.error("GET /api/appointments error:", error);
+    console.error("GET /api/admin/appointments error:", error);
     return NextResponse.json(
       { error: "Failed to fetch appointments" },
       { status: 500 }

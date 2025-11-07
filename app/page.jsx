@@ -8,8 +8,14 @@ import Link from "next/link";
 
 export default function Home() {
   return (
+    
     <div className="bg-background">
-      <section className="relative overflow-hidden py-32">
+      <nav className="sticky top-0 z-50 border-b border-emerald-800/40 bg-emerald-900/40 backdrop-blur-md px-6 py-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
+          Ayur 
+        </h1>
+        </nav>
+      <section className="relative overflow-hidden py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">

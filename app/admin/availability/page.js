@@ -9,7 +9,7 @@ export default function AdminAvailability() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/availability");
+        const res = await fetch("/api/admin/availability");
         if (!res.ok) throw new Error("API returned " + res.status);
         const data = await res.json();
         console.log("Fetched slots:", data);
