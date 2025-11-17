@@ -13,7 +13,6 @@ export default function Dashboard() {
     async function loadUser() {
       try {
         const session = await auth.getSession();
-
         const userData =
           session?.data?.user ||
           session?.data?.session?.user ||
@@ -36,6 +35,7 @@ export default function Dashboard() {
   }, [router]);
 
   if (!user) return <p>Loading...</p>;
+
   return (
     <div className="flex flex-col min-h-screen">
       <h1 className="text-3xl font-bold mb-4">
@@ -44,9 +44,6 @@ export default function Dashboard() {
       <div>
         <div className="bg-emerald-700/50 text-white">Book now</div>
       </div>
-    </div>
+    </div> 
   );
 }
-
-
-//single pg

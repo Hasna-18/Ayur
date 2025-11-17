@@ -41,7 +41,7 @@ export default function Home() {
                 className="bg-emerald-600 text-white 
                   hover:bg-emerald-700">
                   <Link 
-                  href="/onboarding" 
+                  href="/signup" 
                   className="flex items-center">
                     Get Started
                     <ArrowRight className="ml-2 h-4 w-4" />

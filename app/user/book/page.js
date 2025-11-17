@@ -9,19 +9,29 @@ export default function BookAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch("/api/user/appointments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error("Failed to book appointment");
-      setStatus("Appointment booked successfully!");
-      setForm({ name: "", email: "", date: "", time: "", message: "" });
-    } catch (error) {
-      setStatus("Error: " + error.message);
-    }
-  };
+     const dateTime = new Date(form.date + "T00:00:00");
+  const timeDateTime = new Date(form.date + "T" + form.time);
+
+  try {
+    const res = await fetch("/api/user/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        ...form,
+        date: dateTime.toISOString(),
+        time: timeDateTime.toISOString(),
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to book appointment");
+
+    setStatus("Appointment booked successfully!");
+    setForm({ name: "", email: "", date: "", time: "", message: "" });
+  } catch (error) {
+    setStatus("Error: " + error.message);
+  }
+};
 
   return (
     <div className="max-w-md mx-auto p-6">

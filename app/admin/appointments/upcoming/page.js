@@ -18,6 +18,27 @@ export default function UpcomingAppointments() {
       .catch((err) => setError(err.message));
   }, []);
 
+  async function cancelAppointment(id) {
+    try {
+      const res = await fetch(`/api/admin/appointments/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to cancel appointment");
+      }
+
+      // Remove cancelled appointment from UI
+      setUpcoming((prev) => ({
+        ...prev,
+        nextAppointments: prev.nextAppointments.filter((a) => a.id !== id),
+        count: prev.count - 1,
+      }));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   if (error) {
     return (
       <div className="text-center py-10 text-red-500">
@@ -52,6 +73,7 @@ export default function UpcomingAppointments() {
               <CardHeader>
                 <CardTitle>{appt.patientName}</CardTitle>
               </CardHeader>
+
               <CardContent>
                 <p>
                   Time:{" "}
@@ -63,7 +85,15 @@ export default function UpcomingAppointments() {
                     })}
                   </span>
                 </p>
+
                 <p>Status: {appt.status}</p>
+
+                <button
+                  onClick={() => cancelAppointment(appt.id)}
+                  className="mt-3 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Cancel
+                </button>
               </CardContent>
             </Card>
           ))}

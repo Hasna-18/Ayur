@@ -23,7 +23,7 @@ model User {
   sessions Session[]
 
   // Role-based fields
-  role               UserRole           @default(UNASSIGNED)
+  role               UserRole           @default(PATIENT)
   credits            Int                @default(2)
   speciality         String?
   experience         Int?
@@ -83,15 +83,16 @@ model Verification {
 }
 
 model Appointment {
-  id           Int               @id @default(autoincrement())
-  patientName  String
-  patientEmail String
-  reason       String?
-  time         DateTime
-  meetLink     String?
-  status       AppointmentStatus @default(SCHEDULED)
-  createdAt    DateTime          @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String?
+  date      DateTime
+  time      DateTime 
+  status    AppointmentStatus @default(SCHEDULED)
+  createdAt DateTime @default(now())
 }
+
 
 model Availability {
   id        String     @id @default(uuid())

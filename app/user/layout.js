@@ -22,7 +22,7 @@ export default function UserLayout({ children }) {
             Book
           </Link>
           <Link
-            href="/user/appointments"
+            href="/user/appointment-list"
             className="hover:text-emerald-400 transition-colors"
           >
             My Appointments

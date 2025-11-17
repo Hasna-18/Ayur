@@ -82,12 +82,11 @@ CREATE TABLE "verification" (
 -- CreateTable
 CREATE TABLE "Appointment" (
     "id" SERIAL NOT NULL,
-    "patientName" TEXT NOT NULL,
-    "patientEmail" TEXT NOT NULL,
-    "reason" TEXT,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "message" TEXT,
+    "date" TIMESTAMP(3) NOT NULL,
     "time" TIMESTAMP(3) NOT NULL,
-    "meetLink" TEXT,
-    "status" "AppointmentStatus" NOT NULL DEFAULT 'SCHEDULED',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")

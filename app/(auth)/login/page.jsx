@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -9,108 +9,99 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
-import { google, github, email } from "better-auth";
+import { useRouter } from "next/navigation";
 import { createAuthClient } from "better-auth/react";
 
-export default function SignupPage() {
-    const auth = createAuthClient();
-    const router = useRouter();
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
-    const [error,setError] = useState("");
-    const [loading,setLoading] = useState("");
+const auth = createAuthClient();
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  try {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-    
-    if (!res.ok) {
-      setError(data.error || "Login failed");
-    } else {
-      router.push("/login");
+    try {
+      const result = await auth.signIn.email({ email, password });
+      if (result?.error) {
+        setError(result.error.message);
+      } else {
+        router.push("/user/dashboard");
+      }
+    } catch (err) {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setError("Something went wrong");
-  }
-};
+  };
 
-    
-    return( 
+  return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={() => auth.signIn.social({ provider: "google" })}
-        >
-          Signin with Google
-        </Button>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>
-          Login in to your accounnt
-        </CardDescription>
-        
+      <Card className="w-full max-w-sm">
+        <CardHeader className="space-y-3">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => auth.signIn.social({ provider: "google" })}
+          >
+            Sign in with Google
+          </Button>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>
+            Login to your account
+          </CardDescription>
+        </CardHeader>
 
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+        <CardContent>
+          <form onSubmit={handleLogin}>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            </div>
-          </div>
 
-          <CardFooter className="flex-col gap-2 mt-4">
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
-          </CardFooter>
-        </form>
+            <CardFooter className="flex-col gap-2 mt-4">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
+              </Button>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+            </CardFooter>
+          </form>
+        </CardContent>
 
-      </CardContent>
-
-      <CardAction>
+        <CardAction>
           <Button variant="link">
             <Link href="/signup">Don't have an account?</Link>
           </Button>
         </CardAction>
-    </Card>
-    
-</div>
-  )
+      </Card>
+    </div>
+  );
 }
