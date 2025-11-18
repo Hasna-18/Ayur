@@ -18,11 +18,9 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  // Auth relations (BetterAuth)
   accounts Account[]
   sessions Session[]
 
-  // Role-based fields
   role               UserRole           @default(PATIENT)
   credits            Int                @default(2)
   speciality         String?
@@ -31,12 +29,10 @@ model User {
   description        String?            @db.Text
   verificationStatus VerificationStatus @default(PENDING)
 
-  // Financial / Transactions
   transactions       CreditTransaction[]
 
   @@map("user")
 }
-
 
 model Account {
   id                    String    @id @default(uuid())
@@ -88,24 +84,61 @@ model Appointment {
   email     String
   message   String?
   date      DateTime
-  time      DateTime 
+  time      DateTime
   status    AppointmentStatus @default(SCHEDULED)
+  meetUrl   String?   // <--- ADD THIS 
   createdAt DateTime @default(now())
 }
-
 
 model Availability {
   id        String     @id @default(uuid())
   startTime DateTime
   status    SlotStatus @default(AVAILABILITY)
+  createdAt DateTime   @default(now())
 }
 
 model AvailabilityTemplate {
   id        String   @id @default(uuid())
-  dayOfWeek String   // e.g. "Monday"
-  startTime String   // e.g. "09:00"
-  endTime   String   // e.g. "17:00"
+  dayOfWeek String
+  startTime String
+  endTime   String
   createdAt DateTime @default(now())
+}
+
+model WeeklyAvailability {
+  id        String   @id @default(uuid())
+  dayOfWeek String
+  startTime String
+  endTime   String
+  createdAt DateTime @default(now())
+}
+
+model WeeklyOff {
+  id        String   @id @default(uuid())
+  dayOfWeek Int
+  createdAt DateTime @default(now())
+}
+
+model OffDate {
+  id        String   @id @default(uuid())
+  date      DateTime
+  createdAt DateTime @default(now())
+}
+
+model TimeOff {
+  id        String   @id @default(uuid())
+  date      DateTime
+  start     String
+  end       String
+  createdAt DateTime @default(now())
+}
+
+model DailyTime {
+  id        String   @id @default(uuid())
+  start     String
+  end       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CreditTransaction {

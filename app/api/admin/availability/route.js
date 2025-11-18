@@ -1,47 +1,82 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// GET - fetch all availability slots
+// GET all weekly off days
 export async function GET() {
   try {
-    const slots = await prisma.availability.findMany({
-      orderBy: { startTime: "asc" },
+    const weeklyOff = await prisma.weeklyOff.findMany({
+      orderBy: { dayOfWeek: "asc" }
     });
-    return NextResponse.json(slots);
+    return NextResponse.json(weeklyOff);
   } catch (error) {
-    console.error("GET /api/admin/availability error:", error);
+    console.error("GET /api/admin/availability/weekly-off error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch availability" },
+      { error: "Failed to fetch weekly off days" },
       { status: 500 }
     );
   }
 }
 
-// POST - create a new availability slot
+// POST - add weekly off day
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { startTime, status } = body;
+    const { dayOfWeek } = await req.json();
 
-    if (!startTime) {
+    if (dayOfWeek === undefined || dayOfWeek < 0 || dayOfWeek > 6) {
       return NextResponse.json(
-        { error: "Missing startTime" },
+        { error: "Invalid dayOfWeek (0-6)" },
         { status: 400 }
       );
     }
 
-    const slot = await prisma.availability.create({
-      data: {
-        startTime: new Date(startTime),
-        status: status || "AVAILABILITY",
-      },
+    // Check if already exists
+    const existing = await prisma.weeklyOff.findFirst({
+      where: { dayOfWeek }
     });
 
-    return NextResponse.json(slot);
+    if (existing) {
+      return NextResponse.json(
+        { error: "This day is already marked as weekly off" },
+        { status: 400 }
+      );
+    }
+
+    const weeklyOff = await prisma.weeklyOff.create({
+      data: { dayOfWeek }
+    });
+
+    return NextResponse.json(weeklyOff);
   } catch (error) {
-    console.error("POST /api/admin/availability error:", error);
+    console.error("POST /api/admin/availability/weekly-off error:", error);
     return NextResponse.json(
-      { error: "Failed to create slot" },
+      { error: "Failed to create weekly off" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - remove weekly off day
+export async function DELETE(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "ID is required" },
+        { status: 400 }
+      );
+    }
+
+    await prisma.weeklyOff.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ message: "Weekly off day removed" });
+  } catch (error) {
+    console.error("DELETE /api/admin/availability/weekly-off error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete weekly off" },
       { status: 500 }
     );
   }

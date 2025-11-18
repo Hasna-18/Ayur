@@ -21,6 +21,32 @@ export default function AdminAppointments() {
   }, []);
 
   if (loading) return <p className="p-8 text-white">Loading appointments...</p>;
+    const handleStatus = async (id, action) => {
+  try {
+    await fetch(`/api/admin/appointments/${id}/${action}`, {
+      method: "POST",
+    });
+
+    // Refresh list
+    setAppointments((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              status:
+                action === "cancel"
+                  ? "Cancelled"
+                  : action === "done"
+                  ? "Done"
+                  : item.status,
+            }
+          : item
+      )
+    );
+  } catch (error) {
+    console.error("Status update failed:", error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-background text-white p-8">
@@ -76,13 +102,21 @@ export default function AdminAppointments() {
                   </span>
                 </td>
                 <td className="px-6 py-4 flex gap-2">
-                  <button className="text-sm px-3 py-1 bg-red-700/40 rounded hover:bg-red-700/60">
-                    Cancel
-                  </button>
-                  <button className="text-sm px-3 py-1 bg-emerald-700/40 rounded hover:bg-emerald-700/60">
-                    Done
-                  </button>
-                </td>
+                <button
+                  onClick={() => handleStatus(user.id, "cancel")}
+                  className="text-sm px-3 py-1 bg-red-700/40 rounded hover:bg-red-700/60"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={() => handleStatus(user.id, "done")}
+                  className="text-sm px-3 py-1 bg-emerald-700/40 rounded hover:bg-emerald-700/60"
+                >
+                  Done
+                </button>
+              </td>
+
               </tr>
             ))}
           </tbody>
