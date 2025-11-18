@@ -78,6 +78,18 @@ model Verification {
   @@map("verification")
 }
 
+model AdminProfile {
+  id            Int    @id @default(autoincrement())
+  name          String?
+  email         String?
+  phone         String?
+  specialization String?
+  clinicAddress String?
+  bio           String?
+  createdAt     DateTime @default(now())
+}
+
+
 model Appointment {
   id        Int      @id @default(autoincrement())
   name      String

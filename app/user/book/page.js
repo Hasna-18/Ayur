@@ -15,18 +15,43 @@ export default function BookAppointment() {
   }, [date]);
 
   // Load available time slots for selected date
-  const loadSlots = async (date) => {
-    setTime("");
-    setTimeSlots([]);
+const loadSlots = async (date) => {
+  setTime("");
+  setTimeSlots([]);
+  setStatus("");
 
-    try {
-      const res = await fetch(`/api/user/slots?date=${date}`);
-      const data = await res.json();
-      setTimeSlots(data.slots || []);
-    } catch (err) {
-      setStatus("Failed to load slots");
+  try {
+    const res = await fetch(`/api/user/slots?date=${date}`);
+    const data = await res.json();
+
+    if (data.reason === "weekly-off") {
+      const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      setStatus(`❌ Clinic is closed every ${days[data.day]}. Please choose another day.`);
+      return;
     }
-  };
+
+    if (data.reason === "off-date") {
+      setStatus("❌ Doctor is unavailable on this date. Please choose another day.");
+      return;
+    }
+
+    if (data.reason === "no-time") {
+      setStatus("❌ No available time slots on this day. Please select another date.");
+      return;
+    }
+
+    if (data.reason === "no-daily-hours") {
+      setStatus("❌ Clinic working hours not set. Please try again later.");
+      return;
+    }
+
+    setTimeSlots(data.slots || []);
+
+  } catch (err) {
+    setStatus("Failed to load slots");
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

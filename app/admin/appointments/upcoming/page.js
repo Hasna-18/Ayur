@@ -74,12 +74,22 @@ export default function UpcomingAppointments() {
                 <CardTitle>{appt.patientName}</CardTitle>
               </CardHeader>
 
-              <CardContent>
+             <CardContent>
+                <p>
+                  Date:{" "}
+                  <span className="text-emerald-400 font-medium">
+                    {new Date(appt.startAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                </p>
+
                 <p>
                   Time:{" "}
                   <span className="text-emerald-400 font-medium">
-                    {new Date(appt.startAt).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata",
+                    {new Date(appt.startAt).toLocaleTimeString("en-IN", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
@@ -95,6 +105,7 @@ export default function UpcomingAppointments() {
                   Cancel
                 </button>
               </CardContent>
+
             </Card>
           ))}
         </div>
