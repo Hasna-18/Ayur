@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { signIn } from "@/lib/auth-client";
 import {
   Card,
   CardAction,
@@ -65,7 +66,13 @@ export default function SignupPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => auth.signIn.social({ provider: "google" })}
+            onClick={() =>
+            signIn.social({
+              provider: "google",
+              callbackURL: "/user/dashboard"
+            })
+          }
+
           >
             Sign up with Google
           </Button>
