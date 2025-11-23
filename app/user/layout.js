@@ -34,11 +34,15 @@ export default function UserLayout({ children }) {
             About
           </Link>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-emerald-700/40 text-emerald-300 hover:bg-emerald-800/30 hover:text-white"
-          >
+         <Button
+          variant="outline"
+          size="sm"
+          className="border-emerald-700/40 text-emerald-300 hover:bg-emerald-800/30 hover:text-white"
+          onClick={async () => {
+            await fetch("/api/user/logout", { method: "POST" });
+            window.location.href = "/"; // redirect to home/login
+          }}
+        >
             Logout
           </Button>
         </div>
