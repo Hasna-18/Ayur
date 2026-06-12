@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { signIn } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 import {
   Card,
   CardAction,
@@ -15,9 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createAuthClient } from "better-auth/react";
-
-const auth = createAuthClient();
 
 export default function SignupPage() {
   const router = useRouter();
@@ -41,7 +38,7 @@ export default function SignupPage() {
 
     try {
       // BetterAuth signup — handles DB + session + cookies automatically
-      const result = await auth.signUp.email({
+        const result = await authClient.signUp.email({
         email,
         password,
         name,

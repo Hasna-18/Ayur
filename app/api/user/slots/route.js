@@ -39,8 +39,8 @@ export async function GET(req) {
     });
   }
 
-  const start = new Date(date + "T" + daily.start);
-  const end = new Date(date + "T" + daily.end);
+  const start = new Date(date + "T" + daily.start + ":00.000Z");
+  const end = new Date(date + "T" + daily.end + ":00.000Z");
 
   let cursor = new Date(start);
   const slots = [];
@@ -54,11 +54,11 @@ export async function GET(req) {
   const timeOff = await prisma.timeOff.findMany({ where: { date: picked } });
 
   const finalSlots = slots.filter((slot) => {
-    const t = new Date(date + "T" + slot);
+    const t = new Date(date + "T" + slot + ":00.000Z");
 
     return !timeOff.some((block) => {
-      const start = new Date(block.start);
-      const end = new Date(block.end);
+      const start = new Date(date + "T" + block.start + ":00.000Z");
+      const end = new Date(date + "T" + block.end + ":00.000Z");
       return t >= start && t < end;
     });
   });

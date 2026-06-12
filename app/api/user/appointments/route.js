@@ -13,8 +13,14 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const picked = new Date(body.date);
-    const userTime = new Date(body.time);
+    const { date: dateStr, time: timeStr, message } = body;
+
+    if (!dateStr || !timeStr) {
+      return Response.json({ error: "Date and time are required" }, { status: 400 });
+    }
+
+    const picked = new Date(dateStr + "T00:00:00.000Z");
+    const userTime = new Date(dateStr + "T" + timeStr + ":00.000Z");
 
     // Weekly off
     const weekday = picked.getUTCDay();
@@ -34,15 +40,16 @@ export async function POST(req) {
     }
 
     // Time off
-    const timeOff = await prisma.timeOff.findFirst({
-      where: {
-        date: picked,
-        start: { lte: userTime.toISOString() },
-        end: { gte: userTime.toISOString() }
-      }
+    const timeOffs = await prisma.timeOff.findMany({
+      where: { date: picked }
     });
-    if (timeOff) {
-      return Response.json({ error: "This time slot is unavailable" }, { status: 400 });
+    const isTimeOff = timeOffs.some((block) => {
+      const start = new Date(dateStr + "T" + block.start + ":00.000Z");
+      const end = new Date(dateStr + "T" + block.end + ":00.000Z");
+      return userTime >= start && userTime < end;
+    });
+    if (isTimeOff) {
+      return Response.json({ error: "This time slot is unavailable (Doctor Time Off)" }, { status: 400 });
     }
 
     // Daily hours
@@ -51,8 +58,8 @@ export async function POST(req) {
     });
 
     if (daily) {
-      const start = new Date(body.date + "T" + daily.start);
-      const end = new Date(body.date + "T" + daily.end);
+      const start = new Date(dateStr + "T" + daily.start + ":00.000Z");
+      const end = new Date(dateStr + "T" + daily.end + ":00.000Z");
 
       if (userTime < start || userTime > end) {
         return Response.json(
@@ -65,8 +72,8 @@ export async function POST(req) {
     //double booking checking
     const conflict = await prisma.appointment.findFirst({
       where: {
-        date: body.date,
-        time: body.time
+        time: userTime,
+        status: "SCHEDULED"
       }
     });
 
@@ -79,11 +86,12 @@ export async function POST(req) {
 
     const appointment = await prisma.appointment.create({
       data: {
-        name: session.user.name,
+        name: session.user.name || "Patient",
         email: session.user.email,
-        message: body.message,
-        date: body.date,
-        time: body.time,
+        message: message,
+        date: picked,
+        time: userTime,
+        status: "SCHEDULED",
       },
     });
 

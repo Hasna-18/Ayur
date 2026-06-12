@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 import {
   Card,
   CardAction,
@@ -14,9 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createAuthClient } from "better-auth/react";
-
-const auth = createAuthClient();
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,7 +29,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const result = await auth.signIn.email({ email, password });
+      const result = await authClient.signIn.email({ email, password });
       if (result?.error) {
         setError(result.error.message);
       } else {
@@ -51,7 +49,7 @@ export default function LoginPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => auth.signIn.social({ provider: "google" })}
+            onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/user/dashboard" })}
           >
             Sign in with Google
           </Button>

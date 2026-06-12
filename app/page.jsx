@@ -1,127 +1,347 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { features } from "@/lib/data";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Calendar,
+  Video,
+  ClipboardList,
+  Truck,
+  Globe,
+  Star,
+  ShieldCheck,
+} from "lucide-react";
+
+const treatments = [
+  "Weight Loss",
+  "PCOS",
+  "Diabetes",
+  "Hair Loss",
+  "Skin Care",
+  "Stress & Anxiety",
+];
 
 export default function Home() {
   return (
-    
-    <div className="bg-background">
-      <nav className="sticky top-0 z-50 border-b border-emerald-800/40 bg-emerald-900/40 backdrop-blur-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
-          Ayur 
-        </h1>
-        </nav>
-      <section className="relative overflow-hidden py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <Badge
-                variant="outline"
-                className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-400 text-sm font-medium"
-              >
-                Health made simple
-              </Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                Connect with Doctor
-                <br />{"  "}
-                <span className="gradient-title">anytime, anywhere</span>
-              </h1>
-              <p className="text-muted-foreground text-lg md:text-xl max-w-md">
-                Book appointments, consult via video , and manage your healthcare
-                journey all in one secure platform.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                asChild 
-                size="lg" 
-                className="bg-emerald-600 text-white 
-                  hover:bg-emerald-700">
-                  <Link 
-                  href="/signup" 
-                  className="flex items-center">
-                    Get Started
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-                <Button 
-                  asChild 
-                  size="lg" 
-                  className="border-emerald-700/30 hover:bg-muted/80">
-                <Link 
-                href="/doctors" 
-                className="flex items-center">
-                  Find Doctor
-                </Link>
-              </Button>
-              </div>
-            </div>
-            <div>
-              <Image src="/med.jpg" 
-              alt="Doctor consultaion"
-              width ={500}
-              height={500} />
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* features */}
-      <section className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            How it work</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Our platfom makes healthcare access</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature,index)=>{
-              return(
-                <Card key={index}>
-                  <CardHeader>
-                    <div>{feature.icon}</div>
-                    <CardTitle>{feature.title}</CardTitle>
-                    <CardDescription>{feature.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>Card content</p>
-                  </CardContent>
-                  <CardFooter>
-                    <p>Card footer</p>
-                  </CardFooter>
-                </Card>
-              );
+    <main className="bg-[#faf8f2] text-slate-800">
 
-            })} </div>
-        </div>
-        </section>
+      {/* Navbar */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-green-800">
+            AyurMedi
+          </h1>
 
-        {/* Subscriptions */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <Card className="bg-gradient-to-r from-emerald-900/30 to-emerald-950/20 boarder-emerald-800">
-            <CardContent className="p-8 md:p-12 lg:p-16 relative overflow-hidden">
+          <div className="hidden md:flex gap-8">
+            <Link href="#">Home</Link>
+            <Link href="#">Treatments</Link>
+            <Link href="#">About</Link>
+            <Link href="#">Reviews</Link>
+            <Link href="#">Contact</Link>
+          </div>
+
+          <a href="/user/dashboard" className="text-green-700 font-medium">
+            <button className="bg-green-700 text-white px-5 py-3 rounded-xl">
+              Book Appointment
+            </button>
+          </a>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          <div>
+            <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-green-900">
+              Heal Naturally with
+              <br />
+              Expert Ayurvedic Care
+            </h1>
+
+            <p className="mt-6 text-xl text-slate-600 max-w-xl">
+              Personalized Ayurvedic consultations from certified doctors
+              anywhere in the world.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mt-8">
+              <a href="/user/dashboard" className="text-green-700 font-medium">
+                <button className="bg-green-700 text-white px-8 py-4 rounded-xl font-medium">
+                  Book Appointment
+                </button>
+              </a>
+
+              <button className="border px-8 py-4 rounded-xl">
+                Learn More
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 mt-12">
               <div>
-                <h2>Ready to tajke contriol of your healthcare</h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  JOIN NOW FOR BLAH BLAH BAlah blah bla hblmflknf  fn
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button>
-                    <Link href="/signup">Signup now</Link>
-                  </Button>
-                  <Button>
-                    <Link href="/priceplan">View plan</Link>
-                  </Button>
-                </div>
+                <p className="text-3xl font-bold">4.9★</p>
+                <p className="text-gray-500">Patient Rating</p>
               </div>
-            </CardContent>
-          </Card>
+
+              <div>
+                <p className="text-3xl font-bold">50+</p>
+                <p className="text-gray-500">Countries</p>
+              </div>
+
+              <div>
+                <p className="text-3xl font-bold">1000+</p>
+                <p className="text-gray-500">Consultations</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 bg-green-100 rounded-full blur-3xl"></div>
+
+            <Image
+              src="/profile.jpeg"
+              alt="Doctor"
+              width={700}
+              height={700}
+              className="relative z-10"
+            />
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Trust Bar */}
+      <section className="border-y bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+
+          <div className="grid md:grid-cols-4 gap-6 text-center">
+
+            <div className="flex items-center justify-center gap-2">
+              <Globe className="text-green-700" />
+              International Patients
+            </div>
+
+            <div className="flex items-center justify-center gap-2">
+              <ShieldCheck className="text-green-700" />
+              Licensed Doctor
+            </div>
+
+            <div className="flex items-center justify-center gap-2">
+              <Star className="text-green-700" />
+              4.9 Rating
+            </div>
+
+            <div className="flex items-center justify-center gap-2">
+              <Truck className="text-green-700" />
+              Medicine Delivery
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Treatments */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center text-green-900">
+            Ayurvedic Treatments
+          </h2>
+
+          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6 mt-14">
+
+            {treatments.map((item) => (
+              <div
+                key={item}
+                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition"
+              >
+                <h3 className="font-semibold text-center">
+                  {item}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it Works */}
+      <section className="bg-white py-24">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-4xl font-bold text-center text-green-900">
+            How It Works
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-8 mt-16">
+
+            <div className="text-center">
+              <Calendar className="mx-auto w-12 h-12 text-green-700" />
+              <h3 className="font-semibold mt-4">
+                Book Appointment
+              </h3>
+            </div>
+
+            <div className="text-center">
+              <Video className="mx-auto w-12 h-12 text-green-700" />
+              <h3 className="font-semibold mt-4">
+                Online Consultation
+              </h3>
+            </div>
+
+            <div className="text-center">
+              <ClipboardList className="mx-auto w-12 h-12 text-green-700" />
+              <h3 className="font-semibold mt-4">
+                Personalized Plan
+              </h3>
+            </div>
+
+            <div className="text-center">
+              <Truck className="mx-auto w-12 h-12 text-green-700" />
+              <h3 className="font-semibold mt-4">
+                Medicine Delivery
+              </h3>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Single Doctor Section */}
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6">
+
+          <div className="bg-white rounded-3xl shadow-sm p-10 grid lg:grid-cols-2 gap-10 items-center">
+
+            <Image
+              src="/profile.jpeg"
+              alt="Doctor"
+              width={500}
+              height={500}
+            />
+
+            <div>
+
+              <h2 className="text-4xl font-bold text-green-900">
+                Meet Your Ayurvedic Doctor
+              </h2>
+
+              <h3 className="text-2xl font-semibold mt-4">
+                Dr. Hasna Nair
+              </h3>
+
+              <p className="text-green-700 mt-2">
+                BAMS | 10+ Years Experience
+              </p>
+
+              <p className="mt-6 text-slate-600 leading-8">
+                Dedicated to helping patients achieve long-term
+                wellness through authentic Ayurvedic treatments,
+                lifestyle guidance and personalized care.
+              </p>
+
+              <a href="/user/dashboard" className="text-green-700 font-medium mt-4 inline-block">
+              <button className="mt-8 bg-green-700 text-white px-8 py-4 rounded-xl">
+                Book Consultation
+              </button>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-white py-24">
+
+        <div className="max-w-6xl mx-auto px-6">
+
+          <h2 className="text-center text-4xl font-bold text-green-900">
+            What Our Patients Say
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
+
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-[#faf8f2] p-6 rounded-2xl"
+              >
+                <p>
+                  "Excellent consultation and personalized
+                  treatment plan."
+                </p>
+
+                <p className="font-semibold mt-4">
+                  Patient {i}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-green-900 text-white">
+
+        <div className="max-w-6xl mx-auto px-6 text-center">
+
+          <h2 className="text-5xl font-bold">
+            Ready to Begin Your Healing Journey?
+          </h2>
+
+          <p className="mt-6 text-lg">
+            Book your consultation with an Ayurvedic expert today.
+          </p>
+
+          <button className="mt-8 bg-yellow-500 text-black px-8 py-4 rounded-xl font-semibold">
+            Schedule Appointment
+          </button>
+
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-green-950 text-white py-16">
+
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="grid md:grid-cols-4 gap-10">
+
+            <div>
+              <h3 className="text-2xl font-bold">
+                AyurMedi
+              </h3>
+
+              <p className="mt-4 text-gray-300">
+                Bringing Ayurveda to patients worldwide.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Links</h4>
+              <ul className="space-y-2">
+                <li>Home</li>
+                <li>Treatments</li>
+                <li>Contact</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Resources</h4>
+              <ul className="space-y-2">
+                <li>Blog</li>
+                <li>FAQ</li>
+                <li>Privacy Policy</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Contact</h4>
+              <p>hello@ayurmedi.com</p>
+              <p>+91 9876543210</p>
+            </div>
+
+          </div>
+
+        </div>
+      </footer>
+
+    </main>
   );
 }

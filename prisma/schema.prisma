@@ -169,6 +169,7 @@ enum UserRole {
   UNASSIGNED
   PATIENT
   DOCTOR
+  ADMIN
 }
 
 enum VerificationStatus {

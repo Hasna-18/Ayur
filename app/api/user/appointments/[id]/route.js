@@ -1,3 +1,5 @@
+import prisma from "@/lib/prisma";
+
 export async function DELETE(request, { params }) {
   const resolved = await params; // 💥 unlock the promise
   const id = Number(resolved.id);
@@ -12,7 +14,10 @@ export async function DELETE(request, { params }) {
   }
 
   try {
-    await prisma.appointment.delete({ where: { id } });
+    await prisma.appointment.update({
+      where: { id },
+      data: { status: "CANCELLED" }
+    });
     return Response.json({ success: true });
   } catch (err) {
     console.error(err);

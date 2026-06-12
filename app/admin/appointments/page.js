@@ -35,9 +35,9 @@ export default function AdminAppointments() {
               ...item,
               status:
                 action === "cancel"
-                  ? "Cancelled"
+                  ? "CANCELLED"
                   : action === "done"
-                  ? "Done"
+                  ? "COMPLETED"
                   : item.status,
             }
           : item
@@ -72,13 +72,13 @@ export default function AdminAppointments() {
                 <td className="px-6 py-4">
                   {new Date(user.time).toLocaleString()}
                 </td>
-                <td className="px-6 py-4">{user.patientName}</td>
-                <td className="px-6 py-4">{user.patientEmail}</td>
-                <td className="px-6 py-4">{user.reason || "-"}</td>
+                <td className="px-6 py-4">{user.name}</td>
+                <td className="px-6 py-4">{user.email}</td>
+                <td className="px-6 py-4">{user.message || "-"}</td>
                 <td className="px-6 py-4">
-                  {user.meetLink ? (
+                  {user.meetUrl ? (
                     <a
-                      href={user.meetLink}
+                      href={user.meetUrl}
                       target="_blank"
                       className="text-emerald-400 underline hover:text-emerald-300"
                     >
@@ -91,10 +91,12 @@ export default function AdminAppointments() {
                 <td className="px-6 py-4">
                   <span
                     className={`px-2 py-1 rounded text-xs ${
-                      user.status === "Scheduled"
+                      user.status === "SCHEDULED"
                         ? "bg-emerald-700/30 text-emerald-300"
-                        : user.status === "Cancelled"
+                        : user.status === "CANCELLED"
                         ? "bg-red-700/30 text-red-300"
+                        : user.status === "COMPLETED"
+                        ? "bg-blue-700/30 text-blue-300"
                         : "bg-gray-700/40 text-gray-300"
                     }`}
                   >
