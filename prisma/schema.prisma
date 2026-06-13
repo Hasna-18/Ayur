@@ -98,7 +98,7 @@ model Appointment {
   date      DateTime
   time      DateTime
   status    AppointmentStatus @default(SCHEDULED)
-  meetUrl   String?   // <--- ADD THIS 
+  jitsiRoom String?
   createdAt DateTime @default(now())
 }
 

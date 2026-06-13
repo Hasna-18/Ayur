@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { generateJitsiRoomName, getJitsiRoomExpiry, isJitsiRoomActive } from "@/lib/jitsi-utils";
 
 // --------------------- POST (BOOK APPOINTMENT) -----------------------
 export async function POST(req) {
@@ -95,7 +96,24 @@ export async function POST(req) {
       },
     });
 
-    return Response.json({ success: true, appointment });
+    const jitsiRoom = generateJitsiRoomName(appointment.id);
+    const updatedAppointment = await prisma.appointment.update({
+      where: { id: appointment.id },
+      data: { jitsiRoom },
+    });
+
+    return Response.json({
+      success: true,
+      appointment: {
+        ...updatedAppointment,
+        id: Number(updatedAppointment.id),
+        date: updatedAppointment.date.toISOString(),
+        time: updatedAppointment.time.toISOString(),
+        createdAt: updatedAppointment.createdAt.toISOString(),
+        meetingExpired: !isJitsiRoomActive(updatedAppointment.time),
+        meetingExpiresAt: getJitsiRoomExpiry(updatedAppointment.time),
+      },
+    });
 
   } catch (err) {
     return Response.json({ error: "Failed to book", details: err.message }, { status: 500 });
@@ -121,15 +139,32 @@ export async function GET(req) {
       orderBy: { createdAt: "desc" },
     });
 
-    return Response.json(
-      appointments.map(a => ({
-        ...a,
-        id: Number(a.id),
-        date: a.date.toISOString(),
-        time: a.time.toISOString(),
-        createdAt: a.createdAt.toISOString(),
-      }))
+    const enriched = await Promise.all(
+      appointments.map(async (appointment) => {
+        let room = appointment.jitsiRoom;
+
+        if (!room && appointment.status === "SCHEDULED" && isJitsiRoomActive(appointment.time)) {
+          room = generateJitsiRoomName(appointment.id);
+          await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { jitsiRoom: room },
+          });
+        }
+
+        return {
+          ...appointment,
+          id: Number(appointment.id),
+          date: appointment.date.toISOString(),
+          time: appointment.time.toISOString(),
+          createdAt: appointment.createdAt.toISOString(),
+          jitsiRoom: room,
+          meetingExpired: !isJitsiRoomActive(appointment.time),
+          meetingExpiresAt: getJitsiRoomExpiry(appointment.time),
+        };
+      })
     );
+
+    return Response.json(enriched);
 
   } catch (err) {
     return Response.json({ error: "Failed to fetch appointments" }, { status: 500 });

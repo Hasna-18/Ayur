@@ -9,6 +9,7 @@ import {
   Star,
   ShieldCheck,
 } from "lucide-react";
+import { GiLotus } from "react-icons/gi";
 
 const treatments = [
   "Weight Loss",
@@ -26,15 +27,21 @@ export default function Home() {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-green-800">
-            AyurMedi
-          </h1>
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <GiLotus className="w-8 h-8 text-[#d9b56d]" />
+              <h1 className="text-5xl font-serif text-[#d9b56d]">
+                Ayur
+              </h1>
+            </div>
+            <p className="text-sm text-gray-300 mt-2">
+              Ancient Wisdom. Modern Care.
+            </p>
+          </div>
 
           <div className="hidden md:flex gap-8">
             <Link href="#">Home</Link>
-            <Link href="#">Treatments</Link>
-            <Link href="#">About</Link>
-            <Link href="#">Reviews</Link>
+            <Link href="/user/about">About</Link>
             <Link href="#">Contact</Link>
           </div>
 
@@ -236,9 +243,9 @@ export default function Home() {
               </p>
 
               <a href="/user/dashboard" className="text-green-700 font-medium mt-4 inline-block">
-              <button className="mt-8 bg-green-700 text-white px-8 py-4 rounded-xl">
-                Book Consultation
-              </button>
+                <button className="mt-8 bg-green-700 text-white px-8 py-4 rounded-xl">
+                  Book Consultation
+                </button>
               </a>
 
             </div>
@@ -295,52 +302,6 @@ export default function Home() {
 
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-green-950 text-white py-16">
-
-        <div className="max-w-7xl mx-auto px-6">
-
-          <div className="grid md:grid-cols-4 gap-10">
-
-            <div>
-              <h3 className="text-2xl font-bold">
-                AyurMedi
-              </h3>
-
-              <p className="mt-4 text-gray-300">
-                Bringing Ayurveda to patients worldwide.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Links</h4>
-              <ul className="space-y-2">
-                <li>Home</li>
-                <li>Treatments</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2">
-                <li>Blog</li>
-                <li>FAQ</li>
-                <li>Privacy Policy</li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <p>hello@ayurmedi.com</p>
-              <p>+91 9876543210</p>
-            </div>
-
-          </div>
-
-        </div>
-      </footer>
 
     </main>
   );

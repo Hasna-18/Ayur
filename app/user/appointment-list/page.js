@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import JitsiMeeting from "@/components/jitsi-meeting";
 
 export default function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeCall, setActiveCall] = useState(null);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -18,6 +21,11 @@ export default function AppointmentList() {
         if (!res.ok) throw new Error("Failed to fetch appointments");
         const data = await res.json();
         setAppointments(data);
+
+        // Get user name from first appointment or from session
+        if (data.length > 0) {
+          setUserName(data[0].name);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -29,14 +37,10 @@ export default function AppointmentList() {
 
   if (loading) return <p>Loading appointments...</p>;
 
-  if (appointments.length === 0)
-    return <p className="text-muted-foreground">No appointments found.</p>;
+  const noAppointments = appointments.length === 0;
 
   const cancelAppointment = async (id) => {
     try {
-      // optimistic UI: remove visually immediately (optional)
-      // setAppointments(prev => prev.filter(item => item.id !== id));
-
       const res = await fetch(`/api/user/appointments/${id}`, {
         method: "DELETE",
         credentials: "include",
@@ -48,12 +52,10 @@ export default function AppointmentList() {
 
       if (!res.ok) {
         console.error("Cancel failed status:", res.status, "body:", body);
-        // show the server message to user (but not internal errors in production)
         alert(body?.error || body?.message || "Failed to cancel appointment");
         return;
       }
 
-      // success: update state to CANCELLED locally
       setAppointments((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, status: "CANCELLED" } : item
@@ -64,173 +66,266 @@ export default function AppointmentList() {
       alert("Network error while cancelling. Check console.");
     }
   };
+
+  const isJoinAllowed = (appointment) => {
+    return (
+      appointment.status === "SCHEDULED" &&
+      appointment.jitsiRoom &&
+      !appointment.meetingExpired
+    );
+  };
+
+  const handleJoinCall = (appointment) => {
+    if (isJoinAllowed(appointment)) {
+      setActiveCall(appointment);
+    } else if (appointment.meetingExpired) {
+      alert("The meeting code has expired. Please reschedule if needed.");
+    } else {
+      alert("Video call not available for this appointment yet. Please refresh the page.");
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-[#071410] via-[#081a16] to-[#071410] shadow-[0_0_50px_rgba(16,185,129,0.08)]">
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-5xl font-serif font-bold text-[#77e0adff]">
-          My Appointments
-        </h1>
+      <div className="flex items-center justify-between p-8 border-b border-emerald-500/10">
+        <div>
+          <h2 className="text-4xl font-bold text-white">
+            Appointments
+          </h2>
 
-        <p className="mt-3 text-gray-600">
-          View and manage all your booked appointments.
-        </p>
+          <p className="text-zinc-400 mt-2">
+            View and manage all your scheduled appointments.
+          </p>
+        </div>
+
+        <a href='/user/book'>
+          <Button className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl px-6">
+            + New Appointment
+          </Button>
+        </a>
       </div>
 
-      {/* Stats */}
-      <div className="grid md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-3xl p-6 shadow">
-          <p className="text-gray-500">Total Appointments</p>
-          <h2 className="text-4xl font-bold text-[#0B5D3B]">
-            {appointments.length}
-          </h2>
-        </div>
 
-        <div className="bg-white rounded-3xl p-6 shadow">
-          <p className="text-gray-500">Upcoming</p>
-          <h2 className="text-4xl font-bold text-green-600">
-            {
-              appointments.filter(
-                (a) => a.status === "SCHEDULED" && new Date(a.time) >= new Date()
-              ).length
-            }
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-3xl p-6 shadow">
-          <p className="text-gray-500">Completed</p>
-          <h2 className="text-4xl font-bold text-amber-600">
-            {
-              appointments.filter(
-                (a) => a.status === "COMPLETED" || (a.status === "SCHEDULED" && new Date(a.time) < new Date())
-              ).length
-            }
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-3xl p-6 shadow">
-          <p className="text-gray-500">Cancelled</p>
-          <h2 className="text-4xl font-bold text-red-600">
-            {
-              appointments.filter(
-                (a) => a.status === "CANCELLED"
-              ).length
-            }
-          </h2>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="bg-white rounded-[30px] shadow-xl overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
+        {noAppointments ? (
+          <div className="p-16 text-center text-white/80">
+            <p className="text-2xl font-semibold">You have no upcoming appointments.</p>
+            <p className="mt-3 text-zinc-400">Book a new appointment to get a Jitsi meeting code.</p>
+          </div>
+        ) : (
           <table className="w-full">
-            <thead className="bg-[#F8F6EF] text-black">
-              <tr>
-                <th className="text-left p-5">
-                  Date & Time
+            <thead>
+              <tr className="border-b border-emerald-500/10">
+
+                <th className="text-left p-6 text-emerald-400">
+                  TIME
                 </th>
 
-                <th className="text-left p-5">
-                  Reason
+                <th className="text-left p-6 text-emerald-400">
+                  PATIENT
                 </th>
 
-                <th className="text-left p-5">
-                  Patient
+                <th className="text-left p-6 text-emerald-400">
+                  EMAIL
                 </th>
 
-                <th className="text-left p-5">
-                  Status
+                <th className="text-left p-6 text-emerald-400">
+                  REASON
                 </th>
 
-                <th className="text-left p-5">
-                  Action
+                <th className="text-left p-6 text-emerald-400">
+                  STATUS
                 </th>
+
+                <th className="text-left p-6 text-emerald-400">
+                  ACTION
+                </th>
+
               </tr>
             </thead>
 
             <tbody>
+
               {appointments.map((a) => (
                 <tr
                   key={a.id}
-                  className="border-t text-black"
+                  className="border-b border-emerald-500/10 hover:bg-emerald-500/5 transition"
                 >
-                  <td className="p-5">
-                    <div className="font-semibold">
-                      {new Date(a.date).toLocaleDateString([], {
-                        timeZone: "UTC",
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric"
-                      })}
-                    </div>
+                  {/* Date */}
+                  <td className="p-6">
+                    <div className="flex items-center gap-4">
 
-                    <div className="text-sm text-gray-500">
-                      {new Date(a.time).toLocaleTimeString([], {
-                        timeZone: "UTC",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true
-                      })}
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                        📅
+                      </div>
+
+                      <div>
+                        <div className="text-emerald-400 font-semibold">
+                          {new Date(a.date).toLocaleDateString()}
+                        </div>
+
+                        <div className="text-white">
+                          {new Date(a.time).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </div>
+
                     </div>
                   </td>
 
-                  <td className="p-5">
+                  {/* Patient */}
+                  <td className="p-6">
+                    <div className="flex items-center gap-3">
+
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-400 to-green-600 flex items-center justify-center text-black font-bold">
+                        {a.name?.charAt(0)}
+                      </div>
+
+                      <div>
+                        <p className="font-semibold text-white">
+                          {a.name}
+                        </p>
+
+                        <p className="text-zinc-400 text-sm">
+                          Patient
+                        </p>
+                      </div>
+
+                    </div>
+                  </td>
+
+                  {/* Email */}
+                  <td className="p-6 text-zinc-300">
+                    {a.email}
+                  </td>
+
+                  {/* Reason */}
+                  <td className="p-6 text-zinc-300">
                     {a.message || "-"}
                   </td>
 
-                  <td className="p-5">
-                    <div>
-                      <div className="font-medium">
-                        {a.name}
-                      </div>
+                  {/* Status */}
+                  <td className="p-6">
 
-                      <div className="text-sm text-gray-500">
-                        {a.email}
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="p-5">
                     {a.status === "SCHEDULED" && (
-                      <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
-                        Scheduled
+                      <span className="px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        ● Scheduled
                       </span>
                     )}
+
                     {a.status === "COMPLETED" && (
-                      <span className="px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
-                        Completed
+                      <span className="px-4 py-2 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                        ● Completed
                       </span>
                     )}
+
                     {a.status === "CANCELLED" && (
-                      <span className="px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-medium">
-                        Cancelled
+                      <span className="px-4 py-2 rounded-full bg-red-500/15 text-red-400 border border-red-500/30">
+                        ● Cancelled
                       </span>
                     )}
+
                   </td>
 
-                  <td className="p-5">
-                    {a.status === "SCHEDULED" ? (
-                      <Button
-                        onClick={() =>
-                          cancelAppointment(a.id)
-                        }
-                        className="bg-red-600 hover:bg-red-700 text-white font-medium"
-                      >
-                        Cancel
-                      </Button>
-                    ) : (
-                      <span className="text-gray-400 font-medium">-</span>
-                    )}
+                  {/* Action */}
+                  <td className="p-6">
+                    <div className="flex flex-col gap-3">
+                      {a.status === "SCHEDULED" ? (
+                        <div className="flex flex-wrap gap-3 items-center">
+                          <Button
+                            onClick={() => handleJoinCall(a)}
+                            disabled={!isJoinAllowed(a)}
+                            className={`bg-transparent border rounded-xl px-4 ${isJoinAllowed(a) ? "border-emerald-500 text-emerald-400 hover:bg-emerald-500/10" : "border-zinc-700 text-zinc-500 cursor-not-allowed opacity-70"}`}
+                          >
+                            Join
+                          </Button>
+
+                          <Button
+                            onClick={() => cancelAppointment(a.id)}
+                            className="bg-transparent border border-red-500 text-red-400 hover:bg-red-500/10 rounded-xl px-4"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400 font-medium">-</span>
+                      )}
+
+                      {a.jitsiRoom && (
+                        <div className="flex flex-col gap-1 text-xs text-zinc-400">
+                          <p>
+                            Code: {a.jitsiRoom}{a.meetingExpired ? " (expired)" : ""}
+                          </p>
+                          {!a.meetingExpired && (
+                            <a
+                              href={`https://meet.jit.si/${a.jitsiRoom}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-emerald-400 hover:underline block"
+                            >
+                              Direct Link ↗
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
+
             </tbody>
           </table>
-        </div>
+        )}
       </div>
 
+      {!noAppointments && (
+        <div className="flex items-center justify-between p-6 border-t border-emerald-500/10">
+
+          <p className="text-zinc-400">
+            Showing 1 to {appointments.length} of {appointments.length} appointments
+          </p>
+
+          <div className="flex gap-2">
+            <button className="w-10 h-10 rounded-xl bg-white/5 text-white">
+              ←
+            </button>
+
+            <button className="w-10 h-10 rounded-xl bg-emerald-500 text-black font-bold">
+              1
+            </button>
+
+            <button className="w-10 h-10 rounded-xl bg-white/5 text-white">
+              →
+            </button>
+          </div>
+
+        </div>
+      )}
+
+      <Dialog open={!!activeCall} onOpenChange={(open) => {
+        if (!open) setActiveCall(null);
+      }}>
+        <DialogContent className="w-full max-w-6xl h-[90vh] p-0">
+          <DialogHeader className="absolute top-0 left-0 right-0 z-50 bg-black text-white p-4">
+            <DialogTitle>
+              Video Call - {activeCall?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {activeCall && (
+            <div className="mt-12 w-full h-full">
+              <JitsiMeeting
+                roomName={activeCall.jitsiRoom}
+                userName={userName}
+                onClose={() => setActiveCall(null)}
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 

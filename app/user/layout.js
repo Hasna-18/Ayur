@@ -3,14 +3,23 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { GiLotus } from "react-icons/gi";
 
 export default function UserLayout({ children }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-950 via-emerald-900/90 to-background text-foreground">
       <nav className="sticky top-0 z-50 border-b border-emerald-800/40 bg-emerald-900/40 backdrop-blur-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
-          Ayur
-        </h1>
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <GiLotus className="w-8 h-8 text-[#d9b56d]" />
+            <h1 className="text-5xl font-serif text-[#d9b56d]">
+              Ayur
+            </h1>
+          </div>
+          <p className="text-sm text-gray-300 mt-2">
+            Ancient Wisdom. Modern Care.
+          </p>
+        </div>
         <div className="flex gap-6 items-center text-sm font-medium">
           <Link
             href="/user/dashboard"
@@ -37,15 +46,15 @@ export default function UserLayout({ children }) {
             About
           </Link>
 
-         <Button
-          variant="outline"
-          size="sm"
-          className="border-emerald-700/40 text-emerald-300 hover:bg-emerald-800/30 hover:text-white"
-          onClick={async () => {
-            await fetch("/api/user/logout", { method: "POST" });
-            window.location.href = "/"; // redirect to home/login
-          }}
-        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-emerald-700/40 text-emerald-300 hover:bg-emerald-800/30 hover:text-white"
+            onClick={async () => {
+              await fetch("/api/user/logout", { method: "POST" });
+              window.location.href = "/"; // redirect to home/login
+            }}
+          >
             Logout
           </Button>
         </div>

@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { generateJitsiRoomName, getJitsiRoomExpiry, isJitsiRoomActive } from "@/lib/jitsi-utils";
 
 // GET all appointments
 export async function GET() {
@@ -8,8 +9,29 @@ export async function GET() {
       orderBy: { time: "asc" },
     });
 
+    const enriched = await Promise.all(
+      appointments.map(async (appointment) => {
+        let room = appointment.jitsiRoom;
+
+        if (!room && appointment.status === "SCHEDULED" && isJitsiRoomActive(appointment.time)) {
+          room = generateJitsiRoomName(appointment.id);
+          await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { jitsiRoom: room },
+          });
+        }
+
+        return {
+          ...appointment,
+          jitsiRoom: room,
+          meetingExpired: !isJitsiRoomActive(appointment.time),
+          meetingExpiresAt: getJitsiRoomExpiry(appointment.time),
+        };
+      })
+    );
+
     // Always return a valid JSON response (even if empty)
-    return NextResponse.json(appointments);
+    return NextResponse.json(enriched);
   } catch (error) {
     console.error("GET /api/admin/appointments error:", error);
     return NextResponse.json(

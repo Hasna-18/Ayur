@@ -1,235 +1,3 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { createAuthClient } from "better-auth/react";
-
-// const auth = createAuthClient();
-
-// export default function Dashboard() {
-//   const [user, setUser] = useState(null);
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     async function loadUser() {
-//       try {
-//         const session = await auth.getSession();
-
-//         const userData =
-//           session?.data?.user ||
-//           session?.data?.session?.user ||
-//           session?.session?.user ||
-//           session?.user ||
-//           null;
-
-//         if (!userData) {
-//           router.push("/login");
-//         } else {
-//           setUser(userData);
-//         }
-//       } catch (err) {
-//         console.error("Error getting session:", err);
-//         router.push("/login");
-//       }
-//     }
-
-//     loadUser();
-//   }, [router]);
-
-//   if (!user) return <p>Loading...</p>;
-// return (
-//   <div className="min-h-screen bg-[#f3f0e6] flex">
-//     {/* SIDEBAR */}
-//     <aside className="hidden lg:flex w-72 bg-gradient-to-b from-[#012e1f] via-[#013626] to-[#001a12] text-white flex-col p-6">
-//       <div>
-//         <h1 className="text-5xl font-serif text-[#d9b56d]">
-//           Ayur
-//         </h1>
-
-//         <p className="text-sm text-gray-300 mt-2">
-//           Ancient Wisdom. Modern Care.
-//         </p>
-//       </div>
-
-//       <div className="mt-12 space-y-3">
-//         {[
-//           "Dashboard",
-//           "Book Appointment",
-//           "My Appointments",
-//           "Doctors",
-//           "Treatments",
-//           "Ayurveda Guide",
-//           "Health Tips",
-//           "About Us",
-//         ].map((item, i) => (
-//           <button
-//             key={i}
-//             className={`w-full text-left px-5 py-4 rounded-2xl transition ${
-//               i === 0
-//                 ? "bg-[#2f5c34]"
-//                 : "hover:bg-white/10"
-//             }`}
-//           >
-//             {item}
-//           </button>
-//         ))}
-//       </div>
-
-//       <div className="mt-auto">
-//         <div className="border border-[#d9b56d]/20 rounded-3xl p-6">
-//           <p className="text-[#d9b56d] italic">
-//             “A healthy outside starts
-//             from the inside.”
-//           </p>
-
-//           <p className="text-gray-400 mt-4 text-sm">
-//             Ancient Ayurveda
-//           </p>
-//         </div>
-//       </div>
-//     </aside>
-
-//     {/* CONTENT */}
-//     <main className="flex-1 p-4 lg:p-6">
-//       {/* TOP BAR */}
-//       <div className="bg-[#faf8f1] rounded-[30px] shadow-lg px-6 py-4 flex justify-between items-center">
-//         <div>
-//           <p className="text-gray-500">
-//             Welcome back,
-//           </p>
-
-//           <h2 className="text-3xl font-bold text-[#1c5135]">
-//             {user.name || user.email}
-//           </h2>
-//         </div>
-
-//         <div className="hidden md:block">
-//           <input
-//             type="text"
-//             placeholder="Search for treatments..."
-//             className="w-96 bg-white rounded-full px-6 py-3 border outline-none"
-//           />
-//         </div>
-//       </div>
-
-//       {/* HERO */}
-//       <section className="mt-6 bg-gradient-to-r from-[#efe7d4] via-[#f5f0e2] to-[#e9e4d7] rounded-[40px] overflow-hidden">
-//         <div className="grid lg:grid-cols-2 gap-8 p-10">
-//           <div>
-//             <h1 className="text-6xl leading-tight font-serif text-[#173a2b]">
-//               Rooted in Nature,
-//               <br />
-//               Dedicated to
-//               <br />
-//               Your Wellness
-//             </h1>
-
-//             <p className="mt-6 text-lg text-gray-700 max-w-lg">
-//               Ayurveda is not just treatment,
-//               it's a way of life. Let us help
-//               you heal naturally and
-//               holistically.
-//             </p>
-
-//             <div className="flex gap-4 mt-8">
-//               <button className="bg-[#0b5d3b] text-white px-8 py-4 rounded-full">
-//                 Book Appointment
-//               </button>
-
-//               <button className="border border-[#c9a86a] text-[#0b5d3b] px-8 py-4 rounded-full">
-//                 View Appointments
-//               </button>
-//             </div>
-
-//             <div className="mt-8 bg-white rounded-2xl p-4 w-fit shadow">
-//               <p className="font-semibold">
-//                 500+ Happy Patients
-//               </p>
-
-//               <p className="text-gray-500 text-sm">
-//                 Trusted by thousands
-//               </p>
-//             </div>
-//           </div>
-
-//           <div className="flex items-center justify-center">
-//             <div className="w-full h-[400px] rounded-[30px] bg-gradient-to-br from-[#29583b] via-[#6e8e57] to-[#d6c19b] flex items-center justify-center">
-//               <span className="text-white text-2xl">
-//                 Your Ayurveda Image Here
-//               </span>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* CARDS */}
-//       <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
-//         {[
-//           "Book Appointment",
-//           "My Appointments",
-//           "Ayurveda Guide",
-//           "Wellness Tips",
-//         ].map((card, i) => (
-//           <div
-//             key={i}
-//             className="bg-[#faf8f1] rounded-[30px] p-6 shadow-lg"
-//           >
-//             <div className="w-16 h-16 rounded-full bg-green-100"></div>
-
-//             <h3 className="mt-6 text-2xl font-semibold text-[#173a2b]">
-//               {card}
-//             </h3>
-
-//             <p className="mt-4 text-gray-600">
-//               Explore Ayurvedic services and
-//               wellness solutions.
-//             </p>
-
-//             <button className="mt-8 border border-[#0b5d3b] px-6 py-2 rounded-full text-[#0b5d3b]">
-//               Open
-//             </button>
-//           </div>
-//         ))}
-//       </section>
-
-//       {/* BOTTOM BAR */}
-//       <section className="mt-8 bg-gradient-to-r from-[#012e1f] via-[#0b5d3b] to-[#012e1f] rounded-[30px] text-white p-8">
-//         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-//           <div>
-//             <h3 className="text-3xl font-bold">
-//               100%
-//             </h3>
-//             <p>Natural</p>
-//           </div>
-
-//           <div>
-//             <h3 className="text-3xl font-bold">
-//               500+
-//             </h3>
-//             <p>Patients</p>
-//           </div>
-
-//           <div>
-//             <h3 className="text-3xl font-bold">
-//               Expert
-//             </h3>
-//             <p>Doctors</p>
-//           </div>
-
-//           <div>
-//             <h3 className="text-3xl font-bold">
-//               Trusted
-//             </h3>
-//             <p>Care</p>
-//           </div>
-//         </div>
-//       </section>
-//     </main>
-//   </div>
-// );
-// }
-
-
-
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -306,24 +74,13 @@ export default function Dashboard() {
     </div>
   );
 
-  const menuItems = [
-    { name: "Dashboard", icon: LayoutDashboard, active: true },
-    { name: "Book Appointment", icon: CalendarPlus },
-    { name: "My Appointments", icon: CalendarDays },
-    { name: "Doctors", icon: Stethoscope },
-    { name: "Treatments", icon: GiHerbsBundle },
-    { name: "Ayurveda Guide", icon: BookOpen },
-    { name: "Health Tips", icon: Lightbulb },
-    { name: "About Us", icon: Info }
-  ];
-
   const featureCards = [
     {
       title: "Book Appointment",
       icon: CalendarPlus,
       desc: "Schedule your consultation with our expert Ayurvedic doctors.",
       action: "Book Now",
-      color: "from-green-50 to-emerald-50",
+      link: "/user/book",
       iconBg: "bg-green-100"
     },
     {
@@ -331,7 +88,7 @@ export default function Dashboard() {
       icon: CalendarDays,
       desc: "View and manage your upcoming and past appointments.",
       action: "View Appointments",
-      color: "from-amber-50 to-yellow-50",
+      link: "/user/appointment-list",
       iconBg: "bg-amber-100"
     },
     {
@@ -339,7 +96,7 @@ export default function Dashboard() {
       icon: BookOpen,
       desc: "Learn about Ayurvedic treatments, therapies and living.",
       action: "Explore Guide",
-      color: "from-teal-50 to-green-50",
+      link: "/guide",
       iconBg: "bg-teal-100"
     },
     {
@@ -347,62 +104,13 @@ export default function Dashboard() {
       icon: Lightbulb,
       desc: "Daily tips for a balanced mind, body and soul.",
       action: "Read Tips",
-      color: "from-orange-50 to-amber-50",
+      link: "/tips",
       iconBg: "bg-orange-100"
     }
   ];
 
   return (
     <div className="min-h-screen bg-[#f3f0e6] flex">
-      {/* SIDEBAR */}
-      <aside className="hidden lg:flex w-72 bg-gradient-to-b from-[#012e1f] via-[#013626] to-[#001a12] text-white flex-col p-6">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <GiLotus className="w-8 h-8 text-[#d9b56d]" />
-            <h1 className="text-5xl font-serif text-[#d9b56d]">
-              Ayur
-            </h1>
-          </div>
-          <p className="text-sm text-gray-300 mt-2">
-            Ancient Wisdom. Modern Care.
-          </p>
-        </div>
-
-        <div className="mt-12 space-y-2">
-          {menuItems.map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={i}
-                className={`w-full text-left px-5 py-3 rounded-2xl transition flex items-center gap-3 ${item.active
-                    ? "bg-[#2f5c34] text-white"
-                    : "hover:bg-white/10 text-gray-200"
-                  }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span>{item.name}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="mt-auto">
-          <div className="border border-[#d9b56d]/20 rounded-3xl p-5 bg-white/5 backdrop-blur-sm">
-            <Quote className="w-6 h-6 text-[#d9b56d] mb-3" />
-            <p className="text-[#d9b56d] italic text-sm leading-relaxed">
-              "A healthy outside starts from the inside."
-            </p>
-            <p className="text-gray-400 mt-3 text-xs">
-              - Ancient Ayurveda
-            </p>
-          </div>
-
-          <button className="w-full text-left px-5 py-3 rounded-2xl transition hover:bg-white/10 text-gray-200 flex items-center gap-3 mt-4">
-            <LogOut className="w-5 h-5" />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
 
       {/* CONTENT */}
       <main className="flex-1 p-4 lg:p-6 overflow-y-auto">
@@ -419,16 +127,6 @@ export default function Dashboard() {
             </h2>
           </div>
 
-          <div className="hidden md:block">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search for treatments, doctors, tips..."
-                className="w-96 bg-white rounded-full px-12 py-3 border outline-none focus:ring-2 focus:ring-green-600"
-              />
-            </div>
-          </div>
         </div>
 
         {/* HERO SECTION */}
@@ -462,15 +160,19 @@ export default function Dashboard() {
               </div>
 
               <div className="flex gap-4 mt-8">
-                <button className="bg-[#0b5d3b] text-white px-8 py-4 rounded-full flex items-center gap-2 hover:bg-[#0a4a30] transition">
-                  <CalendarPlus className="w-5 h-5" />
-                  Book Appointment
-                </button>
+                <a href="/user/book">
+                  <button className="bg-[#0b5d3b] text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-[#0a4a30] transition">
+                    <CalendarPlus className="w-5 h-5" />
+                    Book Appointment
+                  </button>
+                </a>
 
-                <button className="border border-[#c9a86a] text-[#0b5d3b] px-8 py-4 rounded-full flex items-center gap-2 hover:bg-white/50 transition">
-                  <CalendarDays className="w-5 h-5" />
-                  View My Appointments
-                </button>
+                <a href="/user/appointment-list">
+                  <button className="border border-[#c9a86a] text-[#0b5d3b] px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/50 transition">
+                    <CalendarDays className="w-5 h-5" />
+                    View My Appointments
+                  </button>
+                </a>
               </div>
 
               {/* Stats Row */}
@@ -535,10 +237,11 @@ export default function Dashboard() {
                 <p className="mt-3 text-gray-600 text-sm leading-relaxed">
                   {card.desc}
                 </p>
-
-                <button className="mt-6 border border-[#0b5d3b] px-5 py-2 rounded-full text-[#0b5d3b] text-sm hover:bg-[#0b5d3b] hover:text-white transition">
-                  {card.action}
-                </button>
+                <a href={card.link}>
+                  <button className="mt-6 border border-[#0b5d3b] px-5 py-2 rounded-full text-[#0b5d3b] text-sm hover:bg-[#0b5d3b] hover:text-white transition">
+                    {card.action}
+                  </button>
+                </a>
               </div>
             );
           })}
@@ -664,4 +367,4 @@ export default function Dashboard() {
     </div>
   );
 }
-///jhguygfuyfguyguy
+
