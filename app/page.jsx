@@ -256,7 +256,7 @@ export default function Home() {
           </div>
 
           <a href="/user/dashboard" className="transition-transform active:scale-95">
-            <button className="shimmer-btn bg-brand-green hover:bg-brand-green-dark text-white px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 shadow-lg shadow-brand-green/10 border border-brand-green/20">
+            <button className="shimmer-btn bg-brand-green hover:bg-brand-green-dark text-white px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 shadow-lg shadow-brand-green/10 hover:shadow-brand-green/20 hover:-translate-y-0.5 border border-brand-green/20">
               Book Appointment
             </button>
           </a>
@@ -277,7 +277,8 @@ export default function Home() {
           alt=""
           width={350}
           height={500}
-          className="absolute top-0 left-0 z-0 opacity-40 pointer-events-none mix-blend-multiply"
+          className="absolute top-0 left-0 z-0 opacity-40 pointer-events-none mix-blend-multiply w-[350px] h-auto"
+          priority
         />
 
         <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-16 pb-12 relative z-10">
@@ -325,15 +326,15 @@ export default function Home() {
 
               {/* Buttons */}
               <div className="flex flex-wrap items-center gap-5">
-                <a href="/user/dashboard">
-                  <button className="bg-[#0f4c3a] hover:bg-[#0a3327] transition-colors text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2 shadow-lg shadow-[#0f4c3a]/20">
+                <a href="/user/dashboard" className="transition-transform active:scale-95">
+                  <button className="bg-[#0f4c3a] hover:bg-[#0a3327] transition-all duration-300 text-white px-8 py-4 rounded-full font-semibold flex items-center gap-2 shadow-lg shadow-[#0f4c3a]/20 hover:shadow-xl hover:-translate-y-0.5">
                     Book Appointment
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </a>
 
-                <a href="#treatments">
-                  <button className="bg-white hover:bg-slate-50 transition-colors text-slate-700 px-8 py-4 rounded-full font-semibold flex items-center gap-2 shadow-sm border border-slate-100">
+                <a href="#treatments" className="transition-transform active:scale-95">
+                  <button className="bg-white hover:bg-slate-50 transition-all duration-300 text-slate-700 px-8 py-4 rounded-full font-semibold flex items-center gap-2 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5">
                     <PlayCircle className="w-5 h-5 text-slate-400" />
                     Learn More
                   </button>
@@ -407,7 +408,7 @@ export default function Home() {
                 alt=""
                 width={200}
                 height={300}
-                className="absolute -left-28 top-[10%] z-0 opacity-70 pointer-events-none mix-blend-multiply"
+                className="absolute -left-28 top-[10%] z-0 opacity-70 pointer-events-none mix-blend-multiply w-[200px] h-auto"
               />
 
               <Image
@@ -415,11 +416,11 @@ export default function Home() {
                 alt="leaf"
                 width={200}
                 height={300}
-                className="absolute -right-16 top-[40%] z-0 opacity-70 pointer-events-none mix-blend-multiply rotate-[100deg]"
+                className="absolute -right-16 top-[40%] z-0 opacity-70 pointer-events-none mix-blend-multiply rotate-[100deg] w-[200px] h-auto"
               />
 
               {/* Doctor Card Container */}
-              <div className="relative z-10 bg-white rounded-[40px] shadow-[0_20px_50px_rgb(0,0,0,0.06)] p-3 md:p-4 w-full max-w-[460px] ml-auto">
+              <div className="relative z-10 bg-white rounded-[40px] shadow-[0_20px_50px_rgb(0,0,0,0.06)] p-3 md:p-4 w-full max-w-[460px] ml-auto hover:-translate-y-1 transition duration-500">
 
                 {/* Image Circle Container */}
                 <div className="bg-[#e8ede4] rounded-full overflow-hidden aspect-square relative flex items-end justify-center shadow-inner">
@@ -428,12 +429,13 @@ export default function Home() {
                     alt="Doctor"
                     fill
                     className="object-cover object-top scale-110 translate-y-4"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority
                   />
                 </div>
 
                 {/* Top Right Badge */}
-                <div className="absolute top-8 -right-8 md:-right-12 bg-white shadow-xl rounded-2xl px-5 py-3.5 border border-slate-50 flex items-center gap-3">
+                <div className="absolute top-8 -right-8 md:-right-12 bg-white shadow-xl rounded-2xl px-5 py-3.5 border border-slate-50 flex items-center gap-3 hover:scale-105 transition">
                   <div className="p-2 rounded-lg bg-[#eef3e5]">
                     <ShieldCheck className="w-6 h-6 text-[#0f4c3a] fill-[#0f4c3a] text-white" />
                   </div>
@@ -444,7 +446,7 @@ export default function Home() {
                 </div>
 
                 {/* Bottom Left Badge */}
-                <div className="absolute bottom-16 -left-8 md:-left-12 bg-white shadow-xl rounded-2xl px-5 py-3.5 border border-slate-50 flex items-center gap-3">
+                <div className="absolute bottom-16 -left-8 md:-left-12 bg-white shadow-xl rounded-2xl px-5 py-3.5 border border-slate-50 flex items-center gap-3 hover:scale-105 transition">
                   <div className="p-2 rounded-lg bg-[#fdf5e6]">
                     <Award className="w-6 h-6 text-[#c89d4f]" />
                   </div>
@@ -582,14 +584,14 @@ export default function Home() {
                 return (
                   <div
                     key={item.title}
-                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 group flex flex-row h-[240px]"
+                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-col sm:flex-row h-auto sm:h-[240px]"
                   >
                     {/* Left content block */}
-                    <div className="p-6 pr-2 flex flex-col justify-between flex-1 min-w-0">
+                    <div className="p-6 sm:pr-2 flex flex-col justify-between flex-1 min-w-0 order-2 sm:order-1">
                       <div>
                         {/* Icon & Badge */}
                         <div className="flex items-center gap-2 mb-4">
-                          <div className={`w-10 h-10 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-sm`}>
+                          <div className={`w-10 h-10 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-sm flex-shrink-0`}>
                             <IconComponent className="w-5 h-5" />
                           </div>
                           <span className={`text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold border ${item.theme.badgeBg}`}>
@@ -598,7 +600,7 @@ export default function Home() {
                         </div>
 
                         {/* Title */}
-                        <h3 className="text-xl sm:text-2xl font-serif font-bold text-brand-green mb-2">
+                        <h3 className="text-xl sm:text-2xl font-serif font-bold text-brand-green mb-2 leading-tight">
                           {item.title}
                         </h3>
 
@@ -621,9 +623,9 @@ export default function Home() {
                     </div>
 
                     {/* Right Image Mask / Circle container */}
-                    <div className="w-[42%] relative overflow-hidden flex-shrink-0 flex items-center justify-center">
+                    <div className="w-full h-44 sm:w-[42%] sm:h-full relative overflow-hidden flex-shrink-0 flex items-center justify-center order-1 sm:order-2">
                       {/* Crescent background shape */}
-                      <div className={`absolute right-0 top-0 bottom-0 w-[120%] h-full rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
+                      <div className={`absolute right-0 top-0 bottom-0 w-full sm:w-[120%] h-full rounded-b-[40px] sm:rounded-b-none sm:rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
 
                       {/* Image container */}
                       <div className="absolute inset-0 flex items-center justify-center p-3 z-10">
@@ -632,7 +634,7 @@ export default function Home() {
                             src={item.image}
                             alt={item.title}
                             fill
-                            className="object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
+                            className="object-contain group-hover:scale-108 transition-transform duration-700 ease-out"
                             sizes="(max-width: 768px) 100vw, 30vw"
                           />
                         </div>
@@ -725,7 +727,7 @@ export default function Home() {
           <div className="text-center max-w-3xl mx-auto mb-24">
 
             <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#d8c19c] text-[#c9a15d] uppercase tracking-[3px] font-semibold text-sm bg-white/70">
-              🌿 Simple Process
+              Simple Process
             </span>
 
             <h2 className="mt-8 text-5xl md:text-7xl font-serif font-bold text-[#0f4c3a]">
@@ -873,7 +875,7 @@ export default function Home() {
                     <div className="w-10 h-10 shrink-0 rounded-full bg-[#4a6b53] text-white flex items-center justify-center">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <h4 className="font-bold text-[13px] text-[#113a2c] leading-tight truncate">
                         Trusted by 1000+
@@ -987,7 +989,7 @@ export default function Home() {
                     <button className="group bg-[#1a3b2b] hover:bg-[#122a1f] text-white pl-6 pr-2 py-2 rounded-full font-medium text-[15px] transition-all duration-300 flex items-center gap-6">
                       Book Consultation
                       <span className="w-9 h-9 rounded-full bg-[#d4b982] flex items-center justify-center transition text-white">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                       </span>
                     </button>
                   </a>
@@ -1065,7 +1067,7 @@ export default function Home() {
             <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight">
               Ready to Begin Your
               <br />
-              <span className="text-text-gold-gradient font-serif">Healing Journey?</span>
+              <span className="text-gold-gradient font-serif">Healing Journey?</span>
             </h2>
             <p className="text-brand-gold-light/80 text-lg md:text-xl font-light max-w-xl mx-auto">
               Schedule your standard online video consultation with an Ayurvedic expert doctor today.
