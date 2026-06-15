@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --color-brand-green: #12372A;
+  --color-brand-green-dark: #0A1E17;
+  --color-brand-sage: #436850;
+  --color-brand-cream: #FAF8F5;
+  --color-brand-gold: #C5A880;
+  --color-brand-gold-dark: #A1825B;
+  --color-brand-gold-light: #F4EAE1;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -153,3 +163,73 @@
 .gradient-title {
   @apply bg-gradient-to-b from-emerald-500 to-teal-400 font-bold text-transparent bg-clip-text pb-1 pr-2;
 }
+
+/* Custom premium design utilities */
+.organic-leaf {
+  border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%;
+}
+
+.organic-leaf-reverse {
+  border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%;
+}
+
+.gold-glow {
+  box-shadow: 0 10px 30px -10px rgba(197, 168, 128, 0.3);
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 20px 40px -15px rgba(197, 168, 128, 0.5);
+  transform: translateY(-4px);
+}
+
+.green-glow {
+  box-shadow: 0 10px 30px -10px rgba(18, 55, 42, 0.15);
+}
+
+.green-glow-hover:hover {
+  box-shadow: 0 20px 40px -15px rgba(18, 55, 42, 0.25);
+  transform: translateY(-4px);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #c5a880 50%, #b5945b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #e5c060 0%, #c5a880 100%);
+}
+
+.bg-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bg-glass-dark {
+  background: rgba(18, 37, 30, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.13);
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+}
+
+.shimmer-btn:hover::after {
+  left: 130%;
+}
