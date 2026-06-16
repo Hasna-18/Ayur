@@ -23,7 +23,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
+
           <main className="min-h-screen">{children}</main>
+
           <footer className="bg-green-950 text-white py-16">
 
             <div className="max-w-7xl mx-auto px-6">

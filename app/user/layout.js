@@ -41,7 +41,13 @@ export default function UserLayout({ children }) {
             My Appointments
           </Link>
           <Link
-            href="/user/about"
+            href="/user/prescriptions"
+            className="hover:text-emerald-400 transition-colors"
+          >
+            My Prescriptions
+          </Link>
+          <Link
+            href="/about"
             className="hover:text-emerald-400 transition-colors"
           >
             About

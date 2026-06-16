@@ -195,3 +195,18 @@ enum TransactionType {
   APPOINTMENT_DEDUCTION
   ADMIN_ADJUSTMENT
 }
+
+model ConsultationReport {
+  id            Int      @id @default(autoincrement())
+  appointmentId Int?
+  patientEmail  String
+  patientName   String
+  doctorName    String
+  tips          String?  @db.Text
+  plans         String?  @db.Text
+  medicines     String?  @db.Text
+  fileName      String?
+  fileUrl       String?
+  createdAt     DateTime @default(now())
+}
+

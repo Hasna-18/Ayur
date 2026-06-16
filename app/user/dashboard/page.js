@@ -91,6 +91,14 @@ export default function Dashboard() {
       iconBg: "bg-amber-100"
     },
     {
+      title: "Prescriptions & Plans",
+      icon: ClipboardList,
+      desc: "View treatment plans, daily tips, and medicine names sent by your doctor.",
+      action: "View Prescriptions",
+      link: "/user/prescriptions",
+      iconBg: "bg-purple-100"
+    },
+    {
       title: "Ayurveda Guide",
       icon: BookOpen,
       desc: "Learn about Ayurvedic treatments, therapies and living.",

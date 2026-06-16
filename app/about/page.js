@@ -9,11 +9,13 @@ import {
   Users,
   Star,
 } from "lucide-react";
+import { Navbar } from "@/components/navbar";
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F5F1E8]">
 
+      <Navbar/>
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#f5f1e8] via-[#f5f1e8]/90 to-[#f5f1e8]/70" />

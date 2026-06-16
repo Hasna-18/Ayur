@@ -41,51 +41,8 @@ import {
   HeartHandshake,
 } from "lucide-react";
 import { GiLotus } from "react-icons/gi";
+import { Navbar } from "@/components/navbar";
 
-// const treatments = [
-//   {
-//     title: "Weight Loss",
-//     desc: "Natural metabolism boost, diet plans, and body detoxification.",
-//     icon: Dumbbell,
-//     color: "from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 text-amber-700 dark:text-amber-400 border-amber-100 dark:border-amber-900/30",
-//     badge: "Metabolism"
-//   },
-//   {
-//     title: "PCOS Management",
-//     desc: "Hormonal balance therapies through herbs and lifestyle changes.",
-//     icon: Sparkles,
-//     color: "from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 text-purple-700 dark:text-purple-400 border-purple-100 dark:border-purple-900/30",
-//     badge: "Hormonal Health"
-//   },
-//   {
-//     title: "Diabetes Care",
-//     desc: "Regulate blood sugar levels through tailored Panchakarma treatments.",
-//     icon: Activity,
-//     color: "from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 text-blue-700 dark:text-blue-400 border-blue-100 dark:border-blue-900/30",
-//     badge: "Sugar Control"
-//   },
-//   {
-//     title: "Hair Loss Control",
-//     desc: "Strengthen roots and promote hair growth with natural oils and herbs.",
-//     icon: Droplets,
-//     color: "from-teal-50 to-emerald-50 dark:from-teal-950/20 dark:to-emerald-950/20 text-teal-700 dark:text-teal-400 border-teal-100 dark:border-teal-900/30",
-//     badge: "Scalp Care"
-//   },
-//   {
-//     title: "Skin Care & Glow",
-//     desc: "Restore your natural radiance and treat acne with herbal remedies.",
-//     icon: Flower2,
-//     color: "from-rose-50 to-red-50 dark:from-rose-950/20 dark:to-red-950/20 text-rose-700 dark:text-rose-400 border-rose-100 dark:border-rose-900/30",
-//     badge: "Radiance"
-//   },
-//   {
-//     title: "Stress & Anxiety",
-//     desc: "Calm your mind and improve sleep with Shirodhara and meditation.",
-//     icon: Heart,
-//     color: "from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 text-green-700 dark:text-green-400 border-emerald-100 dark:border-green-900/30",
-//     badge: "Mindfulness"
-//   },
-// ];
 const treatments = [
   {
     title: "Weight Loss",
@@ -224,7 +181,7 @@ export default function Home() {
       <div className="absolute top-[450px] left-0 w-[500px] h-[500px] opacity-[0.06] bg-brand-gold rounded-full blur-3xl -z-10 pointer-events-none" />
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-brand-gold-light/50 transition-all duration-300">
+      {/* <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-brand-gold-light/50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 h-22 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-brand-green/5 flex items-center justify-center">
@@ -247,7 +204,7 @@ export default function Home() {
             <Link href="#" className="text-brand-green font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
               Home
             </Link>
-            <Link href="/user/about" className="text-slate-600 font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
+            <Link href="/about" className="text-slate-600 font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
               About
             </Link>
             <Link href="#" className="text-slate-600 font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
@@ -261,7 +218,8 @@ export default function Home() {
             </button>
           </a>
         </div>
-      </nav>
+      </nav> */}
+      <Navbar/>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#fbf9f4] to-[#f4ebd9] pt-12 pb-16">
