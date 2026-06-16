@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createAuthClient } from "better-auth/react";
+import { authClient as auth } from "@/lib/auth-client";
 import {
   LayoutDashboard,
   CalendarPlus,
@@ -33,7 +33,6 @@ import {
 } from "lucide-react";
 import { GiLotus, GiHerbsBundle, GiHealing, GiSpaMassage, GiMeditation, GiYoga, GiHealthNormal } from "react-icons/gi";
 
-const auth = createAuthClient();
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);

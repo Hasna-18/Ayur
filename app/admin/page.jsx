@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarDays, Users, Settings, Clock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 export default function AdminDashboard() {
   const [profile, setProfile] = useState({
@@ -61,7 +62,15 @@ export default function AdminDashboard() {
       <nav className="w-full border-b border-emerald-800/40 bg-emerald-950/20 backdrop-blur-md sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold text-emerald-400">Dr. Admin Portal</h1>
-          <Button variant="outline" className="border-emerald-700/50">Logout</Button>
+          <Button variant="outline" className="border-emerald-700/50" onClick={async () => {
+            await authClient.signOut({
+              fetchOptions: {
+                onSuccess: () => {
+                  window.location.href = "/admin/login";
+                },
+              },
+            });
+          }}>Logout</Button>
         </div>
       </nav>
 

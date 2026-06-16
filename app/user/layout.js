@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { GiLotus } from "react-icons/gi";
+import { authClient } from "@/lib/auth-client";
 
 export default function UserLayout({ children }) {
   return (
@@ -51,8 +52,13 @@ export default function UserLayout({ children }) {
             size="sm"
             className="border-emerald-700/40 text-emerald-300 hover:bg-emerald-800/30 hover:text-white"
             onClick={async () => {
-              await fetch("/api/user/logout", { method: "POST" });
-              window.location.href = "/"; // redirect to home/login
+              await authClient.signOut({
+                fetchOptions: {
+                  onSuccess: () => {
+                    window.location.href = "/login";
+                  },
+                },
+              });
             }}
           >
             Logout

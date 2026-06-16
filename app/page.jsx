@@ -532,24 +532,24 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-gold-light/20 rounded-full blur-3xl -z-10" />
 
         {/* Left Decorative Image */}
-        <div className="absolute left-0 top-10 hidden xl:block">
+        <div className="absolute left-0 top-10 hidden xl:block overflow-hidden rounded-[40px] mix-blend-multiply opacity-90">
           <Image
             src={f1}
             alt="Ayurveda"
             width={280}
             height={420}
-            className="object-contain opacity-90"
+            className="object-cover w-full h-full"
           />
         </div>
 
         {/* Right Decorative Image */}
-        <div className="absolute right-0 top-10 hidden xl:block">
+        <div className="absolute right-0 top-10 hidden xl:block overflow-hidden rounded-[40px] mix-blend-multiply opacity-90">
           <Image
             src={f2}
             alt="Ayurveda"
             width={280}
             height={420}
-            className="object-contain opacity-90"
+            className="object-cover w-full h-full"
           />
         </div>
 
@@ -584,7 +584,7 @@ export default function Home() {
                 return (
                   <div
                     key={item.title}
-                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-col sm:flex-row h-auto sm:h-[240px]"
+                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-col sm:flex-row h-auto sm:min-h-[260px] items-stretch"
                   >
                     {/* Left content block */}
                     <div className="p-6 sm:pr-2 flex flex-col justify-between flex-1 min-w-0 order-2 sm:order-1">
@@ -623,7 +623,7 @@ export default function Home() {
                     </div>
 
                     {/* Right Image Mask / Circle container */}
-                    <div className="w-full h-44 sm:w-[42%] sm:h-full relative overflow-hidden flex-shrink-0 flex items-center justify-center order-1 sm:order-2">
+                    <div className="w-full h-44 sm:w-[42%] sm:h-auto relative overflow-hidden flex-shrink-0 flex items-center justify-center order-1 sm:order-2">
                       {/* Crescent background shape */}
                       <div className={`absolute right-0 top-0 bottom-0 w-full sm:w-[120%] h-full rounded-b-[40px] sm:rounded-b-none sm:rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
 
@@ -863,7 +863,7 @@ export default function Home() {
                       {/* Doctor Image */}
                       <Image
                         src="/g33.png"
-                        alt="Dr. Hasna Nair"
+                        alt="Dr. Yeti"
                         fill
                         className="object-cover relative z-10"
                       />
