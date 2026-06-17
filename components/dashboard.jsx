@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createAuthClient } from "better-auth/react";
-
-const auth = createAuthClient();
+import { authClient } from "@/lib/auth-client";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -12,7 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function loadUser() {
       try {
-        const session = await auth.getSession();
+        const session = await authClient.getSession();
         const userData =
           session?.data?.user ||
           session?.data?.session?.user ||
