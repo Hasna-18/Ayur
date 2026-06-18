@@ -1,41 +1,34 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient as auth } from "@/lib/auth-client";
 import {
-  LayoutDashboard,
   CalendarPlus,
   CalendarDays,
-  Stethoscope,
-  FlaskConical,
-  BookOpen,
-  Lightbulb,
-  Info,
-  LogOut,
-  Search,
-  Users,
-  Shield,
-  Heart,
-  Leaf,
-  Quote,
-  Sparkles,
-  Clock,
-  CheckCircle,
-  Award,
-  Star,
-  Flower2,
-  User,
-  TrendingUp,
-  Smile,
   ClipboardList,
-  Globe,
-  Sun
+  Calendar,
+  Clock,
+  Video,
+  ArrowRight,
+  Leaf,
+  Bell,
+  Droplets,
+  Activity,
+  Utensils,
+  Moon,
+  Coffee,
+  Book,
+  Smile,
+  Heart
 } from "lucide-react";
-import { GiLotus, GiHerbsBundle, GiHealing, GiSpaMassage, GiMeditation, GiYoga, GiHealthNormal } from "react-icons/gi";
-
+import { GiLotus } from "react-icons/gi";
+import Image from "next/image";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const [nextAppointment, setNextAppointment] = useState(null);
+  const [loadingAppts, setLoadingAppts] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,314 +57,361 @@ export default function Dashboard() {
     loadUser();
   }, [router]);
 
+  useEffect(() => {
+    if (!user) return;
+
+    async function fetchAppointments() {
+      try {
+        const res = await fetch("/api/user/appointments", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          // Find the next scheduled appointment that isn't expired
+          const upcoming = data
+            .filter(a => a.status === "SCHEDULED" && !a.meetingExpired)
+            .sort((a, b) => new Date(a.time) - new Date(b.time))[0];
+          setNextAppointment(upcoming || null);
+        }
+      } catch (err) {
+        console.error("Error fetching appointments:", err);
+      } finally {
+        setLoadingAppts(false);
+      }
+    }
+
+    fetchAppointments();
+  }, [user]);
+
   if (!user) return (
-    <div className="min-h-screen bg-[#f3f0e6] flex items-center justify-center">
+    <div className="min-h-screen bg-[#f4f1e8] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-[#0b5d3b] border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-[#0b5d3b] font-medium">Loading your wellness journey...</p>
+        <div className="w-12 h-12 border-4 border-[#5a7258] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-[#5a7258] font-medium">Loading your wellness journey...</p>
       </div>
     </div>
   );
 
-  const featureCards = [
-    {
-      title: "Book Appointment",
-      icon: CalendarPlus,
-      desc: "Schedule your consultation with our expert Ayurvedic doctors.",
-      action: "Book Now",
-      link: "/user/book",
-      iconBg: "bg-green-100"
-    },
-    {
-      title: "My Appointments",
-      icon: CalendarDays,
-      desc: "View and manage your upcoming and past appointments.",
-      action: "View Appointments",
-      link: "/user/appointment-list",
-      iconBg: "bg-amber-100"
-    },
-    {
-      title: "Prescriptions & Plans",
-      icon: ClipboardList,
-      desc: "View treatment plans, daily tips, and medicine names sent by your doctor.",
-      action: "View Prescriptions",
-      link: "/user/prescriptions",
-      iconBg: "bg-purple-100"
-    },
-    {
-      title: "Ayurveda Guide",
-      icon: BookOpen,
-      desc: "Learn about Ayurvedic treatments, therapies and living.",
-      action: "Explore Guide",
-      link: "/guide",
-      iconBg: "bg-teal-100"
-    },
-    {
-      title: "Wellness Tips",
-      icon: Lightbulb,
-      desc: "Daily tips for a balanced mind, body and soul.",
-      action: "Read Tips",
-      link: "/tips",
-      iconBg: "bg-orange-100"
-    }
-  ];
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  // Helper to format date
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    return new Date(dateStr).toLocaleDateString('en-US', options);
+  };
+
+  // Helper to format time
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+    return new Date(timeStr).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-[#f3f0e6] flex">
+    <div className="min-h-screen bg-[#f4f1e8] text-[#3e4a3d] font-sans relative overflow-hidden pb-10">
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        .font-hand { font-family: 'Caveat', cursive; }
+        .font-serif-display { font-family: 'Playfair Display', serif; }
+        .paper-texture {
+            background-color: #fdfdfa;
+            background-image: url("https://www.transparenttextures.com/patterns/clean-textile.png");
+            box-shadow: 2px 4px 15px rgba(0,0,0,0.03);
+        }
+      `}} />
 
-      {/* CONTENT */}
-      <main className="flex-1 p-4 lg:p-6 overflow-y-auto">
-        {/* TOP BAR */}
-        <div className="bg-[#faf8f1] rounded-[30px] shadow-lg px-6 py-4 flex justify-between items-center">
+      {/* Header */}
+      <header className="flex justify-between items-center p-6 lg:px-12">
+        <a href="/user/dashboard" className="flex items-center gap-2 hover:opacity-90 transition">
+          <Leaf className="text-[#5a7258] w-8 h-8" />
           <div>
-            <p className="text-gray-500 text-sm flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#d9b56d]" />
-              Welcome back,
-            </p>
-            <h2 className="text-3xl font-bold text-[#1c5135] flex items-center gap-2">
-              {user.name || user.email}
-              <Leaf className="w-6 h-6 text-green-600" />
-            </h2>
+            <h1 className="text-2xl font-serif-display font-bold text-[#3e4a3d] tracking-tight">Ayur</h1>
+            <p className="text-[10px] uppercase tracking-wider text-[#6b7a68]">Ancient Wisdom. Modern Care.</p>
           </div>
+        </a>
+        <div className="hidden md:flex text-3xl font-hand text-[#6b7a68]">
+          {getGreeting()}, {user.name || user.email?.split('@')[0]} 👋
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-[#e0dcd0] rounded-full overflow-hidden border-2 border-white shadow-sm flex items-center justify-center">
+            <Smile className="text-[#6b7a68] w-6 h-6" />
+          </div>
+          <button className="p-2 rounded-full hover:bg-black/5 relative">
+            <Bell className="w-5 h-5 text-[#6b7a68]" />
+            <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-[#f4f1e8]"></span>
+          </button>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-6 lg:px-12 mt-4">
+        {/* Top Hero Section */}
+        <div className="relative flex flex-col md:flex-row justify-between mb-12">
+          {/* Left text */}
+          <div className="max-w-md z-10 pt-8">
+            <h2 className="text-6xl lg:text-7xl font-hand leading-tight text-[#2b3a2f]">
+              Welcome back,<br />{user.name || user.email?.split('@')[0]}
+            </h2>
+            <div className="mt-6 flex items-start gap-4 text-[#5a7258]">
+              <div className="hidden sm:block">
+                <GiLotus className="w-8 h-8 opacity-60" />
+              </div>
+              <p className="text-sm font-medium leading-relaxed">
+                Take care of your body.<br />It's the only place you have to live.
+              </p>
+            </div>
+            {/* Next Appointment Card (Torn Paper look) */}
+            <div className="mt-10 paper-texture rounded-sm p-6 relative w-80 transform -rotate-2 border border-[#e8e4d9] overflow-hidden">
+              {loadingAppts ? (
+                <div className="py-4 text-center text-sm text-[#6b7a68]">Checking appointments...</div>
+              ) : nextAppointment ? (
+                <div className="flex gap-4 items-start relative z-10">
+                  <div className="bg-[#e8e4d9] p-3 rounded-lg border border-[#d1ccbd]">
+                    <Calendar className="w-6 h-6 text-[#5a7258]" />
+                  </div>
+                  <div>
+                    <p className="font-hand text-[#6b7a68] text-xl">Next Appointment</p>
+                    <p className="font-bold text-[#3e4a3d] mt-1">{formatDate(nextAppointment.date)}</p>
+                    <p className="text-sm font-medium text-[#6b7a68]">{formatTime(nextAppointment.time)}</p>
+                    <a href="/user/appointment-list">
+                      <button className="mt-4 bg-[#5a7258] hover:bg-[#465a44] text-white text-xs px-5 py-2.5 rounded-full flex items-center gap-2 transition shadow-sm">
+                        View Appointment <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex gap-4 items-start relative z-10">
+                  <div className="bg-[#e8e4d9] p-3 rounded-lg border border-[#d1ccbd]">
+                    <Calendar className="w-6 h-6 text-[#5a7258]" />
+                  </div>
+                  <div>
+                    <p className="font-hand text-[#6b7a68] text-xl">Next Appointment</p>
+                    <p className="font-bold text-[#3e4a3d] mt-1">No Upcoming Bookings</p>
+                    <p className="text-sm font-medium text-[#6b7a68] mt-1">Start your natural healing today.</p>
+                    <a href="/user/book">
+                      <button className="mt-4 bg-[#5a7258] hover:bg-[#465a44] text-white text-xs px-5 py-2.5 rounded-full flex items-center gap-2 transition shadow-sm">
+                        Book Appointment <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </a>
+                  </div>
+                </div>
+
+              )}
+            </div>
+            <div
+              className="hidden lg:block absolute top-0 right-0 w-[50%] h-[450px] rounded-[30px] bg-cover bg-center shadow-sm"
+              style={{ backgroundImage: "url('/user/d5.png')" }}
+            ></div>
+          </div>
+
+          {/* Right side background image - simulating the tea/plant scene */}
+          <div className="hidden lg:block absolute top-0 right-0 w-[50%] h-[450px] rounded-[30px] bg-cover bg-center shadow-sm" style={{ backgroundImage: "url('/user/hero_dash.png')" }}></div>
 
         </div>
 
-        {/* HERO SECTION */}
-        <section className="mt-6 bg-gradient-to-r from-[#efe7d4] via-[#f5f0e2] to-[#e9e4d7] rounded-[40px] overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-8 p-10">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-[2px] w-12 bg-[#d9b56d]"></div>
-                <span className="text-[#d9b56d] text-sm font-medium">ANCIENT WISDOM</span>
+        {/* Features Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          {/* Feature 1 */}
+          <a href="/user/book" className="paper-texture bg-[#f6f7f3] rounded-2xl p-6 border border-[#e8e4d9] transform hover:-translate-y-1 transition duration-300">
+            <div className="w-14 h-14 bg-[#7d8c72] rounded-full flex items-center justify-center text-white mb-5 shadow-inner">
+              <CalendarPlus className="w-7 h-7" />
+            </div>
+            <h3 className="font-hand text-4xl text-[#2b3a2f]">Book<br />Appointment</h3>
+            <p className="text-xs text-[#6b7a68] mt-3 mb-5 font-medium">Consult our experts and schedule your visit.</p>
+            <ArrowRight className="w-5 h-5 text-[#6b7a68]" />
+          </a>
+
+          {/* Feature 2 */}
+          <a href="/user/appointment-list" className="paper-texture bg-[#f5efe6] rounded-2xl p-6 border border-[#e8dcc4] transform hover:-translate-y-1 transition duration-300">
+            <div className="w-14 h-14 bg-[#b5a385] rounded-full flex items-center justify-center text-white mb-5 shadow-inner">
+              <CalendarDays className="w-7 h-7" />
+            </div>
+            <h3 className="font-hand text-4xl text-[#2b3a2f]">My<br />Appointment</h3>
+            <p className="text-xs text-[#6b7a68] mt-3 mb-5 font-medium">View your upcoming bookings and details.</p>
+            <ArrowRight className="w-5 h-5 text-[#6b7a68]" />
+          </a>
+
+          {/* Feature 3 */}
+          <a href="/user/prescriptions" className="paper-texture bg-[#f1ebf4] rounded-2xl p-6 border border-[#dcd1ec] transform hover:-translate-y-1 transition duration-300">
+            <div className="w-14 h-14 bg-[#9d8bb3] rounded-full flex items-center justify-center text-white mb-5 shadow-inner">
+              <ClipboardList className="w-7 h-7" />
+            </div>
+            <h3 className="font-hand text-4xl text-[#2b3a2f]">My<br />Prescription</h3>
+            <p className="text-xs text-[#6b7a68] mt-3 mb-5 font-medium">View your treatment and medication plan.</p>
+            <ArrowRight className="w-5 h-5 text-[#6b7a68]" />
+          </a>
+
+          {/* Tip of the day */}
+          <div className="paper-texture bg-[#f9f5ea] rounded-xl p-5 border border-[#e8e4d9] transform rotate-2 relative shadow-md">
+            <div className="absolute top-2 right-4 w-3 h-3 rounded-full bg-[#d69e2e] shadow-sm"></div>
+            <h3 className="font-hand text-3xl text-[#2b3a2f] flex items-center gap-2">Today's Tip
+              <div>
+                <Image
+                  src="/l11.png"
+                  width={125}
+                  height={125}
+                  alt="leaf"
+                  className="scale-x-[-1]"
+                />
+              </div></h3>
+            <div className="flex gap-4 mt-4 items-center">
+              <div className="w-24 h-24 bg-[#e8e4d9] rounded-full overflow-hidden border-4 border-white shadow-sm flex-shrink-0 relative">
+                <Image src="/e1.png" layout="fill" objectFit="cover" alt="Oil Massage" />
               </div>
-              <h1 className="text-6xl leading-tight font-serif text-[#173a2b]">
-                Rooted in Nature,
-                <br />
-                Dedicated to
-                <br />
-                Your Wellness
-              </h1>
-
-              <p className="mt-6 text-lg text-gray-700 max-w-lg leading-relaxed">
-                Ayurveda is not just treatment, it's a way of life. Let us help
-                you heal naturally and holistically.
-              </p>
-
-              {/* Quote Card */}
-              <div className="mt-6 bg-white/70 backdrop-blur-sm rounded-2xl p-4 max-w-md border-l-4 border-[#d9b56d]">
-                <Quote className="w-5 h-5 text-[#d9b56d] mb-2" />
-                <p className="text-gray-700 italic text-sm">
-                  "Let food be thy medicine and medicine be thy food."
-                </p>
-                <p className="text-xs text-gray-500 mt-1">- Charaka Samhita</p>
+              <div>
+                <p className="text-xs text-[#3e4a3d] font-bold">Practice Abhyanga</p>
+                <p className="text-[10px] text-[#6b7a68] leading-tight mt-1">(self-massage) with warm sesame oil before your shower to calm the nervous system.</p>
               </div>
+            </div>
+            <div className="mt-5 flex gap-2 justify-center">
+              <div className="w-2 h-2 rounded-full bg-[#5a7258]"></div>
+              <div className="w-2 h-2 rounded-full bg-[#d1ccbd]"></div>
+              <div className="w-2 h-2 rounded-full bg-[#d1ccbd]"></div>
+            </div>
+          </div>
+        </div>
 
-              <div className="flex gap-4 mt-8">
+        {/* Bottom Section */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          {/* Upcoming Appointment */}
+          <div className="lg:col-span-5 paper-texture bg-white rounded-2xl p-6 border border-[#e8e4d9]">
+            <h3 className="font-hand text-3xl text-[#2b3a2f] mb-5">Upcoming Appointment</h3>
+
+            {loadingAppts ? (
+              <div className="py-8 text-center text-sm text-[#6b7a68]">Loading consultation details...</div>
+            ) : nextAppointment ? (
+              <>
+                <div className="flex flex-col sm:flex-row gap-5 justify-between items-start">
+                  <div className="flex gap-4 items-center">
+                    <div className="w-16 h-16 rounded-full bg-[#e0dcd0] overflow-hidden border-2 border-white shadow-sm flex items-center justify-center">
+                      <Image src="/g33.png" alt="doc" width={100} height={100} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-[#3e4a3d]">Dr. Priya Menon</h4>
+                      <p className="text-[11px] text-[#6b7a68] mt-0.5">Ayurveda General • Ayurveda Expert</p>
+                      <div className="flex gap-4 text-xs mt-2 font-medium text-[#3e4a3d]">
+                        <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#6b7a68]" /> {formatDate(nextAppointment.date)}</span>
+                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-[#6b7a68]" /> {formatTime(nextAppointment.time)}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-[11px] mt-1 text-[#6b7a68]">
+                        <Video className="w-3 h-3" /> Online Consultation
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                    <a href={`https://meet.jit.si/${nextAppointment.jitsiRoom}`} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                      <button className="bg-[#4a5f48] hover:bg-[#3e4a3d] text-white text-[11px] px-4 py-2 rounded-lg w-full sm:w-auto flex items-center justify-center gap-2 shadow-sm transition">
+                        <Video className="w-3.5 h-3.5" /> Join Consultation
+                      </button>
+                    </a>
+                    <a href="/user/appointment-list" className="text-[11px] text-[#6b7a68] hover:text-[#3e4a3d] flex items-center gap-1 mt-1">
+                      View Details <ArrowRight className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+                <div className="mt-5 pt-4 border-t border-dashed border-[#d1ccbd] flex justify-between items-center">
+                  <p className="text-xs text-[#6b7a68]">Meeting Room Code: <span className="font-bold text-[#3e4a3d]">{nextAppointment.jitsiRoom}</span></p>
+                  <a href={`https://meet.jit.si/${nextAppointment.jitsiRoom}`} target="_blank" rel="noopener noreferrer" className="text-[11px] text-[#6b7a68] hover:text-[#3e4a3d] flex items-center gap-1">
+                    Direct Join Link <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div className="py-8 text-center">
+                <p className="text-sm text-[#6b7a68] font-medium">You have no upcoming consultations.</p>
                 <a href="/user/book">
-                  <button className="bg-[#0b5d3b] text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-[#0a4a30] transition">
-                    <CalendarPlus className="w-5 h-5" />
-                    Book Appointment
-                  </button>
-                </a>
-
-                <a href="/user/appointment-list">
-                  <button className="border border-[#c9a86a] text-[#0b5d3b] px-8 py-3 rounded-full flex items-center gap-2 hover:bg-white/50 transition">
-                    <CalendarDays className="w-5 h-5" />
-                    View My Appointments
+                  <button className="mt-4 bg-[#5a7258] hover:bg-[#465a44] text-white text-xs px-5 py-2 rounded-full transition shadow-sm">
+                    Book Consultation Now
                   </button>
                 </a>
               </div>
+            )}
+          </div>
 
-              {/* Stats Row */}
-              <div className="flex gap-6 mt-8">
-                <div className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-md">
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <Users className="w-5 h-5 text-green-700" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#173a2b]">500+</p>
-                    <p className="text-gray-500 text-xs">Happy Patients</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-md">
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-green-700" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#173a2b]">Trusted</p>
-                    <p className="text-gray-500 text-xs">by thousands</p>
-                  </div>
-                </div>
-              </div>
+          {/* Quote Card */}
+          <div className="lg:col-span-3 bg-[#4a5f48] rounded-xl p-8 text-white shadow-lg transform -rotate-1 flex flex-col justify-center relative overflow-hidden">
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-4 bg-[#c2bba8] shadow-sm transform rotate-2"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <span className="text-5xl opacity-40 font-serif leading-none absolute top-4 left-4">"</span>
+            <p className="font-hand text-3xl leading-snug mt-4 z-10 pl-2">
+              Ayurveda believes in treating the root cause, not just the symptoms.
+            </p>
+            <div className="absolute bottom-2 right-2 opacity-30">
+              <Leaf className="w-12 h-12" />
             </div>
+          </div>
 
-            <div className="flex items-center justify-center">
-              <div className="w-full h-[450px] rounded-[30px] bg-gradient-to-br from-[#29583b] via-[#6e8e57] to-[#d6c19b] flex flex-col items-center justify-center relative overflow-hidden">
-                <GiLotus className="w-28 h-28 text-white/80 mb-4" />
-                <div className="text-center text-white">
-                  <p className="text-lg font-serif italic">Ancient Wisdom</p>
-                  <p className="text-sm mt-1">Modern Healing</p>
-                </div>
-                <div className="absolute bottom-6 left-6 right-6 bg-white/20 backdrop-blur-md rounded-2xl p-3">
-                  <div className="flex items-center justify-center gap-3 text-white text-sm">
-                    <Heart className="w-4 h-4" />
-                    <span>Holistic Healing Since 2010</span>
-                  </div>
-                </div>
+          {/* Daily Wellness Tracker */}
+          <div className="lg:col-span-4 paper-texture rounded-2xl p-6 border border-[#e8e4d9]">
+            <h3 className="font-hand text-3xl text-[#2b3a2f] mb-6">Your Daily Wellness</h3>
+            <div className="flex justify-between items-end text-center px-2 pt-2">
+              <div className="flex flex-col items-center">
+                <Droplets className="w-7 h-7 text-[#5b9ca8] mb-3" strokeWidth={1.5} />
+                <p className="text-[11px] font-bold text-[#3e4a3d]">Water</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">6/8 glasses</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Activity className="w-7 h-7 text-[#a8825b] mb-3" strokeWidth={1.5} />
+                <p className="text-[11px] font-bold text-[#3e4a3d]">Movement</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">30 mins</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Utensils className="w-7 h-7 text-[#5a7258] mb-3" strokeWidth={1.5} />
+                <p className="text-[11px] font-bold text-[#3e4a3d]">Meals</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">2/3 completed</p>
+              </div>
+              <div className="flex flex-col items-center">
+                <Moon className="w-7 h-7 text-[#625ba8] mb-3" strokeWidth={1.5} />
+                <p className="text-[11px] font-bold text-[#3e4a3d]">Sleep</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">7 hrs</p>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* FEATURE CARDS */}
-        <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
-          {featureCards.map((card, i) => {
-            const Icon = card.icon;
-            return (
-              <div
-                key={i}
-                className="bg-[#faf8f1] rounded-[30px] p-6 shadow-lg hover:shadow-xl transition-all duration-300 group"
-              >
-                <div className={`w-16 h-16 rounded-full ${card.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-8 h-8 text-green-700" />
-                </div>
+        {/* Footer Reminder */}
+        <div className="mt-10 border-t border-b border-[#d1ccbd] py-6 flex flex-col md:flex-row gap-6 items-center justify-between text-[#6b7a68] relative">
 
-                <h3 className="mt-6 text-2xl font-semibold text-[#173a2b]">
-                  {card.title}
-                </h3>
 
-                <p className="mt-3 text-gray-600 text-sm leading-relaxed">
-                  {card.desc}
-                </p>
-                <a href={card.link}>
-                  <button className="mt-6 border border-[#0b5d3b] px-5 py-2 rounded-full text-[#0b5d3b] text-sm hover:bg-[#0b5d3b] hover:text-white transition">
-                    {card.action}
-                  </button>
-                </a>
-              </div>
-            );
-          })}
-        </section>
-
-        {/* ABOUT SECTION */}
-        <section className="mt-8 bg-white rounded-[40px] overflow-hidden shadow-lg">
-          <div className="grid lg:grid-cols-2 gap-0">
-            <div className="p-10 bg-gradient-to-br from-[#faf8f1] to-white">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-[2px] w-12 bg-[#d9b56d]"></div>
-                <span className="text-[#d9b56d] text-sm font-medium">ABOUT US</span>
-              </div>
-
-              <h2 className="text-4xl font-serif text-[#173a2b] mb-4">
-                About Dr. Priya Menon
-              </h2>
-
-              <p className="text-gray-600 italic text-lg mb-4 leading-relaxed">
-                "Healing is not just about treating illness, but nurturing the body, mind and soul."
-              </p>
-
-              <p className="text-gray-700 leading-relaxed">
-                Dr. Priya Menon is a general physician with over 10 years of
-                experience, passionate about accessible digital healthcare.
-                Our mission is to make healthcare simple, transparent, and
-                available anywhere through secure online consultations.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 mt-8">
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-green-50">
-                  <Heart className="w-5 h-5 text-green-700" />
-                  <div>
-                    <p className="font-semibold text-sm text-[#173a2b]">Natural Healing</p>
-                    <p className="text-xs text-gray-500">Holistic & safe treatments</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-50">
-                  <Stethoscope className="w-5 h-5 text-amber-700" />
-                  <div>
-                    <p className="font-semibold text-sm text-[#173a2b]">Expert Doctors</p>
-                    <p className="text-xs text-gray-500">Qualified professionals</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-teal-50">
-                  <User className="w-5 h-5 text-teal-700" />
-                  <div>
-                    <p className="font-semibold text-sm text-[#173a2b]">Personalized Care</p>
-                    <p className="text-xs text-gray-500">Tailored to your needs</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-50">
-                  <Shield className="w-5 h-5 text-purple-700" />
-                  <div>
-                    <p className="font-semibold text-sm text-[#173a2b]">Secure & Private</p>
-                    <p className="text-xs text-gray-500">100% confidential</p>
-                  </div>
-                </div>
-              </div>
+          <div className="flex items-center gap-4 z-10">
+            <div className="w-20 h-20 relative rounded-full overflow-hidden border border-white">
+              <Image src="/user/d4.png" layout="fill" objectFit="cover" alt="Plant" />
             </div>
-
-            <div className="bg-gradient-to-br from-[#012e1f] to-[#001a12] p-10 flex flex-col justify-center items-center text-white">
-              <div className="w-32 h-32 rounded-full bg-[#d9b56d]/20 flex items-center justify-center mb-6">
-                <GiLotus className="w-16 h-16 text-[#d9b56d]" />
-              </div>
-              <blockquote className="text-center">
-                <Quote className="w-8 h-8 text-[#d9b56d] mx-auto mb-4" />
-                <p className="text-2xl font-serif italic leading-relaxed">
-                  "The art of healing comes from nature, not from the physician."
-                </p>
-                <p className="mt-6 text-[#d9b56d] font-medium">
-                  - Dr. Priya Menon
-                </p>
-              </blockquote>
+            <div>
+              <h4 className="font-hand text-2xl text-[#3e4a3d]">Evening Reminder</h4>
+              <p className="text-[11px] leading-tight">Take 5 deep breaths, unwind,<br />and let go of the day.</p>
             </div>
           </div>
-        </section>
 
-        {/* BOTTOM STATS BAR */}
-        <section className="mt-8 bg-gradient-to-r from-[#012e1f] via-[#0b5d3b] to-[#012e1f] rounded-[30px] text-white p-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
-                <BookOpen className="w-7 h-7" />
-              </div>
-              <h3 className="text-3xl font-bold">Ancient</h3>
-              <p className="text-gray-200 text-sm">Wisdom</p>
-              <p className="text-xs text-gray-300 mt-1">Backed by Science</p>
-            </div>
-
-            <div>
-              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
-                <Leaf className="w-7 h-7" />
-              </div>
-              <h3 className="text-3xl font-bold">100%</h3>
-              <p className="text-gray-200 text-sm">Natural</p>
-              <p className="text-xs text-gray-300 mt-1">Safe & Effective</p>
-            </div>
-
-            <div>
-              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
-                <Users className="w-7 h-7" />
-              </div>
-              <h3 className="text-3xl font-bold">500+</h3>
-              <p className="text-gray-200 text-sm">Patients</p>
-              <p className="text-xs text-gray-300 mt-1">Trusted by Many</p>
-            </div>
-
-            <div>
-              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
-                <Award className="w-7 h-7" />
-              </div>
-              <h3 className="text-3xl font-bold">Expert</h3>
-              <p className="text-gray-200 text-sm">Care</p>
-              <p className="text-xs text-gray-300 mt-1">Qualified Doctors</p>
-            </div>
+          <div className="flex items-center gap-8 text-xs font-medium z-10">
+            <div className="flex items-center gap-2"><Coffee className="w-5 h-5 text-[#2b3a2f] opacity-70" /> Drink warm water</div>
+            <div className="flex items-center gap-2"><Book className="w-5 h-5 text-[#2b3a2f] opacity-70" /> Gratitude journal</div>
+            <div className="flex items-center gap-2"><Smile className="w-5 h-5 text-[#2b3a2f] opacity-70" /> Meditate for 10 mins</div>
           </div>
-        </section>
+
+          <div className="font-hand text-3xl text-[#3e4a3d] flex items-center gap-2 z-10">
+            Be kind to your<br />body and mind. <Heart className="w-4 h-4 text-[#3e4a3d]" fill="transparent" strokeWidth={2} />
+          </div>
+
+          <div className="absolute right-0 bottom-0 translate-x-1/2 translate-y-1/4 hidden lg:block">
+            {/* <Leaf className="w-32 h-32 text-[#5a7258] transform -scale-x-100" /> */}
+            <Image src="/l11.png" alt='leaf' width={200} height={200} />
+          </div>
+        </div>
+
       </main>
     </div>
   );
 }
-
