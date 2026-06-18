@@ -1,8 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CalendarDays } from "lucide-react";
+import { 
+  CalendarDays, 
+  Clock, 
+  XCircle, 
+  User, 
+  LayoutDashboard, 
+  ClipboardList, 
+  Sun, 
+  Cloud, 
+  Moon 
+} from "lucide-react";
+import { GiLotus } from "react-icons/gi";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function UpcomingAppointments() {
   const [upcoming, setUpcoming] = useState(null);
@@ -39,77 +51,226 @@ export default function UpcomingAppointments() {
     }
   }
 
+  // Helpers: dynamic initials avatar color
+  const getAvatarColor = (name) => {
+    const char = name ? name.charAt(0).toUpperCase() : "A";
+    const colors = {
+      A: "bg-emerald-700 text-white",
+      B: "bg-blue-700 text-white",
+      C: "bg-cyan-700 text-white",
+      D: "bg-teal-700 text-white",
+      E: "bg-indigo-700 text-white",
+      F: "bg-orange-700 text-white",
+      G: "bg-amber-700 text-white",
+      H: "bg-emerald-600 text-white",
+      I: "bg-sky-700 text-white",
+      J: "bg-violet-700 text-white",
+      K: "bg-lime-700 text-white",
+      L: "bg-yellow-700 text-white",
+      M: "bg-rose-700 text-white",
+      N: "bg-pink-700 text-white",
+      O: "bg-purple-700 text-white",
+      P: "bg-fuchsia-700 text-white",
+      Q: "bg-red-700 text-white",
+      R: "bg-amber-600 text-white",
+      S: "bg-teal-600 text-white",
+      T: "bg-blue-600 text-white",
+      U: "bg-indigo-600 text-white",
+      V: "bg-purple-600 text-white",
+      W: "bg-pink-600 text-white",
+      X: "bg-red-600 text-white",
+      Y: "bg-orange-600 text-white",
+      Z: "bg-yellow-600 text-white",
+    };
+    return colors[char] || "bg-emerald-700 text-white";
+  };
+
+  // Helpers: weather icon mapping based on appointment time
+  const getTimeIcon = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      const hours = date.getHours();
+      if (hours >= 18 || hours < 6) {
+        return <Moon className="w-3.5 h-3.5 text-emerald-600/70" />;
+      } else if (hours >= 12 && hours < 17) {
+        return <Cloud className="w-3.5 h-3.5 text-emerald-600/70" />;
+      } else {
+        return <Sun className="w-3.5 h-3.5 text-emerald-600/70" />;
+      }
+    } catch {
+      return <Sun className="w-3.5 h-3.5 text-emerald-600/70" />;
+    }
+  };
+
   if (error) {
     return (
-      <div className="text-center py-10 text-red-500">
-        Error loading appointments: {error}
+      <div className="min-h-screen bg-[#faf8f5] flex items-center justify-center p-6 text-center">
+        <div className="bg-[#fff5f5] border border-red-200 text-red-700 p-6 rounded-2xl max-w-md shadow-sm">
+          <p className="font-bold text-lg">Error loading appointments</p>
+          <p className="text-sm mt-1">{error}</p>
+        </div>
       </div>
     );
   }
 
   if (!upcoming) {
     return (
-      <div className="text-center py-10 text-muted-foreground">
-        Loading upcoming appointments...
+      <div className="min-h-screen bg-[#faf8f5] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#12372A] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-[#12372A] font-semibold">Loading upcoming appointments...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 text-white">
-      <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
-        <CalendarDays className="text-emerald-400" /> Upcoming Appointments
-      </h1>
+    <div className="min-h-screen bg-[#faf8f5] text-[#12372A] relative overflow-hidden font-sans pb-16 pt-6 px-4 md:px-12">
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        .font-hand { font-family: 'Caveat', cursive; }
+        .font-serif-display { font-family: 'Playfair Display', serif; }
+      `}} />
 
-      {upcoming.count === 0 ? (
-        <p className="text-muted-foreground">No upcoming appointments found.</p>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {upcoming.nextAppointments?.map((appt) => (
-            <Card
-              key={appt.id}
-              className="bg-emerald-950/30 border border-emerald-800/40 hover:border-emerald-700/50"
-            >
-              <CardHeader>
-                <CardTitle>{appt.patientName}</CardTitle>
-              </CardHeader>
+      {/* BACKGROUND LEAF ILLUSTRATIONS */}
+      {/* Top Left Leaves */}
+      <div className="absolute -top-12 -left-12 opacity-80 pointer-events-none mix-blend-multiply w-[260px] md:w-[320px] h-[260px] md:h-[320px] z-0 select-none">
+        <Image
+          src="/l11.png"
+          alt="Leaves decoration"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      {/* Top Right Hanging Leaves */}
+      <div className="absolute -top-10 -right-10 opacity-90 pointer-events-none mix-blend-multiply rotate-[120deg] w-[260px] md:w-[320px] h-[260px] md:h-[320px] z-0 select-none">
+        <Image
+          src="/l12.png"
+          alt="Leaves decoration"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      {/* Bottom Right Mandalas */}
+      <div className="absolute -bottom-16 -right-16 opacity-75 pointer-events-none mix-blend-multiply rotate-[45deg] w-[220px] h-[220px] z-0 select-none">
+        <Image
+          src="/l13.png"
+          alt="Leaves decoration"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
 
-             <CardContent>
-                <p>
-                  Date:{" "}
-                  <span className="text-emerald-400 font-medium">
-                    {new Date(appt.startAt).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                </p>
+      <div className="max-w-6xl mx-auto flex flex-col gap-6 md:gap-8 relative z-10">
+        
+        {/* HEADER SECTION */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4 mb-2">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-4xl md:text-5xl font-bold font-serif-display text-[#12372A] tracking-tight">
+                Upcoming Appointments
+              </h1>
+              <CalendarDays className="w-7 h-7 text-emerald-600 animate-pulse" />
+            </div>
+            <p className="text-[#6b7a68] text-sm font-medium mt-1">
+              Track and manage your next scheduled patient consultations.
+            </p>
+          </div>
 
-                <p>
-                  Time:{" "}
-                  <span className="text-emerald-400 font-medium">
-                    {new Date(appt.startAt).toLocaleTimeString("en-IN", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </p>
-
-                <p>Status: {appt.status}</p>
-
-                <button
-                  onClick={() => cancelAppointment(appt.id)}
-                  className="mt-3 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                >
-                  Cancel
-                </button>
-              </CardContent>
-
-            </Card>
-          ))}
+          <div className="flex gap-3">
+            <a href="/admin">
+              <Button variant="outline" className="border-[#12372A]/20 text-[#12372A] bg-white hover:bg-[#FAF8F5] rounded-full px-5 py-4 flex items-center gap-2 shadow-sm font-medium transition duration-200">
+                <LayoutDashboard className="w-4 h-4 text-[#12372A]" />
+                Dashboard
+              </Button>
+            </a>
+            <a href="/admin/appointments">
+              <Button className="bg-[#23382b] hover:bg-[#12372A] text-[#FAF8F5] rounded-full px-6 py-4 flex items-center gap-2 shadow-md font-medium transition duration-200 border-none">
+                <ClipboardList className="w-4 h-4 text-[#C5A880]" />
+                Appointments List
+              </Button>
+            </a>
+          </div>
         </div>
-      )}
+
+        {/* UPCOMING CARDS LIST */}
+        {upcoming.count === 0 ? (
+          <div className="bg-white rounded-3xl border border-[#e8e4d9]/85 p-16 text-center shadow-[0_4px_20px_rgba(43,58,47,0.01)] max-w-xl mx-auto mt-6">
+            <GiLotus className="w-16 h-16 text-[#c2bba8] mx-auto mb-4 animate-bounce" />
+            <h2 className="text-xl font-bold font-serif-display text-[#12372A]">No upcoming appointments found</h2>
+            <p className="mt-2 text-[#6b7a68] text-sm font-medium">There are currently no new patients scheduled for today or later.</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+            {upcoming.nextAppointments?.map((appt) => {
+              const dateObj = new Date(appt.startAt);
+              const dateStr = dateObj.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              });
+              const timeStr = dateObj.toLocaleTimeString("en-IN", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+
+              return (
+                <div
+                  key={appt.id}
+                  className="bg-white rounded-3xl border border-[#e8e4d9]/85 p-6 shadow-[0_4px_20px_rgba(43,58,47,0.01)] hover:shadow-[0_8px_30px_rgba(43,58,47,0.02)] transition-all duration-300 relative overflow-hidden flex flex-col justify-between min-h-[240px]"
+                >
+                  <div>
+                    {/* Header: Avatar Circle & Patient Name */}
+                    <div className="flex items-center gap-3.5 mb-4 border-b border-[#e8e4d9]/45 pb-3">
+                      <div className={`w-10 h-10 rounded-full ${getAvatarColor(appt.patientName)} flex items-center justify-center font-bold text-sm uppercase shadow-sm flex-shrink-0`}>
+                        {appt.patientName ? appt.patientName.charAt(0).toUpperCase() : "A"}
+                      </div>
+                      <h3 className="text-lg font-bold font-serif-display text-[#12372A] truncate" title={appt.patientName}>
+                        {appt.patientName}
+                      </h3>
+                    </div>
+
+                    {/* Content */}
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-[#4a5a4b] font-medium">
+                        <CalendarDays className="w-4 h-4 text-[#a1825b] flex-shrink-0" />
+                        <span>Date:</span>
+                        <span className="text-[#12372A] font-bold">{dateStr}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-[#4a5a4b] font-medium">
+                        <Clock className="w-4 h-4 text-[#a1825b] flex-shrink-0" />
+                        <span>Time:</span>
+                        <span className="text-[#12372A] font-bold flex items-center gap-1.5">
+                          {timeStr}
+                          {getTimeIcon(appt.startAt)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1.5">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#fff9eb] border border-amber-200 text-amber-700 text-[10px] font-bold uppercase tracking-wider">
+                          <Clock className="w-3 h-3 text-amber-600" />
+                          {appt.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions: Cancel */}
+                  <button
+                    onClick={() => cancelAppointment(appt.id)}
+                    className="w-full mt-5 py-2.5 bg-[#fff5f5] hover:bg-[#ffeaea] border border-red-200/80 text-red-600 hover:text-red-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition cursor-pointer shadow-sm"
+                  >
+                    <XCircle className="w-4 h-4" />
+                    Cancel Appointment
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -26,8 +26,8 @@ export async function GET(req) {
     const cleaned = patients.map((p) => ({
       id: p.id,
       name: p.name || "Unnamed",
-      age: 22, // you don’t have age field yet
-      gender: "Unknown", // no gender field in your schema
+      age: p.age !== null && p.age !== undefined ? p.age : "Not specified",
+      gender: p.gender || "Not specified",
       lastVisit: p.updatedAt.toISOString(),
     }));
 

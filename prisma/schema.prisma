@@ -22,6 +22,8 @@ model User {
   sessions Session[]
 
   role               UserRole           @default(PATIENT)
+  age                Int?
+  gender             String?
   credits            Int                @default(2)
   speciality         String?
   experience         Int?

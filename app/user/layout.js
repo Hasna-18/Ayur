@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { GiLotus } from "react-icons/gi";
 import { authClient } from "@/lib/auth-client";
-import { Leaf, LogOut, Menu, X, Calendar, BookOpen, ClipboardList } from "lucide-react";
+import { Leaf, LogOut, Menu, X, Calendar, BookOpen, ClipboardList, User } from "lucide-react";
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
@@ -45,6 +45,7 @@ export default function UserLayout({ children }) {
     { name: "Book Appointment", href: "/user/book", icon: Calendar },
     { name: "Appointments", href: "/user/appointment-list", icon: ClipboardList },
     { name: "Prescriptions", href: "/user/prescriptions", icon: BookOpen },
+    { name: "Profile", href: "/user/profile", icon: User },
   ];
 
   return (
