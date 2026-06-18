@@ -229,7 +229,6 @@ export default function AdminProfile() {
                     <input
                       type="email"
                       readOnly
-                      placeholder="doctor@ayurmedi.com"
                       value={profile.email}
                       className="w-full bg-[#f2efe6]/40 border border-[#e8e4d9] rounded-2xl pl-10 pr-4 py-2.5 text-sm text-zinc-500 focus:outline-none cursor-not-allowed"
                     />
