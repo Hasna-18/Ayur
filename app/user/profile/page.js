@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { User, Save, Sparkles, Loader2, Mail, ShieldCheck } from "lucide-react";
+import { User, Save, Sparkles, Loader2, Mail, ShieldCheck, AlertCircle } from "lucide-react";
 import { GiLotus } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState({ name: "", email: "", age: "", gender: "" });
+  const [profile, setProfile] = useState({ name: "", email: "", age: "", gender: "", emailVerified: false });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
@@ -26,6 +26,7 @@ export default function ProfilePage() {
         email: data.email || "",
         age: data.age !== null && data.age !== undefined ? data.age.toString() : "",
         gender: data.gender || "",
+        emailVerified: data.emailVerified || false,
       });
     } catch (error) {
       console.error(error);
@@ -152,19 +153,44 @@ export default function ProfilePage() {
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-emerald-600 via-[#C5A880] to-emerald-800" />
             
             {/* Large Initials Avatar */}
-            <div className={`w-24 h-24 rounded-full ${getAvatarColor(profile.name)} flex items-center justify-center font-bold text-3xl uppercase shadow-md my-4 border-4 border-[#faf8f5]`}>
-              {profile.name ? profile.name.charAt(0).toUpperCase() : "A"}
+            <div className="relative my-4">
+              <div className={`w-24 h-24 rounded-full ${getAvatarColor(profile.name)} flex items-center justify-center font-bold text-3xl uppercase shadow-md border-4 border-[#faf8f5]`}>
+                {profile.name ? profile.name.charAt(0).toUpperCase() : "A"}
+              </div>
+              {profile.emailVerified && (
+                <span className="absolute bottom-0 left-0 w-6 h-6 bg-emerald-600 rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                  <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+              )}
             </div>
 
             {/* Profile Info */}
-            <h2 className="text-2xl font-bold font-serif-display text-[#12372A] tracking-tight truncate w-full px-2">
-              {profile.name || "Patient"}
-            </h2>
+            <div className="flex items-center gap-1.5 justify-center">
+              <h2 className="text-2xl font-bold font-serif-display text-[#12372A] tracking-tight truncate max-w-[200px]">
+                {profile.name || "Patient"}
+              </h2>
+              {profile.emailVerified && (
+                <span className="text-emerald-600 mt-1" title="Verified Account">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2 3.4-1.46 3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/>
+                  </svg>
+                </span>
+              )}
+            </div>
             
-            <p className="text-xs text-[#6b7a68] font-semibold flex items-center gap-1 mt-1.5 justify-center bg-[#f2efe6]/60 px-3 py-1 rounded-full border border-[#e8e4d9]/40 shadow-inner w-fit">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-              Verified Patient
-            </p>
+            {profile.emailVerified ? (
+              <p className="text-xs text-[#6b7a68] font-semibold flex items-center gap-1 mt-2.5 justify-center bg-[#f2efe6]/60 px-3 py-1 rounded-full border border-[#e8e4d9]/40 shadow-inner w-fit">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                Verified Patient
+              </p>
+            ) : (
+              <p className="text-xs text-red-700 font-semibold flex items-center gap-1 mt-2.5 justify-center bg-red-50 px-3 py-1 rounded-full border border-red-200/40 shadow-inner w-fit">
+                <AlertCircle className="w-3.5 h-3.5 text-red-600" />
+                Unverified Patient
+              </p>
+            )}
 
             <div className="w-full border-t border-[#e8e4d9]/45 my-5" />
 

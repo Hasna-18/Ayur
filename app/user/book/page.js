@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Calendar, Clock, MessageCircle, Leaf, Shield, Users, Sparkles, CheckCircle, AlertCircle } from "lucide-react";
+import { Calendar, Clock, MessageCircle, Leaf, Shield, Users, Sparkles, CheckCircle, AlertCircle, ShieldAlert, Key, MailOpen, Loader2 } from "lucide-react";
 import { GiLotus } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 
@@ -50,6 +50,80 @@ export default function BookAppointment() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
   const [backendSlots, setBackendSlots] = useState([]);
+
+  // Verification States
+  const [isVerified, setIsVerified] = useState(false);
+  const [checkingVerification, setCheckingVerification] = useState(true);
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [otpError, setOtpError] = useState("");
+
+  useEffect(() => {
+    async function checkUserVerification() {
+      try {
+        const res = await fetch("/api/auth/get-user");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.user?.emailVerified) {
+            setIsVerified(true);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to check user verification:", err);
+      } finally {
+        setCheckingVerification(false);
+      }
+    }
+    checkUserVerification();
+  }, []);
+
+  const handleSendOtp = async () => {
+    setOtpLoading(true);
+    setOtpError("");
+    try {
+      const res = await fetch("/api/user/verify/send-otp", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to send OTP");
+      }
+      setOtpSent(true);
+    } catch (err) {
+      setOtpError(err.message);
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    if (!otp) {
+      setOtpError("Please enter the verification code.");
+      return;
+    }
+    setOtpVerifying(true);
+    setOtpError("");
+    try {
+      const res = await fetch("/api/user/verify/check-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ otp }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Invalid OTP");
+      }
+      setIsVerified(true);
+      window.location.reload(); // Reload page to refresh layouts & headers
+    } catch (err) {
+      setOtpError(err.message);
+    } finally {
+      setOtpVerifying(false);
+    }
+  };
 
   // Load configured daily hours from backend on mount
   useEffect(() => {
@@ -235,120 +309,223 @@ export default function BookAppointment() {
         {/* Appointment Card Column */}
         <div className="lg:col-span-7 w-full flex justify-center">
           <div className="bg-[#faf8f5]/95 rounded-[30px] border border-[#e8e4d9]/80 shadow-[0_10px_40px_rgba(43,58,47,0.04)] p-6 lg:p-8 max-w-xl w-full">
-            <div className="text-center mb-6">
-              <div className="w-12 h-12 rounded-full bg-[#e2ebe4] text-[#3e4a3d] flex items-center justify-center mx-auto mb-3">
-                <Calendar className="w-6 h-6 text-[#3c5e48]" />
+            
+            {checkingVerification ? (
+              <div className="py-16 flex flex-col items-center justify-center gap-4 text-[#12372A]">
+                <Loader2 className="w-10 h-10 animate-spin text-[#C5A880]" />
+                <p className="font-semibold text-sm">Checking verification status...</p>
               </div>
-              <h2 className="text-2xl lg:text-3xl font-bold font-serif-display text-[#12372A]">
-                Book Appointment
-              </h2>
-              {/* Mini flourish */}
-              <div className="flex justify-center items-center gap-2 mt-2">
-                <div className="h-[1px] w-12 bg-[#c2bba8]/60"></div>
-                <Leaf className="w-3.5 h-3.5 text-[#a1825b]" />
-                <div className="h-[1px] w-12 bg-[#c2bba8]/60"></div>
+            ) : !isVerified ? (
+              <div className="text-center py-4">
+                <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200/60">
+                  <ShieldAlert className="w-8 h-8 text-amber-600" />
+                </div>
+                <h2 className="text-2xl font-bold font-serif-display text-[#12372A]">
+                  Verification Required
+                </h2>
+                <p className="text-xs text-[#6b7a68] mt-2 font-medium max-w-sm mx-auto leading-relaxed">
+                  For security and authentic consultations, we require all patients to verify their email before booking an appointment.
+                </p>
+
+                <div className="w-full border-t border-[#e8e4d9]/60 my-6" />
+
+                {!otpSent ? (
+                  <div className="space-y-4">
+                    <p className="text-xs font-semibold text-[#6b7a68]">
+                      We will send a 6-digit One-Time Password (OTP) to your registered email address.
+                    </p>
+                    <button
+                      onClick={handleSendOtp}
+                      disabled={otpLoading}
+                      className="w-full h-12 rounded-xl bg-[#12372A] hover:bg-[#1C3524] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed"
+                    >
+                      {otpLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Sending Code...
+                        </>
+                      ) : (
+                        <>
+                          <MailOpen className="w-4 h-4 text-[#C5A880]" />
+                          Send Verification Code
+                        </>
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleVerifyOtp} className="space-y-5 text-left">
+                    <div className="space-y-1.5">
+                      <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
+                        <Key className="w-3.5 h-3.5 text-[#5a7258]" />
+                        Enter 6-Digit OTP
+                      </label>
+                      <input
+                        type="text"
+                        maxLength={6}
+                        placeholder="••••••"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                        className="w-full h-12 text-center text-lg tracking-[8px] bg-white border border-[#e8e4d9] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#12372A] font-bold text-[#12372A] placeholder:text-zinc-300"
+                        required
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={otpVerifying}
+                      className="w-full h-12 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed"
+                    >
+                      {otpVerifying ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Verifying...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-white" />
+                          Verify & Proceed
+                        </>
+                      )}
+                    </button>
+
+                    <div className="text-center mt-4">
+                      <button
+                        type="button"
+                        onClick={handleSendOtp}
+                        disabled={otpLoading}
+                        className="text-xs text-[#5a7258] hover:underline font-bold"
+                      >
+                        Resend Verification Code
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {otpError && (
+                  <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-500/20 text-red-800 text-xs font-medium text-left flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                    <span>{otpError}</span>
+                  </div>
+                )}
               </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Date selection */}
-              <div className="space-y-1">
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
-                  <Calendar className="w-3.5 h-3.5 text-[#5a7258]" />
-                  Select Appointment Date
-                </label>
-                <input
-                  type="date"
-                  value={date}
-                  min={new Date().toISOString().split("T")[0]} // Disable past dates
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full h-11 px-4 text-sm bg-white border border-[#e8e4d9] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#12372A] font-semibold text-[#12372A] cursor-pointer"
-                  required
-                />
-              </div>
-
-              {/* Time selection */}
-              <div className="space-y-2">
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
-                  <Clock className="w-3.5 h-3.5 text-[#5a7258]" />
-                  Select Appointment Time
-                </label>
-
-                <div className="space-y-1">
-                  {/* Styled Grid container with no height scroll restriction */}
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 pr-1">
-                    {allSlotsToRender.map((slot) => {
-                      const isSelected = time === slot;
-                      const isAvailable = date && timeSlots.includes(slot);
-                      return (
-                        <button
-                          key={slot}
-                          type="button"
-                          disabled={!isAvailable}
-                          onClick={() => isAvailable && setTime(slot)}
-                          className={`h-9 rounded-lg text-[10px] font-bold transition-all border flex items-center justify-center gap-1 cursor-pointer ${
-                            isSelected
-                              ? "bg-[#12372A] text-white border-transparent shadow-[0_2px_8px_rgba(18,55,42,0.15)] scale-[1.01]"
-                              : isAvailable
-                              ? "bg-white text-[#12372A] border-[#e8e4d9] hover:bg-[#12372A]/5 hover:border-[#12372A]"
-                              : "bg-zinc-100/50 text-zinc-400 border-zinc-200/40 opacity-50 cursor-not-allowed"
-                          }`}
-                        >
-                          <Clock className={`w-3 h-3 ${isSelected ? "text-white" : isAvailable ? "text-[#5a7258]" : "text-zinc-400"}`} />
-                          {formatTime12Hour(slot)}
-                        </button>
-                      );
-                    })}
+            ) : (
+              <>
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 rounded-full bg-[#e2ebe4] text-[#3e4a3d] flex items-center justify-center mx-auto mb-3">
+                    <Calendar className="w-6 h-6 text-[#3c5e48]" />
+                  </div>
+                  <h2 className="text-2xl lg:text-3xl font-bold font-serif-display text-[#12372A]">
+                    Book Appointment
+                  </h2>
+                  {/* Mini flourish */}
+                  <div className="flex justify-center items-center gap-2 mt-2">
+                    <div className="h-[1px] w-12 bg-[#c2bba8]/60"></div>
+                    <Leaf className="w-3.5 h-3.5 text-[#a1825b]" />
+                    <div className="h-[1px] w-12 bg-[#c2bba8]/60"></div>
                   </div>
                 </div>
-              </div>
 
-              {/* Reason for Appointment */}
-              <div className="space-y-1">
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
-                  <MessageCircle className="w-3.5 h-3.5 text-[#5a7258]" />
-                  Reason for Appointment
-                </label>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Briefly describe your health concern or consultation reason..."
-                  rows={2}
-                  className="w-full text-sm bg-white border border-[#e8e4d9] rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-[#12372A] font-semibold text-[#12372A] placeholder:text-zinc-400"
-                />
-              </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Date selection */}
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
+                      <Calendar className="w-3.5 h-3.5 text-[#5a7258]" />
+                      Select Appointment Date
+                    </label>
+                    <input
+                      type="date"
+                      value={date}
+                      min={new Date().toISOString().split("T")[0]} // Disable past dates
+                      onChange={(e) => setDate(e.target.value)}
+                      className="w-full h-11 px-4 text-sm bg-white border border-[#e8e4d9] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#12372A] font-semibold text-[#12372A] cursor-pointer"
+                      required
+                    />
+                  </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full h-12 rounded-xl bg-[#12372A] hover:bg-[#1C3524] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Leaf className="w-4 h-4 text-[#C5A880] fill-current" />
-                Book Appointment
-              </button>
-            </form>
+                  {/* Time selection */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
+                      <Clock className="w-3.5 h-3.5 text-[#5a7258]" />
+                      Select Appointment Time
+                    </label>
 
-            {status && (
-              <div className={`mt-4 p-3 rounded-xl flex items-start gap-2 border text-xs transition-all duration-300 ${status.includes("✅")
-                  ? "bg-emerald-50/60 border-emerald-500/20 text-emerald-800"
-                  : "bg-red-50/60 border-red-500/20 text-red-800"
-                }`}>
-                <div className="mt-0.5 shrink-0">
-                  {status.includes("✅") ? (
-                    <CheckCircle className="w-4 h-4 text-emerald-600" />
-                  ) : (
-                    <AlertCircle className="w-4 h-4 text-red-600" />
-                  )}
-                </div>
-                <div>
-                  <p className="font-bold">
-                    {status.includes("✅") ? "Success" : "Notification"}
-                  </p>
-                  <p className="mt-0.5 opacity-90 font-medium">
-                    {status.replace("✅", "").replace("❌", "").trim()}
-                  </p>
-                </div>
-              </div>
+                    <div className="space-y-1">
+                      {/* Styled Grid container with no height scroll restriction */}
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 pr-1">
+                        {allSlotsToRender.map((slot) => {
+                          const isSelected = time === slot;
+                          const isAvailable = date && timeSlots.includes(slot);
+                          return (
+                            <button
+                              key={slot}
+                              type="button"
+                              disabled={!isAvailable}
+                              onClick={() => isAvailable && setTime(slot)}
+                              className={`h-9 rounded-lg text-[10px] font-bold transition-all border flex items-center justify-center gap-1 cursor-pointer ${
+                                isSelected
+                                  ? "bg-[#12372A] text-white border-transparent shadow-[0_2px_8px_rgba(18,55,42,0.15)] scale-[1.01]"
+                                  : isAvailable
+                                  ? "bg-white text-[#12372A] border-[#e8e4d9] hover:bg-[#12372A]/5 hover:border-[#12372A]"
+                                  : "bg-zinc-100/50 text-zinc-400 border-zinc-200/40 opacity-50 cursor-not-allowed"
+                              }`}
+                            >
+                              <Clock className={`w-3 h-3 ${isSelected ? "text-white" : isAvailable ? "text-[#5a7258]" : "text-zinc-400"}`} />
+                              {formatTime12Hour(slot)}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reason for Appointment */}
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-[#12372A]">
+                      <MessageCircle className="w-3.5 h-3.5 text-[#5a7258]" />
+                      Reason for Appointment
+                    </label>
+                    <textarea
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Briefly describe your health concern or consultation reason..."
+                      rows={2}
+                      className="w-full text-sm bg-white border border-[#e8e4d9] rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-[#12372A] font-semibold text-[#12372A] placeholder:text-zinc-400"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    className="w-full h-12 rounded-xl bg-[#12372A] hover:bg-[#1C3524] text-white text-sm font-bold shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Leaf className="w-4 h-4 text-[#C5A880] fill-current" />
+                    Book Appointment
+                  </button>
+                </form>
+
+                {status && (
+                  <div className={`mt-4 p-3 rounded-xl flex items-start gap-2 border text-xs transition-all duration-300 ${status.includes("✅")
+                      ? "bg-emerald-50/60 border-emerald-500/20 text-emerald-800"
+                      : "bg-red-50/60 border-red-500/20 text-red-800"
+                    }`}>
+                    <div className="mt-0.5 shrink-0">
+                      {status.includes("✅") ? (
+                        <CheckCircle className="w-4 h-4 text-emerald-600" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-red-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-bold">
+                        {status.includes("✅") ? "Success" : "Notification"}
+                      </p>
+                      <p className="mt-0.5 opacity-90 font-medium">
+                        {status.replace("✅", "").replace("❌", "").trim()}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

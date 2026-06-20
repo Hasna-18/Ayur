@@ -180,46 +180,7 @@ export default function Home() {
       <div className="absolute top-20 right-0 w-96 h-96 opacity-10 bg-brand-green rounded-full blur-3xl -z-10 pointer-events-none" />
       <div className="absolute top-[450px] left-0 w-[500px] h-[500px] opacity-[0.06] bg-brand-gold rounded-full blur-3xl -z-10 pointer-events-none" />
 
-      {/* Navbar */}
-      {/* <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-brand-gold-light/50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-22 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-brand-green/5 flex items-center justify-center">
-              <GiLotus className="w-9 h-9 text-brand-gold" />
-            </div>
-            <div>
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-serif font-bold text-brand-green tracking-wide">
-                  Ayur
-                </span>
-                <span className="text-brand-gold font-bold text-lg leading-none">.</span>
-              </div>
-              <p className="text-[10px] uppercase tracking-widest text-brand-sage font-semibold">
-                Ancient Wisdom • Modern Care
-              </p>
-            </div>
-          </div>
-
-          <div className="hidden md:flex gap-10 items-center">
-            <Link href="#" className="text-brand-green font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
-              Home
-            </Link>
-            <Link href="/about" className="text-slate-600 font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
-              About
-            </Link>
-            <Link href="#" className="text-slate-600 font-medium hover:text-brand-gold transition duration-200 text-sm tracking-wide">
-              Contact
-            </Link>
-          </div>
-
-          <a href="/user/dashboard" className="transition-transform active:scale-95">
-            <button className="shimmer-btn bg-brand-green hover:bg-brand-green-dark text-white px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 shadow-lg shadow-brand-green/10 hover:shadow-brand-green/20 hover:-translate-y-0.5 border border-brand-green/20">
-              Book Appointment
-            </button>
-          </a>
-        </div>
-      </nav> */}
-      <Navbar/>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#fbf9f4] to-[#f4ebd9] pt-12 pb-16">
@@ -542,10 +503,10 @@ export default function Home() {
                 return (
                   <div
                     key={item.title}
-                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-col sm:flex-row h-auto sm:min-h-[260px] items-stretch"
+                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-row h-auto sm:min-h-[260px] items-stretch"
                   >
                     {/* Left content block */}
-                    <div className="p-6 sm:pr-2 flex flex-col justify-between flex-1 min-w-0 order-2 sm:order-1">
+                    <div className="p-4 xs:p-5 sm:p-6 sm:pr-2 flex flex-col justify-between flex-1 min-w-0">
                       <div>
                         {/* Icon & Badge */}
                         <div className="flex items-center gap-2 mb-4">
@@ -581,12 +542,12 @@ export default function Home() {
                     </div>
 
                     {/* Right Image Mask / Circle container */}
-                    <div className="w-full h-44 sm:w-[42%] sm:h-auto relative overflow-hidden flex-shrink-0 flex items-center justify-center order-1 sm:order-2">
+                    <div className="w-[38%] sm:w-[42%] relative overflow-hidden flex-shrink-0 flex items-center justify-center">
                       {/* Crescent background shape */}
-                      <div className={`absolute right-0 top-0 bottom-0 w-full sm:w-[120%] h-full rounded-b-[40px] sm:rounded-b-none sm:rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
+                      <div className={`absolute right-0 top-0 bottom-0 w-[120%] h-full rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
 
                       {/* Image container */}
-                      <div className="absolute inset-0 flex items-center justify-center p-3 z-10">
+                      <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3 z-10">
                         <div className="relative w-full h-[85%]">
                           <Image
                             src={item.image}
@@ -682,24 +643,24 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
 
           {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-24">
+          <div className="text-center max-w-3xl mx-auto mb-16">
 
-            <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#d8c19c] text-[#c9a15d] uppercase tracking-[3px] font-semibold text-sm bg-white/70">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#d8c19c]/60 text-[#a1825b] uppercase tracking-[2px] font-bold text-xs bg-[#fff9eb]/40">
               Simple Process
             </span>
 
-            <h2 className="mt-8 text-5xl md:text-7xl font-serif font-bold text-[#0f4c3a]">
+            <h2 className="mt-4 text-3xl md:text-5xl font-serif font-bold text-[#12372A] leading-tight">
               Your Journey to Wellness
             </h2>
 
-            <p className="mt-6 text-xl text-slate-500">
+            <p className="mt-3 text-sm md:text-base text-slate-500 max-w-xl mx-auto leading-relaxed">
               Healing step-by-step with authentic advice and direct organic medicines shipped worldwide.
             </p>
 
           </div>
 
           {/* Steps */}
-          <div className="grid lg:grid-cols-4 gap-14 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 relative">
 
             {steps.map((step, index) => {
               const Icon = step.icon;
@@ -712,30 +673,30 @@ export default function Home() {
 
                   {/* Arrow Connector */}
                   {index < 3 && (
-                    <div className="hidden lg:flex absolute top-16 left-[70%] w-full items-center z-0">
-                      <div className="flex-1 border-t-2 border-dashed border-[#b7cc8f]" />
-                      <div className="w-10 h-10 rounded-full bg-white border border-[#d9c6a1] flex items-center justify-center shadow-sm">
+                    <div className="hidden lg:flex absolute top-12 left-[65%] w-[70%] items-center z-0">
+                      <div className="flex-1 border-t border-dashed border-[#C5A880]/50" />
+                      <div className="w-6 h-6 rounded-full bg-white border border-[#e8e4d9] flex items-center justify-center text-[10px] text-[#C5A880] shadow-xs select-none">
                         →
                       </div>
                     </div>
                   )}
 
                   {/* Icon Circle */}
-                  <div className="relative z-10 mx-auto w-36 h-36 rounded-full bg-[#f8f6ef] border-[8px] border-[#edf2df] shadow-lg flex items-center justify-center group-hover:scale-105 transition">
+                  <div className="relative z-10 mx-auto w-24 h-24 rounded-full bg-[#f8f6ef] border-[6px] border-[#e8e4d9]/50 shadow-md flex items-center justify-center group-hover:scale-105 group-hover:border-[#12372A]/20 transition-all duration-300">
 
-                    <Icon className="w-14 h-14 text-[#0f4c3a]" />
+                    <Icon className="w-8 h-8 text-[#12372A]" />
 
-                    <div className="absolute top-3 right-3 w-12 h-12 rounded-full bg-[#0f4c3a] text-[#d8c19c] font-bold flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-[#12372A] text-[#FAF8F5] font-bold text-xs flex items-center justify-center shadow-md">
                       {step.step}
                     </div>
 
                   </div>
 
-                  <h3 className="mt-8 text-3xl font-serif font-bold text-[#0f4c3a]">
+                  <h3 className="mt-5 text-lg md:text-xl font-serif font-bold text-[#12372A]">
                     {step.title}
                   </h3>
 
-                  <p className="mt-4 text-slate-500 leading-8 max-w-xs mx-auto">
+                  <p className="mt-2 text-xs md:text-sm text-slate-500 leading-relaxed max-w-[220px] mx-auto font-medium">
                     {step.desc}
                   </p>
 
@@ -884,7 +845,7 @@ export default function Home() {
                   </h2>
 
                   <h3 className="text-2xl md:text-[30px] font-serif text-[#b89b65]">
-                    Dr. Hasna Nair
+                    Dr. Priya
                   </h3>
 
                   <div className="inline-flex items-center gap-2 bg-[#f5f7f2] rounded-full px-3 py-1.5 mt-2">

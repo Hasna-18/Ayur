@@ -99,13 +99,31 @@ export default function UserLayout({ children }) {
           <div className="hidden md:flex items-center gap-5">
             {user && (
               <div className="flex items-center gap-3 border-r border-[#e8e4d9] pr-5">
-                <div className="w-9 h-9 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase shadow-sm">
-                  {user.name ? user.name.charAt(0).toLowerCase() : (user.email ? user.email.charAt(0).toLowerCase() : "u")}
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase shadow-sm">
+                    {user.name ? user.name.charAt(0).toLowerCase() : (user.email ? user.email.charAt(0).toLowerCase() : "u")}
+                  </div>
+                  {user.emailVerified && (
+                    <span className="absolute bottom-[-1px] left-[-1px] w-3.5 h-3.5 bg-emerald-600 rounded-full border border-[#faf8f5] flex items-center justify-center shadow-xs">
+                      <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                  )}
                 </div>
                 <div className="text-left">
-                  <p className="text-xs font-bold text-[#12372A] leading-tight max-w-[120px] truncate">
-                    {user.name || user.email?.split("@")[0]}
-                  </p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-xs font-bold text-[#12372A] leading-tight max-w-[120px] truncate">
+                      {user.name || user.email?.split("@")[0]}
+                    </p>
+                    {user.emailVerified && (
+                      <span className="text-emerald-600 shrink-0" title="Verified Account">
+                        <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                          <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2 3.4-1.46 3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/>
+                        </svg>
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[10px] text-[#6b7a68] font-medium leading-tight">Patient</p>
                 </div>
               </div>
@@ -123,8 +141,17 @@ export default function UserLayout({ children }) {
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
             {user && (
-              <div className="w-8 h-8 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-xs uppercase shadow-sm">
-                {user.name ? user.name.charAt(0).toLowerCase() : "u"}
+              <div className="relative">
+                <div className="w-8 h-8 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-xs uppercase shadow-sm">
+                  {user.name ? user.name.charAt(0).toLowerCase() : "u"}
+                </div>
+                {user.emailVerified && (
+                  <span className="absolute bottom-[-1px] left-[-1px] w-3 h-3 bg-emerald-600 rounded-full border border-[#faf8f5] flex items-center justify-center shadow-xs">
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                )}
               </div>
             )}
             <button

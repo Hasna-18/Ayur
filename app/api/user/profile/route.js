@@ -24,6 +24,7 @@ export async function GET() {
         email: true,
         age: true,
         gender: true,
+        emailVerified: true,
       },
     });
 

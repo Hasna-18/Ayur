@@ -355,27 +355,27 @@ export default function Dashboard() {
 
           {/* Daily Wellness Tracker */}
           <div className="lg:col-span-4 paper-texture rounded-2xl p-6 border border-[#e8e4d9]">
-            <h3 className="font-hand text-3xl text-[#2b3a2f] mb-6">Your Daily Wellness</h3>
+            <h3 className="font-hand text-3xl text-[#2b3a2f] mb-6">Daily Wellness</h3>
             <div className="flex justify-between items-end text-center px-2 pt-2">
               <div className="flex flex-col items-center">
                 <Droplets className="w-7 h-7 text-[#5b9ca8] mb-3" strokeWidth={1.5} />
                 <p className="text-[11px] font-bold text-[#3e4a3d]">Water</p>
-                <p className="text-[10px] text-[#6b7a68] mt-0.5">6/8 glasses</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">8-12 glasses</p>
               </div>
               <div className="flex flex-col items-center">
                 <Activity className="w-7 h-7 text-[#a8825b] mb-3" strokeWidth={1.5} />
                 <p className="text-[11px] font-bold text-[#3e4a3d]">Movement</p>
-                <p className="text-[10px] text-[#6b7a68] mt-0.5">30 mins</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">30-60 mins</p>
               </div>
               <div className="flex flex-col items-center">
                 <Utensils className="w-7 h-7 text-[#5a7258] mb-3" strokeWidth={1.5} />
                 <p className="text-[11px] font-bold text-[#3e4a3d]">Meals</p>
-                <p className="text-[10px] text-[#6b7a68] mt-0.5">2/3 completed</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">3 completed</p>
               </div>
               <div className="flex flex-col items-center">
                 <Moon className="w-7 h-7 text-[#625ba8] mb-3" strokeWidth={1.5} />
                 <p className="text-[11px] font-bold text-[#3e4a3d]">Sleep</p>
-                <p className="text-[10px] text-[#6b7a68] mt-0.5">7 hrs</p>
+                <p className="text-[10px] text-[#6b7a68] mt-0.5">7-9 hrs</p>
               </div>
             </div>
           </div>

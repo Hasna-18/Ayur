@@ -13,112 +13,115 @@ import { Navbar } from "@/components/navbar";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#F5F1E8]">
+    <div className="min-h-screen bg-[#FAF6F0] relative overflow-hidden">
+      <Navbar />
 
-      <Navbar/>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#f5f1e8] via-[#f5f1e8]/90 to-[#f5f1e8]/70" />
+      <section className="relative overflow-hidden py-12 md:py-20">
+        {/* Background Watercolor Leaf Watermark (hanging from top-left) */}
+        <Image
+          src="/l12.png"
+          alt=""
+          width={350}
+          height={450}
+          className="absolute -top-12 -left-12 opacity-[0.12] pointer-events-none mix-blend-multiply w-[350px] h-auto z-0 rotate-180 scale-x-[-1]"
+        />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-            {/* Left */}
-            <div>
-
-              <div className="inline-flex items-center gap-2 bg-[#E9E3D4] px-4 py-2 rounded-full mb-6">
-                <Leaf className="w-4 h-4 text-[#0B5D3B]" />
-                <span className="text-[#0B5D3B] font-medium">
+            {/* Left Column */}
+            <div className="relative z-10 space-y-6">
+              <div className="inline-flex items-center gap-2 bg-[#EAE8E0] px-4 py-1.5 rounded-full">
+                <Leaf className="w-4 h-4 text-brand-green" />
+                <span className="text-brand-green font-semibold text-sm">
                   Ayurveda Specialist
                 </span>
               </div>
 
-              <h1 className="text-6xl font-serif font-bold text-[#123524] leading-tight">
+              <h1 className="text-5xl md:text-6xl font-serif font-bold text-brand-green leading-tight">
                 About
                 <br />
                 Dr. Priya Menon
               </h1>
 
-              <div className="w-40 h-px bg-[#8DA17D] mt-8 mb-8" />
+              <div className="w-20 h-1.5 bg-brand-gold rounded-full my-6" />
 
-              <p className="text-xl text-[#3F5147] leading-relaxed">
-                Dr. Priya Menon is a highly
-                experienced Ayurvedic physician
-                dedicated to helping patients
-                achieve complete wellness through
-                natural healing, preventive care,
-                and personalized treatment plans.
+              <p className="text-base md:text-lg text-slate-600 font-light leading-relaxed max-w-xl">
+                Dr. Priya Menon is a highly experienced Ayurvedic physician
+                dedicated to helping patients achieve complete wellness through
+                natural healing, preventive care, and personalized treatment plans.
               </p>
 
-              <div className="grid grid-cols-2 gap-4 mt-10">
-
-                <div className="bg-white rounded-3xl p-5 shadow-sm">
-                  <h3 className="text-4xl font-bold text-[#0B5D3B]">
-                    10+
-                  </h3>
-                  <p className="text-gray-600">
-                    Years Experience
-                  </p>
-                </div>
-
-                <div className="bg-white rounded-3xl p-5 shadow-sm">
-                  <h3 className="text-4xl font-bold text-[#0B5D3B]">
-                    500+
-                  </h3>
-                  <p className="text-gray-600">
-                    Happy Patients
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Right */}
-            <div className="relative">
-
-              <div className="absolute -top-6 -left-6 bg-white rounded-3xl p-5 shadow-xl z-20">
-                <div className="flex items-center gap-3">
-                  <Heart className="text-red-500" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10">
+                {/* Stat Card 1 */}
+                <div className="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100/50 flex items-center gap-4 hover:shadow-md transition-all duration-300">
+                  <div className="w-14 h-14 rounded-full bg-[#EAE8E0] flex items-center justify-center text-brand-green flex-shrink-0">
+                    <Leaf className="w-6 h-6" />
+                  </div>
                   <div>
-                    <p className="font-bold">
-                      Patient Care
+                    <h3 className="text-3xl font-serif font-bold text-brand-green leading-none mb-1">
+                      10+
+                    </h3>
+                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                      Years Experience
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Personalized treatment
+                  </div>
+                </div>
+
+                {/* Stat Card 2 */}
+                <div className="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100/50 flex items-center gap-4 hover:shadow-md transition-all duration-300">
+                  <div className="w-14 h-14 rounded-full bg-[#EAE8E0] flex items-center justify-center text-brand-green flex-shrink-0">
+                    <Users className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-serif font-bold text-brand-green leading-none mb-1">
+                      500+
+                    </h3>
+                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
+                      Happy Patients
                     </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="relative rounded-[40px] overflow-hidden shadow-2xl">
+            {/* Right Column */}
+            <div className="relative justify-self-center lg:justify-self-end w-full max-w-[480px] mt-12 lg:mt-0 z-10">
+
+              {/* Floating Top-Left Badge */}
+              <div className="absolute -top-4 left-6 bg-white rounded-full px-5 py-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-100/50 z-20 flex items-center gap-2 hover:scale-105 transition-transform duration-300">
+                <Heart className="w-4 h-4 text-red-500 fill-none" />
+                <span className="text-xs font-semibold text-slate-700 tracking-wide">
+                  Personalized Treatment
+                </span>
+              </div>
+
+              {/* Main Image Container */}
+              <div className="relative rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-500 ease-out border-8 border-white bg-white">
                 <Image
-                  src="/profile.jpeg"
-                  alt="Doctor"
-                  width={700}
-                  height={800}
-                  className="w-full h-[700px] object-cover"
-                  unoptimized // Add this to ensure local build handles dev files safely
+                  src="/g33.png"
+                  alt="Dr. Priya Menon"
+                  width={600}
+                  height={650}
+                  className="w-full h-[520px] object-cover object-top"
+                  unoptimized
                 />
               </div>
 
-              <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur rounded-3xl p-6 shadow-xl max-w-xs">
-
+              {/* Floating Bottom-Right Testimonial Card */}
+              <div className="absolute bottom-6 -right-4 bg-white rounded-[24px] p-5 shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-slate-100/50 max-w-[280px] z-20 hover:scale-105 transition-transform duration-300">
                 <div className="flex text-amber-500 gap-1 mb-3">
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
+                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                  <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                 </div>
-
-                <p className="text-[#123524] font-medium">
-                  Dedicated to holistic healing
-                  and long-term wellness through
+                <p className="text-brand-green font-medium text-xs md:text-sm leading-relaxed">
+                  Dedicated to holistic healing and long-term wellness through
                   authentic Ayurvedic practices.
                 </p>
-
               </div>
 
             </div>
@@ -127,73 +130,96 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-
+      {/* Features Section */}
+      <section className="max-w-7xl mx-auto px-6 py-16 relative z-10">
         <div className="grid md:grid-cols-3 gap-8">
 
-          <div className="bg-white rounded-[30px] p-8 shadow-sm">
-            <Leaf className="w-12 h-12 text-[#0B5D3B]" />
-
-            <h3 className="text-2xl font-bold text-[#123524] mt-6">
-              Natural Healing
-            </h3>
-
-            <p className="text-gray-600 mt-4">
-              Traditional Ayurvedic therapies
-              tailored to individual needs.
-            </p>
+          {/* Feature 1 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100/50 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div>
+              <div className="w-14 h-14 rounded-full bg-[#EAE8E0] flex items-center justify-center text-brand-green mb-6">
+                <Leaf className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-brand-green mt-4">
+                Natural Healing
+              </h3>
+              <p className="text-slate-600 font-light mt-3 leading-relaxed">
+                Traditional Ayurvedic therapies
+                tailored to individual needs.
+              </p>
+            </div>
+            <div className="w-12 h-0.5 bg-[#C5A880] mt-6" />
           </div>
 
-          <div className="bg-white rounded-[30px] p-8 shadow-sm">
-            <Shield className="w-12 h-12 text-[#0B5D3B]" />
-
-            <h3 className="text-2xl font-bold text-[#123524] mt-6">
-              Safe Treatments
-            </h3>
-
-            <p className="text-gray-600 mt-4">
-              Proven therapies focusing on
-              prevention and long-term health.
-            </p>
+          {/* Feature 2 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100/50 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div>
+              <div className="w-14 h-14 rounded-full bg-[#EAE8E0] flex items-center justify-center text-brand-green mb-6">
+                <Shield className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-brand-green mt-4">
+                Safe Treatments
+              </h3>
+              <p className="text-slate-600 font-light mt-3 leading-relaxed">
+                Proven therapies focusing on
+                prevention and long-term health.
+              </p>
+            </div>
+            <div className="w-12 h-0.5 bg-[#C5A880] mt-6" />
           </div>
 
-          <div className="bg-white rounded-[30px] p-8 shadow-sm">
-            <Users className="w-12 h-12 text-[#0B5D3B]" />
-
-            <h3 className="text-2xl font-bold text-[#123524] mt-6">
-              Patient Focused
-            </h3>
-
-            <p className="text-gray-600 mt-4">
-              Compassionate care designed around
-              each patient’s wellness journey.
-            </p>
+          {/* Feature 3 */}
+          <div className="bg-white rounded-[32px] p-8 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100/50 flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div>
+              <div className="w-14 h-14 rounded-full bg-[#EAE8E0] flex items-center justify-center text-brand-green mb-6">
+                <Users className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-brand-green mt-4">
+                Patient Focused
+              </h3>
+              <p className="text-slate-600 font-light mt-3 leading-relaxed">
+                Compassionate care designed around
+                each patient’s wellness journey.
+              </p>
+            </div>
+            <div className="w-12 h-0.5 bg-[#C5A880] mt-6" />
           </div>
 
         </div>
       </section>
 
-      {/* Mission */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
+      {/* Mission Section */}
+      <section className="max-w-7xl mx-auto px-6 pb-20 relative z-10">
+        <div className="relative overflow-hidden bg-[#0F3C2A] rounded-[40px] text-white p-10 md:p-16 hover:shadow-lg transition-shadow duration-300">
 
-        <div className="bg-gradient-to-r from-[#012E1F] to-[#0B5D3B] rounded-[40px] text-white p-12">
+          {/* Mortar & Pestle Watermark background (right-aligned) */}
+          <div className="absolute right-0 bottom-0 top-0 w-full md:w-1/2 opacity-[0.08] pointer-events-none z-0">
+            <Image
+              src="/g4.png"
+              alt="Botanical watermark"
+              fill
+              className="object-contain object-right-bottom scale-110"
+            />
+          </div>
 
-          <Award className="w-14 h-14 mb-6" />
+          <div className="relative z-10 max-w-2xl">
+            <div className="w-14 h-14 rounded-full border border-[#C5A880]/30 flex items-center justify-center text-[#C5A880] mb-6 bg-white/5">
+              <Award className="w-7 h-7" />
+            </div>
 
-          <h2 className="text-5xl font-serif font-bold">
-            Our Mission
-          </h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white">
+              Our Mission
+            </h2>
 
-          <p className="text-xl mt-6 max-w-3xl leading-relaxed">
-            To make healthcare simple,
-            transparent and accessible while
-            preserving the wisdom of Ayurveda
-            for modern lifestyles.
-          </p>
+            <p className="text-lg md:text-xl mt-6 leading-relaxed text-white/80 font-light">
+              To make healthcare simple,
+              transparent and accessible while
+              preserving the wisdom of Ayurveda
+              for modern lifestyles.
+            </p>
+          </div>
 
         </div>
-
       </section>
 
     </div>

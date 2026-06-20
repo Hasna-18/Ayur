@@ -46,6 +46,16 @@ export default function AppointmentList() {
   const [loading, setLoading] = useState(true);
   const [activeCall, setActiveCall] = useState(null);
   const [userName, setUserName] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -198,9 +208,9 @@ export default function AppointmentList() {
 
         {/* Appointments Table Card */}
         <div className="bg-[#faf8f5] rounded-[30px] border border-[#e8e4d9]/80 shadow-[0_4px_20px_rgba(43,58,47,0.02)] overflow-hidden">
-          <div className="overflow-x-auto">
+          <div>
             {noAppointments ? (
-              <div className="p-16 text-center text-[#12372A]">
+              <div className="p-16 text-center text-[#12372A] overflow-x-auto">
                 <GiLotus className="w-16 h-16 text-[#c2bba8] mx-auto mb-4 animate-bounce" />
                 <p className="text-2xl font-bold font-serif-display text-[#12372A]">You have no upcoming appointments.</p>
                 <p className="mt-3 text-[#6b7a68] text-sm font-medium">Book a new appointment to get a Jitsi meeting code.</p>
@@ -210,189 +220,323 @@ export default function AppointmentList() {
                   </Button>
                 </a>
               </div>
-            ) : (
-              <table className="w-full border-collapse">
-                <thead className="bg-[#23382b] text-white">
-                  <tr>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <Clock className="w-4 h-4 text-[#C5A880]" />
-                        <span>TIME</span>
-                      </div>
-                    </th>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <User className="w-4 h-4 text-[#C5A880]" />
-                        <span>PATIENT</span>
-                      </div>
-                    </th>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <Mail className="w-4 h-4 text-[#C5A880]" />
-                        <span>EMAIL</span>
-                      </div>
-                    </th>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <Leaf className="w-4 h-4 text-[#C5A880]" />
-                        <span>REASON</span>
-                      </div>
-                    </th>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <CircleDot className="w-4 h-4 text-[#C5A880]" />
-                        <span>STATUS</span>
-                      </div>
-                    </th>
-                    <th className="p-5 text-left border-r border-white/10 last:border-r-0">
-                      <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
-                        <Settings className="w-4 h-4 text-[#C5A880]" />
-                        <span>ACTION</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {appointments.map((a) => (
-                    <tr
-                      key={a.id}
-                      className="border-b border-[#e8e4d9]/50 hover:bg-[#f5f0e1]/30 transition-colors"
-                    >
-                      {/* Time cell */}
-                      <td className="p-5 align-middle">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-[#e8e4d9]/60 flex items-center justify-center border border-[#d1ccbd]/30 text-[#5a7258] flex-shrink-0">
-                            <CalendarDays className="w-6 h-6 text-[#5a7258]" />
-                          </div>
-                          <div>
-                            <div className="text-[#12372A] font-bold text-sm">
-                              {new Date(a.date).toLocaleDateString([], {
-                                month: "numeric",
-                                day: "numeric",
-                                year: "numeric"
-                              })}
-                            </div>
-                            <div className="text-xs text-[#6b7a68] font-medium mt-0.5">
-                              {new Date(a.time).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </div>
-                          </div>
+            ) : isMobile ? (
+              <div className="flex flex-col gap-4 p-4">
+                {appointments.map((a) => (
+                  <div 
+                    key={a.id} 
+                    className="bg-white rounded-2xl border border-[#e8e4d9] p-5 shadow-sm flex flex-col gap-4 text-left"
+                  >
+                    {/* Card Header: Date & Status */}
+                    <div className="flex justify-between items-start border-b border-[#e8e4d9]/60 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#e8e4d9]/50 flex items-center justify-center border border-[#d1ccbd]/20 text-[#5a7258] flex-shrink-0">
+                          <CalendarDays className="w-5.5 h-5.5" />
                         </div>
-                      </td>
-
-                      {/* Patient cell */}
-                      <td className="p-5 align-middle">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase">
-                            {a.name?.charAt(0).toLowerCase()}
-                          </div>
-                          <div>
-                            <p className="font-bold text-[#12372A] text-sm">
-                              {a.name}
-                            </p>
-                            <p className="text-xs text-[#6b7a68] mt-0.5">
-                              Patient
-                            </p>
-                          </div>
+                        <div>
+                          <p className="text-[#12372A] font-bold text-sm">
+                            {new Date(a.date).toLocaleDateString([], {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric"
+                            })}
+                          </p>
+                          <p className="text-xs text-[#6b7a68] font-medium flex items-center gap-1 mt-0.5">
+                            <Clock className="w-3.5 h-3.5 text-[#a1825b]" />
+                            {new Date(a.time).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </p>
                         </div>
-                      </td>
-
-                      {/* Email cell */}
-                      <td className="p-5 align-middle text-sm text-[#4a5a4b] font-medium">
-                        {a.email}
-                      </td>
-
-                      {/* Reason cell */}
-                      <td className="p-5 align-middle">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-[#e8e4d9]/40 flex items-center justify-center text-[#5a7258] flex-shrink-0">
-                            <Leaf className="w-4 h-4 text-[#5a7258]" />
-                          </div>
-                          <span className="text-sm text-[#4a5a4b] font-medium max-w-[180px] truncate block" title={a.message || "-"}>
-                            {a.message || "-"}
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Status cell */}
-                      <td className="p-5 align-middle">
+                      </div>
+                      <div>
                         {a.status === "SCHEDULED" && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#e2ebe4] text-[#3c5e48] border border-[#c1d0b5] text-xs font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#e2ebe4] text-[#3c5e48] border border-[#c1d0b5] text-[11px] font-semibold font-sans">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#3c5e48]" />
                             Scheduled
                           </span>
                         )}
                         {a.status === "COMPLETED" && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#dce9f5] text-[#2c5282] border border-[#b9d2eb] text-xs font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#dce9f5] text-[#2c5282] border border-[#b9d2eb] text-[11px] font-semibold font-sans">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#2c5282]" />
                             Completed
                           </span>
                         )}
                         {a.status === "CANCELLED" && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fde8e8] text-[#9b2c2c] border border-[#f8b4b4] text-xs font-semibold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#fde8e8] text-[#9b2c2c] border border-[#f8b4b4] text-[11px] font-semibold font-sans">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#9b2c2c]" />
                             Cancelled
                           </span>
                         )}
-                      </td>
+                      </div>
+                    </div>
 
-                      {/* Action cell */}
-                      <td className="p-5 align-middle">
-                        <div className="flex flex-col gap-2">
-                          {a.status === "SCHEDULED" ? (
-                            <div className="flex flex-wrap gap-2 items-center">
-                              <Button
-                                onClick={() => handleJoinCall(a)}
-                                disabled={!isJoinAllowed(a)}
-                                className={`rounded-xl px-4 py-1.5 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer ${
-                                  isJoinAllowed(a)
-                                    ? "bg-[#12372A] text-white hover:bg-[#1c4737] border border-transparent"
-                                    : "bg-zinc-200 text-zinc-400 border border-zinc-300 opacity-60 cursor-not-allowed"
-                                }`}
-                              >
-                                <Video className="w-3.5 h-3.5" />
-                                Join
-                              </Button>
-
-                              <Button
-                                onClick={() => cancelAppointment(a.id)}
-                                className="bg-transparent border border-[#e38585] text-[#d84c4c] hover:bg-red-50/50 rounded-xl px-4 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-                              >
-                                <XCircle className="w-3.5 h-3.5" />
-                                Cancel
-                              </Button>
-                            </div>
-                          ) : (
-                            <span className="text-gray-400 text-sm font-medium pl-2">-</span>
-                          )}
-
-                          {a.jitsiRoom && (
-                            <div className="flex flex-col gap-0.5 text-xs text-[#6b7a68] mt-1 pl-1">
-                              <p className="font-medium">
-                                Code: <span className="font-semibold text-[#3e4a3d]">{a.jitsiRoom}</span>
-                                {a.meetingExpired ? " (expired)" : ""}
-                              </p>
-                              {!a.meetingExpired && (
-                                <a
-                                  href={`https://meet.jit.si/${a.jitsiRoom}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-[#5a7258] hover:underline font-semibold flex items-center gap-0.5 mt-0.5 w-fit"
-                                >
-                                  Direct Link <span className="text-[10px]">↗</span>
-                                </a>
-                              )}
-                            </div>
-                          )}
+                    {/* Card Body: Patient Info */}
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-xs uppercase flex-shrink-0">
+                          {a.name?.charAt(0).toLowerCase()}
                         </div>
-                      </td>
+                        <div>
+                          <p className="font-bold text-[#12372A] text-sm leading-tight">{a.name}</p>
+                          <p className="text-[11px] text-[#6b7a68] mt-0.5 font-medium">Patient</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-2 text-xs text-[#4a5a4b] font-medium pt-1">
+                        <div className="flex items-center gap-2">
+                          <Mail className="w-4 h-4 text-[#C5A880] flex-shrink-0" />
+                          <span className="break-all">{a.email}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <Leaf className="w-4 h-4 text-[#C5A880] mt-0.5 flex-shrink-0" />
+                          <span className="leading-relaxed">Reason: {a.message || "-"}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Jitsi code & Link */}
+                    {a.jitsiRoom && (
+                      <div className="bg-[#f5f2e9]/70 rounded-xl p-3.5 border border-[#e8e4d9]/50 flex flex-col gap-2 mt-1">
+                        <div className="flex items-center justify-between text-xs text-[#6b7a68]">
+                          <div className="flex items-center gap-1.5">
+                            <Video className="w-4 h-4 text-[#5a7258]" />
+                            <span className="font-semibold text-[#12372A]">Video Call Code</span>
+                          </div>
+                          <span className="font-bold text-[#3e4a3d] bg-white px-2 py-0.5 rounded border border-[#e8e4d9]">
+                            {a.jitsiRoom}
+                          </span>
+                        </div>
+                        {!a.meetingExpired ? (
+                          <a
+                            href={`https://meet.jit.si/${a.jitsiRoom}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#5a7258] hover:underline font-bold text-xs flex items-center gap-1 justify-center w-full bg-white border border-[#e8e4d9] py-2 rounded-lg mt-1 transition-all hover:bg-gray-50 shadow-sm"
+                          >
+                            Go to Jitsi Meet <span className="text-[10px] text-[#C5A880]">↗</span>
+                          </a>
+                        ) : (
+                          <p className="text-[11px] text-red-500 font-semibold text-center mt-1">
+                            Meeting link has expired
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    {a.status === "SCHEDULED" && (
+                      <div className="flex gap-2.5 mt-2">
+                        <Button
+                          onClick={() => handleJoinCall(a)}
+                          disabled={!isJoinAllowed(a)}
+                          className={`flex-1 rounded-xl py-5 text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer ${
+                            isJoinAllowed(a)
+                              ? "bg-[#12372A] text-white hover:bg-[#1c4737]"
+                              : "bg-zinc-200 text-zinc-400 border border-zinc-300 opacity-60 cursor-not-allowed"
+                          }`}
+                        >
+                          <Video className="w-4 h-4" />
+                          Join Call
+                        </Button>
+                        <Button
+                          onClick={() => cancelAppointment(a.id)}
+                          className="bg-transparent border border-[#e38585] text-[#d84c4c] hover:bg-red-50/50 rounded-xl py-5 px-4 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead className="bg-[#23382b] text-white">
+                    <tr>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <Clock className="w-4 h-4 text-[#C5A880]" />
+                          <span>TIME</span>
+                        </div>
+                      </th>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <User className="w-4 h-4 text-[#C5A880]" />
+                          <span>PATIENT</span>
+                        </div>
+                      </th>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <Mail className="w-4 h-4 text-[#C5A880]" />
+                          <span>EMAIL</span>
+                        </div>
+                      </th>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <Leaf className="w-4 h-4 text-[#C5A880]" />
+                          <span>REASON</span>
+                        </div>
+                      </th>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <CircleDot className="w-4 h-4 text-[#C5A880]" />
+                          <span>STATUS</span>
+                        </div>
+                      </th>
+                      <th className="p-5 text-left border-r border-white/10 last:border-r-0">
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-[#f4eae1]">
+                          <Settings className="w-4 h-4 text-[#C5A880]" />
+                          <span>ACTION</span>
+                        </div>
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {appointments.map((a) => (
+                      <tr
+                        key={a.id}
+                        className="border-b border-[#e8e4d9]/50 hover:bg-[#f5f0e1]/30 transition-colors"
+                      >
+                        {/* Time cell */}
+                        <td className="p-5 align-middle">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-[#e8e4d9]/60 flex items-center justify-center border border-[#d1ccbd]/30 text-[#5a7258] flex-shrink-0">
+                              <CalendarDays className="w-6 h-6 text-[#5a7258]" />
+                            </div>
+                            <div>
+                              <div className="text-[#12372A] font-bold text-sm">
+                                {new Date(a.date).toLocaleDateString([], {
+                                  month: "numeric",
+                                  day: "numeric",
+                                  year: "numeric"
+                                })}
+                              </div>
+                              <div className="text-xs text-[#6b7a68] font-medium mt-0.5">
+                                {new Date(a.time).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Patient cell */}
+                        <td className="p-5 align-middle">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase">
+                              {a.name?.charAt(0).toLowerCase()}
+                            </div>
+                            <div>
+                              <p className="font-bold text-[#12372A] text-sm">
+                                {a.name}
+                              </p>
+                              <p className="text-xs text-[#6b7a68] mt-0.5">
+                                Patient
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Email cell */}
+                        <td className="p-5 align-middle text-sm text-[#4a5a4b] font-medium">
+                          {a.email}
+                        </td>
+
+                        {/* Reason cell */}
+                        <td className="p-5 align-middle">
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-full bg-[#e8e4d9]/40 flex items-center justify-center text-[#5a7258] flex-shrink-0">
+                              <Leaf className="w-4 h-4 text-[#5a7258]" />
+                            </div>
+                            <span className="text-sm text-[#4a5a4b] font-medium max-w-[180px] truncate block" title={a.message || "-"}>
+                              {a.message || "-"}
+                            </span>
+                          </div>
+                        </td>
+
+                        {/* Status cell */}
+                        <td className="p-5 align-middle">
+                          {a.status === "SCHEDULED" && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#e2ebe4] text-[#3c5e48] border border-[#c1d0b5] text-xs font-semibold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#3c5e48]" />
+                              Scheduled
+                            </span>
+                          )}
+                          {a.status === "COMPLETED" && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#dce9f5] text-[#2c5282] border border-[#b9d2eb] text-xs font-semibold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#2c5282]" />
+                              Completed
+                            </span>
+                          )}
+                          {a.status === "CANCELLED" && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fde8e8] text-[#9b2c2c] border border-[#f8b4b4] text-xs font-semibold">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#9b2c2c]" />
+                              Cancelled
+                            </span>
+                          )}
+                        </td>
+
+                        {/* Action cell */}
+                        <td className="p-5 align-middle">
+                          <div className="flex flex-col gap-2">
+                            {a.status === "SCHEDULED" ? (
+                              <div className="flex flex-wrap gap-2 items-center">
+                                <Button
+                                  onClick={() => handleJoinCall(a)}
+                                  disabled={!isJoinAllowed(a)}
+                                  className={`rounded-xl px-4 py-1.5 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer ${
+                                    isJoinAllowed(a)
+                                      ? "bg-[#12372A] text-white hover:bg-[#1c4737] border border-transparent"
+                                      : "bg-zinc-200 text-zinc-400 border border-zinc-300 opacity-60 cursor-not-allowed"
+                                  }`}
+                                >
+                                  <Video className="w-3.5 h-3.5" />
+                                  Join
+                                </Button>
+
+                                <Button
+                                  onClick={() => cancelAppointment(a.id)}
+                                  className="bg-transparent border border-[#e38585] text-[#d84c4c] hover:bg-red-50/50 rounded-xl px-4 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                                >
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  Cancel
+                                </Button>
+                              </div>
+                            ) : (
+                              <span className="text-gray-400 text-sm font-medium pl-2">-</span>
+                            )}
+
+                            {a.jitsiRoom && (
+                              <div className="flex flex-col gap-0.5 text-xs text-[#6b7a68] mt-1 pl-1">
+                                <p className="font-medium">
+                                  Code: <span className="font-semibold text-[#3e4a3d]">{a.jitsiRoom}</span>
+                                  {a.meetingExpired ? " (expired)" : ""}
+                                </p>
+                                {!a.meetingExpired && (
+                                  <a
+                                    href={`https://meet.jit.si/${a.jitsiRoom}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-[#5a7258] hover:underline font-semibold flex items-center gap-0.5 mt-0.5 w-fit"
+                                  >
+                                    Direct Link <span className="text-[10px]">↗</span>
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
 
