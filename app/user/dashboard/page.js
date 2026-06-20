@@ -299,7 +299,7 @@ export default function Dashboard() {
                       <Image src="/g33.png" alt="doc" width={100} height={100} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-[#3e4a3d]">Dr. Priya Menon</h4>
+                      <h4 className="font-bold text-[#3e4a3d]">Dr. Kajal</h4>
                       <p className="text-[11px] text-[#6b7a68] mt-0.5">Ayurveda General • Ayurveda Expert</p>
                       <div className="flex gap-4 text-xs mt-2 font-medium text-[#3e4a3d]">
                         <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5 text-[#6b7a68]" /> {formatDate(nextAppointment.date)}</span>

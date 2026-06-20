@@ -42,15 +42,13 @@ export default function AboutPage() {
               <h1 className="text-5xl md:text-6xl font-serif font-bold text-brand-green leading-tight">
                 About
                 <br />
-                Dr. Priya Menon
+                Dr. Kajal
               </h1>
 
               <div className="w-20 h-1.5 bg-brand-gold rounded-full my-6" />
 
               <p className="text-base md:text-lg text-slate-600 font-light leading-relaxed max-w-xl">
-                Dr. Priya Menon is a highly experienced Ayurvedic physician
-                dedicated to helping patients achieve complete wellness through
-                natural healing, preventive care, and personalized treatment plans.
+                Dr. Kajal is a certified Ayurveda practitioner dedicated to bringing balance, healing, and wellness into people’s lives using time-tested Ayurvedic principles. The name "Ayurveechi" combines "Ayurveda" and "Veechi" (meaning wave or flow), symbolizing the natural flow of life and health through ancient wisdom.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10">
@@ -101,7 +99,7 @@ export default function AboutPage() {
               <div className="relative rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-500 ease-out border-8 border-white bg-white">
                 <Image
                   src="/g33.png"
-                  alt="Dr. Priya Menon"
+                  alt="Dr. Kajal"
                   width={600}
                   height={650}
                   className="w-full h-[520px] object-cover object-top"
@@ -202,21 +200,42 @@ export default function AboutPage() {
             />
           </div>
 
-          <div className="relative z-10 max-w-2xl">
-            <div className="w-14 h-14 rounded-full border border-[#C5A880]/30 flex items-center justify-center text-[#C5A880] mb-6 bg-white/5">
+          <div className="relative z-10 max-w-5xl">
+            <div className="w-14 h-14 rounded-full border border-[#C5A880]/30 flex items-center justify-center text-[#C5A880] mb-8 bg-white/5">
               <Award className="w-7 h-7" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-white">
-              Our Mission
-            </h2>
+            <div className="grid md:grid-cols-3 gap-10">
+              {/* Mission */}
+              <div className="space-y-3 text-left">
+                <h2 className="text-2xl font-serif font-bold text-[#C5A880]">
+                  Our Mission
+                </h2>
+                <p className="text-sm leading-relaxed text-white/80 font-light">
+                  To make authentic Ayurveda accessible and personalized for modern lifestyles—helping individuals restore balance, prevent disease, and live more consciously.
+                </p>
+              </div>
 
-            <p className="text-lg md:text-xl mt-6 leading-relaxed text-white/80 font-light">
-              To make healthcare simple,
-              transparent and accessible while
-              preserving the wisdom of Ayurveda
-              for modern lifestyles.
-            </p>
+              {/* Vision */}
+              <div className="space-y-3 text-left">
+                <h2 className="text-2xl font-serif font-bold text-[#C5A880]">
+                  Our Vision
+                </h2>
+                <p className="text-sm leading-relaxed text-white/80 font-light">
+                  To be a global leader in integrative, holistic wellness through Ayurveda, empowering individuals to take charge of their health in alignment with nature.
+                </p>
+              </div>
+
+              {/* Long-Term Goal */}
+              <div className="space-y-3 text-left">
+                <h2 className="text-2xl font-serif font-bold text-[#C5A880]">
+                  Long-Term Goal
+                </h2>
+                <p className="text-sm leading-relaxed text-white/80 font-light">
+                  To create a trusted online ecosystem for Ayurvedic healing, lifestyle education, and wellness transformation that reaches people worldwide.
+                </p>
+              </div>
+            </div>
           </div>
 
         </div>

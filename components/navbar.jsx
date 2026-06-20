@@ -27,7 +27,7 @@ export function Navbar() {
                             <div>
                                 <div className="flex items-baseline gap-1">
                                     <span className="text-3xl font-serif font-bold text-brand-green tracking-wide">
-                                        Ayur
+                                        Ayurveechi
                                     </span>
                                     <span className="text-brand-gold font-bold text-lg leading-none">.</span>
                                 </div>

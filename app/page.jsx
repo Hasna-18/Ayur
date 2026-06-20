@@ -12,6 +12,10 @@ import e3 from "@/public/e3.png";
 import e4 from "@/public/e4.png";
 import e5 from "@/public/e5.png";
 import e6 from "@/public/e6.png";
+import e7 from "@/public/e7.png";
+import e8 from "@/public/e8.png";
+import e9 from "@/public/e9.png";
+import e10 from "@/public/e10.png";
 
 import Link from "next/link";
 import {
@@ -43,17 +47,18 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
+  Smile,
 } from "lucide-react";
 import { GiLotus } from "react-icons/gi";
 import { Navbar } from "@/components/navbar";
 
 const treatments = [
   {
-    title: "Weight Loss",
-    desc: "Natural metabolism boost, diet plans, and body detoxification.",
+    title: "Wellness Consultations",
+    desc: "Tailored, in-depth consultations rooted in classical Ayurveda to address root causes.",
     image: e1,
-    badge: "Metabolism",
-    icon: Dumbbell,
+    badge: "Classical Ayurveda",
+    icon: ClipboardList,
     theme: {
       iconBg: "bg-[#e28a2b]",
       badgeBg: "bg-[#FAF0E4] text-[#b46d1b] border-[#f5dfc6]",
@@ -61,11 +66,11 @@ const treatments = [
     }
   },
   {
-    title: "PCOS Management",
-    desc: "Hormonal balance therapies through herbs and lifestyle changes.",
+    title: "Diet & Lifestyle",
+    desc: "Personalized nutrition and daily routine adjustments based on your unique body constitution (Prakriti).",
     image: e2,
-    badge: "Hormonal Health",
-    icon: Sparkles,
+    badge: "Prakriti Guidance",
+    icon: Scale,
     theme: {
       iconBg: "bg-[#8a5cb3]",
       badgeBg: "bg-[#f5effa] text-[#6d3e96] border-[#ebdcf5]",
@@ -73,23 +78,11 @@ const treatments = [
     }
   },
   {
-    title: "Diabetes Care",
-    desc: "Regulate blood sugar levels through tailored Panchakarma treatments.",
-    image: e5,
-    badge: "Sugar Control",
-    icon: Activity,
-    theme: {
-      iconBg: "bg-[#2b6cb0]",
-      badgeBg: "bg-[#ebf8ff] text-[#2b6cb0] border-[#bee3f8]",
-      circleBg: "from-[#f0f7ff] to-[#d3e9fa]",
-    }
-  },
-  {
-    title: "Hair Loss Control",
-    desc: "Strengthen roots and promote hair growth with natural oils and herbs.",
+    title: "Custom Remedies",
+    desc: "Customized natural remedies and organic herbal formulations crafted to support your specific needs.",
     image: e3,
-    badge: "Scalp Care",
-    icon: Droplets,
+    badge: "Herbal Support",
+    icon: Leaf,
     theme: {
       iconBg: "bg-[#1d8a8a]",
       badgeBg: "bg-[#e6fffa] text-[#1d8a8a] border-[#b2f5ea]",
@@ -97,11 +90,23 @@ const treatments = [
     }
   },
   {
-    title: "Skin Care & Glow",
-    desc: "Restore your natural radiance and treat acne with herbal remedies.",
-    image: e4,
-    badge: "Radiance",
-    icon: Flower2,
+    title: "Detox & Rasayana",
+    desc: "Revitalize body and mind using traditional purification (Rasayana) guidance and detox paths.",
+    image: e5,
+    badge: "Rejuvenation",
+    icon: Sparkles,
+    theme: {
+      iconBg: "bg-[#2b6cb0]",
+      badgeBg: "bg-[#ebf8ff] text-[#2b6cb0] border-[#bee3f8]",
+      circleBg: "from-[#f0f7ff] to-[#d3e9fa]",
+    }
+  },
+  {
+    title: "Mind-Body Balance",
+    desc: "Practical techniques including yoga, breathwork, meditation, mindfulness, and sleep hygiene.",
+    image: e6,
+    badge: "Holistic Health",
+    icon: Heart,
     theme: {
       iconBg: "bg-[#d53f8c]",
       badgeBg: "bg-[#fff5f7] text-[#d53f8c] border-[#fed7e2]",
@@ -109,11 +114,11 @@ const treatments = [
     }
   },
   {
-    title: "Stress & Anxiety",
-    desc: "Calm your mind and improve sleep with Shirodhara and meditation.",
-    image: e6,
-    badge: "Mindfulness",
-    icon: Heart,
+    title: "Continuous Care",
+    desc: "Ongoing health assessments, short check-ins, and flexible support as your body restores balance.",
+    image: e7,
+    badge: "Ongoing Support",
+    icon: HeartHandshake,
     theme: {
       iconBg: "bg-[#5D7E62]",
       badgeBg: "bg-[#f0fff4] text-[#3b7a57] border-[#c6f6d5]",
@@ -132,7 +137,7 @@ const steps = [
   {
     step: "02",
     title: "Online Consultation",
-    desc: "Connect directly via high-quality video call with our Ayurvedic experts.",
+    desc: "Connect directly via high-quality video call with Dr. Kajal, our Ayurvedic expert.",
     icon: Video,
   },
   {
@@ -155,14 +160,14 @@ const testimonials = [
     location: "Bangalore, India",
     initials: "AR",
     rating: 5,
-    text: "The PCOS treatment has completely changed my life. After 6 months of following Dr. Hasna's personalized diet and herbal plan, my cycle is regular and I feel so much more energetic!",
+    text: "The PCOS treatment has completely changed my life. After 6 months of following Dr. Kajal's personalized diet and herbal plan, my cycle is regular and I feel so much more energetic!",
   },
   {
     name: "Rahul M.",
     location: "Mumbai, India",
     initials: "RM",
     rating: 5,
-    text: "Dr. Hasna's stress management plan helped me overcome severe insomnia. The Shirodhara oils recommended were extremely soothing. Highly recommend her consultation!",
+    text: "Dr. Kajal's stress management plan helped me overcome severe insomnia. The Shirodhara oils recommended were extremely soothing. Highly recommend her consultation!",
   },
   {
     name: "Sarah J.",
@@ -171,6 +176,117 @@ const testimonials = [
     rating: 5,
     text: "Excellent online experience. I was skeptical about virtual Ayurvedic consulting, but the diagnosis was precise and the prescribed herbs were delivered to my doorstep in the UK.",
   },
+];
+
+const concerns = [
+  {
+    name: "Digestive Issues",
+    detail: "Bloating, acidity, IBS & slow metabolism",
+    icon: CupSoda,
+    image: e1,
+    theme: {
+      iconBg: "bg-[#E28A2B]",
+      cardBg: "from-[#FFFBF5] to-[#FDF0DF]",
+    }
+  },
+  {
+    name: "Thyroid Issues",
+    detail: "Hormonal imbalances & energy regulation",
+    icon: Sparkles,
+    image: e2,
+    theme: {
+      iconBg: "bg-[#8a5cb3]",
+      cardBg: "from-[#FAF8FC] to-[#F1EAF7]",
+    }
+  },
+  {
+    name: "Stress & Anxiety",
+    detail: "Nervous system calming & mental wellness",
+    icon: Smile,
+    image: e3,
+    theme: {
+      iconBg: "bg-[#1d8a8a]",
+      cardBg: "from-[#F5FBFB] to-[#E3F2F2]",
+    }
+  },
+  {
+    name: "Women’s Health",
+    detail: "Menstrual care, PCOS & holistic hormone support",
+    icon: Flower2,
+    image: e4,
+    theme: {
+      iconBg: "bg-[#d53f8c]",
+      cardBg: "from-[#FFF8FA] to-[#FCEAF0]",
+    }
+  },
+  {
+    name: "Arthritis & Joint Pain",
+    detail: "Inflammation reduction & bone health",
+    icon: Scale,
+    image: e5,
+    theme: {
+      iconBg: "bg-[#5D7E62]",
+      cardBg: "from-[#F8FAF8] to-[#EAF2EA]",
+    }
+  },
+  {
+    name: "Respiratory & Allergy",
+    detail: "Immunity, respiratory strength & sinus care",
+    icon: Activity,
+    image: e6,
+    theme: {
+      iconBg: "bg-[#2b6cb0]",
+      cardBg: "from-[#F5FAFF] to-[#E3F0FC]",
+    }
+  },
+  {
+    name: "Neurological Issues",
+    detail: "Nerve health, chronic fatigue & sensory care",
+    icon: Activity,
+    image: e7,
+    theme: {
+      iconBg: "bg-[#6D3E96]",
+      cardBg: "from-[#FAF8FC] to-[#F1EAF7]",
+    }
+  },
+  {
+    name: "Immunity Boosting",
+    detail: "Natural disease resistance & ojas building",
+    icon: ShieldCheck,
+    image: e8,
+    theme: {
+      iconBg: "bg-[#c89d4f]",
+      cardBg: "from-[#FFFBF4] to-[#F7EFE0]",
+    }
+  },
+  {
+    name: "Geriatric Care",
+    detail: "Age-associated care, vitality & bone strength",
+    icon: HeartHandshake,
+    image: e9,
+    theme: {
+      iconBg: "bg-[#436850]",
+      cardBg: "from-[#F7FAF7] to-[#E5ECE5]",
+    }
+  },
+  {
+    name: "Prenatal & Post Natal",
+    detail: "Maternal wellness, recovery & baby bonding",
+    icon: Heart,
+    image: e10,
+    theme: {
+      iconBg: "bg-[#e07a9e]",
+      cardBg: "from-[#FFF8F9] to-[#FCEBEF]",
+    }
+  },
+];
+
+const benefits = [
+  { title: "Personalized Healing", desc: "Every plan is customized to your unique dosha and imbalances.", icon: Leaf },
+  { title: "Experienced Practitioner", desc: "Consult directly with a certified and practicing Ayurvedic doctor.", icon: ShieldCheck },
+  { title: "Online Convenience", desc: "Accessible from anywhere via video consultation.", icon: Video },
+  { title: "Holistic Approach", desc: "Address body, mind, and spirit for deep healing.", icon: Heart },
+  { title: "Empowering Education", desc: "Learn the 'why' behind your health issues and how to prevent them.", icon: Award },
 ];
 
 export default function Home() {
@@ -488,87 +604,58 @@ export default function Home() {
           {/* Heading */}
           <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
             <span className="inline-flex items-center px-5 py-2 rounded-full border border-brand-green/30 text-brand-green font-semibold text-sm mb-6">
-              SPECIALIZED CARE
+              HEALTH CONCERNS ADDRESSED
             </span>
 
             <h2 className="text-5xl md:text-6xl font-serif font-bold text-brand-green leading-tight">
-              Ayurvedic Treatments,
-              <br />
-              Tailored for{" "}
+              Specialized Care For{" "}
               <span className="text-brand-gold">
-                You
+                Your Wellness
               </span>
             </h2>
 
             <p className="mt-6 text-slate-600 text-lg max-w-2xl mx-auto">
-              We focus on identifying the root cause of ailments and restore harmony
-              through holistic healing methodologies.
+              We offer structured holistic care for a wide range of specific health concerns, restoring your body's natural alignment.
             </p>
           </div>
 
           {/* Cards Container */}
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {treatments.map((item) => {
+          <div className="max-w-7xl mx-auto px-4 md:px-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {concerns.map((item) => {
                 const IconComponent = item.icon;
                 return (
                   <div
-                    key={item.title}
-                    className="bg-white rounded-[32px] overflow-hidden border border-brand-gold-light/40 shadow-sm hover:shadow-2xl hover:-translate-y-2 hover:border-brand-gold/40 transition-all duration-500 group flex flex-row h-auto sm:min-h-[260px] items-stretch"
+                    key={item.name}
+                    className={`bg-gradient-to-b ${item.theme.cardBg} rounded-[24px] overflow-hidden border border-brand-gold-light/10 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 group flex flex-col justify-between h-[390px] sm:h-[410px]`}
                   >
-                    {/* Left content block */}
-                    <div className="p-4 xs:p-5 sm:p-6 sm:pr-2 flex flex-col justify-between flex-1 min-w-0">
-                      <div>
-                        {/* Icon & Badge */}
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className={`w-10 h-10 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-sm flex-shrink-0`}>
-                            <IconComponent className="w-5 h-5" />
-                          </div>
-                          <span className={`text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold border ${item.theme.badgeBg}`}>
-                            {item.badge}
-                          </span>
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-xl sm:text-2xl font-serif font-bold text-brand-green mb-2 leading-tight">
-                          {item.title}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-light line-clamp-3">
-                          {item.desc}
-                        </p>
+                    {/* Top Content */}
+                    <div className="p-5 flex-grow flex flex-col">
+                      {/* Icon */}
+                      <div className={`w-11 h-11 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-sm mb-4 flex-shrink-0 group-hover:scale-105 transition-transform duration-300`}>
+                        <IconComponent className="w-5 h-5" />
                       </div>
 
-                      {/* Link */}
-                      <div className="mt-3">
-                        <a
-                          href="/user/dashboard"
-                          className="inline-flex items-center gap-1.5 font-bold text-brand-green hover:text-brand-gold transition text-xs sm:text-sm"
-                        >
-                          Book Consultation
-                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </a>
-                      </div>
+                      {/* Title */}
+                      <h3 className="text-lg font-serif font-bold text-brand-green mb-1.5 leading-snug">
+                        {item.name}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-[11px] text-slate-600 leading-normal font-light line-clamp-3">
+                        {item.detail}
+                      </p>
                     </div>
 
-                    {/* Right Image Mask / Circle container */}
-                    <div className="w-[38%] sm:w-[42%] relative overflow-hidden flex-shrink-0 flex items-center justify-center">
-                      {/* Crescent background shape */}
-                      <div className={`absolute right-0 top-0 bottom-0 w-[120%] h-full rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-70`} />
-
-                      {/* Image container */}
-                      <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3 z-10">
-                        <div className="relative w-full h-[85%]">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            fill
-                            className="object-contain group-hover:scale-108 transition-transform duration-700 ease-out"
-                            sizes="(max-width: 768px) 100vw, 30vw"
-                          />
-                        </div>
-                      </div>
+                    {/* Bottom Image */}
+                    <div className="relative w-full h-[180px] mt-auto overflow-hidden rounded-b-[24px]">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                        sizes="(max-width: 768px) 100vw, 20vw"
+                      />
                     </div>
                   </div>
                 );
@@ -636,6 +723,42 @@ export default function Home() {
               </div>
 
             </div>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Why Choose Us */}
+      <section className="py-16 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-flex items-center px-5 py-2 rounded-full border border-brand-green/30 text-brand-green font-semibold text-xs mb-4 uppercase tracking-wider bg-[#FAF6F0]">
+              WHY AYURVEECHI
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-brand-green leading-tight">
+              Healing Rooted in Nature & Science
+            </h2>
+            <p className="mt-4 text-slate-600 text-base max-w-xl mx-auto">
+              Experience the wave of flow and health through balanced, ancient Ayurvedic wisdom brought to modern life.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+            {benefits.map((benefit, idx) => {
+              const Icon = benefit.icon;
+              return (
+                <div key={idx} className="bg-[#FAF6F0]/40 rounded-3xl p-6 border border-brand-gold-light/30 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500 group">
+                  <div>
+                    <div className="w-12 h-12 rounded-full border border-[#C5A880]/30 flex items-center justify-center bg-white text-brand-gold mb-5 group-hover:bg-[#12372A] group-hover:text-white group-hover:border-[#12372A] transition-all duration-300 shadow-sm">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-serif font-bold text-brand-green mb-3 group-hover:text-brand-gold transition-colors duration-300">{benefit.title}</h3>
+                    <p className="text-xs text-slate-600 font-light leading-relaxed">{benefit.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -839,7 +962,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Doctor Details */}
               <div className="space-y-7 lg:pl-4">
 
                 <div className="space-y-3">
@@ -856,25 +978,21 @@ export default function Home() {
                   </h2>
 
                   <h3 className="text-2xl md:text-[30px] font-serif text-[#b89b65]">
-                    Dr. Priya
+                    Dr. Kajal
                   </h3>
 
                   <div className="inline-flex items-center gap-2 bg-[#f5f7f2] rounded-full px-3 py-1.5 mt-2">
                     <ShieldCheck className="w-4 h-4 text-[#4a6b53]" />
                     <span className="font-semibold text-[11px] tracking-wide text-[#4a6b53]">
-                      BAMS | 10+ YEARS EXPERIENCE
+                      BAMS | CERTIFIED AYURVEDA PRACTITIONER
                     </span>
                   </div>
                 </div>
 
                 <p className="text-[15px] text-gray-600 leading-relaxed max-w-[500px]">
-                  Dedicated to helping patients achieve long-term wellness through
-                  authentic Ayurvedic treatments, lifestyle guidance, and
-                  personalized care. She believes in healing the body by working in
-                  alignment with the natural rhythms of life.
+                  Dr. Kajal is a certified Ayurveda practitioner dedicated to bringing balance, healing, and wellness into people's lives using time-tested Ayurvedic principles. She believes in healing the body by working in alignment with the natural rhythms of life.
                 </p>
 
-                {/* Features */}
                 <div className="grid grid-cols-2 gap-y-5 gap-x-6 pt-2">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full border border-[#e8ebd9] flex items-center justify-center shrink-0">
@@ -925,6 +1043,179 @@ export default function Home() {
                   </a>
                 </div>
 
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Consultation Packages */}
+      <section className="py-16 bg-[#FAF6F0]/30 border-t border-b border-brand-gold-light/20 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-flex items-center px-5 py-2 rounded-full border border-brand-green/30 text-brand-green font-semibold text-xs mb-4 uppercase tracking-wider bg-white">
+              STRUCTURED WELLNESS PLANS
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-brand-green leading-tight">
+              Consultation Packages
+            </h2>
+            <p className="mt-4 text-slate-600 text-base max-w-xl mx-auto">
+              Choose a structured plan that matches your health goals. We offer personalized paths to long-term healing.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Package 1 */}
+            <div className="bg-white rounded-[32px] p-8 border border-brand-gold-light/40 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between relative group">
+              <div>
+                <span className="text-xs uppercase tracking-widest text-[#b46d1b] font-bold bg-[#FAF0E4] px-3.5 py-1.5 rounded-full border border-[#f5dfc6] inline-block mb-6">
+                  Introductory
+                </span>
+                <h3 className="text-2xl font-serif font-bold text-brand-green mb-2">Introductory Wellness Consult</h3>
+                <p className="text-sm text-slate-500 font-light mb-6">A comprehensive starting point for your Ayurvedic healing journey.</p>
+                <div className="text-3xl font-bold text-[#b89b65] font-serif mb-6 border-b border-slate-100 pb-6 flex items-baseline gap-2">
+                  <span>1 Hour Session</span>
+                </div>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Basic health assessment</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Dosha analysis (Prakriti / Vikriti)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Initial personalized recommendations</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Follow-up email with detailed consultation notes</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8">
+                <a href="/user/dashboard" className="w-full inline-block">
+                  <button className="w-full py-4 bg-[#FAF6F0] hover:bg-brand-green text-brand-green hover:text-white font-bold rounded-2xl transition duration-300 border border-brand-gold-light/40">
+                    Book Consult
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            {/* Package 2 */}
+            <div className="bg-white rounded-[32px] p-8 border-2 border-brand-gold shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between relative group">
+              <div className="absolute -top-4 right-8 bg-brand-gold text-white font-bold text-[10px] uppercase tracking-wider py-1.5 px-4 rounded-full shadow-sm">
+                Recommended Journey
+              </div>
+              <div>
+                <span className="text-xs uppercase tracking-widest text-brand-green font-bold bg-[#eef3e5] px-3.5 py-1.5 rounded-full border border-brand-green/20 inline-block mb-6">
+                  Complete Journey
+                </span>
+                <h3 className="text-2xl font-serif font-bold text-brand-green mb-2">3-Session Wellness Journey</h3>
+                <p className="text-sm text-slate-500 font-light mb-6">Dr. Kajal's signature deep-dive program for progressive, sustained healing.</p>
+                <div className="text-3xl font-bold text-[#b89b65] font-serif mb-6 border-b border-slate-100 pb-6 flex items-baseline gap-2">
+                  <span>3 Sessions</span>
+                  <span className="text-xs text-slate-400 font-sans font-normal">/ over 4–6 weeks</span>
+                </div>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Three 45-minute structured sessions</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Full health & systemic analysis</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Custom diet, lifestyle & herbal support plans</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Progress review & plan adjustment</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-600 font-medium">Direct Email / WhatsApp support between sessions</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-8">
+                <a href="/user/dashboard" className="w-full inline-block">
+                  <button className="w-full py-4 bg-brand-green hover:bg-brand-green-dark text-white font-bold rounded-2xl transition duration-300 shadow-md">
+                    Begin Journey
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Ongoing Support Banner */}
+          <div className="max-w-4xl mx-auto mt-12 bg-white rounded-3xl border border-brand-gold-light/40 p-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-4 text-left">
+              <div className="w-12 h-12 rounded-full bg-[#fdf5e6] flex items-center justify-center text-brand-gold shrink-0">
+                <HeartHandshake className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="font-serif font-bold text-brand-green text-lg">Ongoing Support</h4>
+                <p className="text-sm text-slate-500 font-light">Short 20-minute check-ins and extended sessions as needed for all returning clients.</p>
+              </div>
+            </div>
+            <a href="/user/dashboard">
+              <button className="px-6 py-3 bg-[#FAF6F0] hover:bg-brand-green text-brand-green hover:text-white font-semibold text-sm rounded-xl transition duration-200 shrink-0 border border-brand-gold-light/30">
+                Schedule Check-in
+              </button>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Location & Service Areas */}
+      <section className="py-16 bg-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="bg-[#FAF6F0]/60 border border-brand-gold-light/50 rounded-[40px] p-8 md:p-12 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-12 gap-8 items-center">
+              <div className="md:col-span-5 text-left space-y-4">
+                <span className="inline-flex items-center px-4 py-1.5 rounded-full border border-brand-green/30 text-brand-green font-semibold text-xs bg-white">
+                  GLOBAL ACCESSIBILITY
+                </span>
+                <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-green leading-tight">
+                  Locations & Service Areas
+                </h3>
+                <p className="text-slate-600 font-light text-sm leading-relaxed">
+                  Ayurveechi is a global, online Ayurveda practice offering video consultations across international borders, making authentic healing simple and accessible.
+                </p>
+              </div>
+
+              <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {/* Serving Countries */}
+                <div className="bg-white rounded-3xl p-6 border border-brand-gold-light/30 text-left shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#eef3e5] flex items-center justify-center text-brand-green mb-4">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-bold text-brand-green text-sm uppercase tracking-wider mb-2">Serving Globally</h4>
+                  <p className="text-xs text-slate-500 font-light leading-relaxed">India, Canada, USA, UK, UAE, Australia, and more.</p>
+                </div>
+
+                {/* Languages */}
+                <div className="bg-white rounded-3xl p-6 border border-brand-gold-light/30 text-left shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#eef3e5] flex items-center justify-center text-brand-green mb-4">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-bold text-brand-green text-sm uppercase tracking-wider mb-2">Languages</h4>
+                  <p className="text-xs text-slate-500 font-light leading-relaxed">Consultations are conducted in English and Malayalam.</p>
+                </div>
+
+                {/* Time-Zone friendly */}
+                <div className="bg-white rounded-3xl p-6 border border-brand-gold-light/30 text-left shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#eef3e5] flex items-center justify-center text-[#c89d4f] mb-4">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-bold text-brand-green text-sm uppercase tracking-wider mb-2">Time-Zone Friendly</h4>
+                  <p className="text-xs text-slate-500 font-light leading-relaxed">Flexible booking options supporting IST, PST, EST, and GMT.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -1173,71 +1464,81 @@ export default function Home() {
         <section id="mobile-treatments" className="py-4 text-center bg-[#FAF8F5]">
           <div className="mb-3">
             <span className="inline-flex items-center px-4 py-1 rounded-full border border-[#12372A]/20 text-[#12372A] font-semibold text-[9px] uppercase tracking-wider mb-2">
-              SPECIALIZED CARE
+              HEALTH CONCERNS ADDRESSED
             </span>
             <h2 className="text-2xl font-serif font-bold text-[#12372A] leading-tight">
-              Ayurvedic Treatments,
+              Specialized Care For
               <br />
-              Tailored for <span className="text-[#C5A880]">You</span>
+              <span className="text-[#C5A880]">Your Wellness</span>
             </h2>
           </div>
 
           {/* Cards Grid (2 columns on mobile) */}
-          <div className="grid grid-cols-2 gap-3 px-4 mb-4 max-w-md mx-auto">
-            {treatments.map((item) => {
+          <div className="grid grid-cols-2 gap-3.5 px-4 mb-4 max-w-lg mx-auto">
+            {concerns.map((item) => {
               const IconComponent = item.icon;
               return (
                 <div
-                  key={item.title}
-                  className="bg-white rounded-2xl p-3 border border-[#F4EAE1]/80 shadow-xs flex flex-col justify-between relative overflow-hidden group min-h-[160px]"
+                  key={item.name}
+                  className={`bg-gradient-to-b ${item.theme.cardBg} rounded-[20px] overflow-hidden border border-brand-gold-light/10 shadow-xs flex flex-col justify-between min-h-[220px] group`}
                 >
-                  <div className="text-left relative z-10">
+                  <div className="p-3 pb-0 flex-grow flex flex-col">
                     {/* Icon */}
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <div className={`w-6 h-6 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-xs flex-shrink-0`}>
-                        <IconComponent className="w-3.5 h-3.5" />
-                      </div>
+                    <div className={`w-8 h-8 rounded-full ${item.theme.iconBg} flex items-center justify-center text-white shadow-xs mb-2 flex-shrink-0`}>
+                      <IconComponent className="w-4 h-4" />
                     </div>
 
                     {/* Title */}
-                    <h3 className="text-xs font-serif font-bold text-[#12372A] leading-tight mb-1">
-                      {item.title}
+                    <h3 className="text-[11px] font-serif font-bold text-brand-green mb-1 leading-snug">
+                      {item.name}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-[8px] text-slate-500 leading-relaxed font-light line-clamp-3 mb-2 pr-4">
-                      {item.desc}
+                    <p className="text-[9px] text-slate-600 leading-snug font-light line-clamp-2">
+                      {item.detail}
                     </p>
                   </div>
 
-                  {/* Consultation Link */}
-                  <div className="mt-auto relative z-10 text-left">
-                    <a
-                      href="/user/dashboard"
-                      className="inline-flex items-center gap-0.5 font-bold text-[#12372A] hover:text-[#C5A880] transition text-[7px] uppercase tracking-wider"
-                    >
-                      Book Consultation
-                      <ArrowRight className="w-2.5 h-2.5" />
-                    </a>
+                  {/* Bottom Image */}
+                  <div className="relative w-full h-[90px] mt-2 overflow-hidden rounded-b-[20px]">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                      sizes="35vw"
+                    />
                   </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-                  {/* Right side floating illustration in crescent mask */}
-                  <div className="absolute right-0 bottom-0 top-0 w-[45%] overflow-hidden pointer-events-none">
-                    {/* Crescent background shape */}
-                    <div className={`absolute right-[-15%] bottom-[-10%] w-[115%] h-[80%] rounded-l-full bg-gradient-to-br ${item.theme.circleBg} opacity-60`} />
-                    
-                    {/* Image */}
-                    <div className="absolute inset-0 flex items-end justify-center p-1 z-10">
-                      <div className="relative w-full h-[75%]">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-contain animate-fade-in"
-                          sizes="20vw"
-                        />
-                      </div>
-                    </div>
+
+
+        {/* Mobile Why Choose Us */}
+        <section className="py-6 px-4 bg-white text-center border-b border-[#F4EAE1]/30">
+          <div className="mb-4">
+            <span className="inline-flex items-center px-3 py-1 rounded-full border border-[#12372A]/20 text-[#12372A] font-semibold text-[8px] uppercase tracking-wider mb-2">
+              WHY AYURVEECHI
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#12372A] leading-tight">
+              Healing Rooted in Nature
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-2 max-w-sm mx-auto">
+            {benefits.map((benefit, idx) => {
+              const Icon = benefit.icon;
+              return (
+                <div key={idx} className="bg-[#FAF6F0]/40 rounded-xl p-3 border border-[#F4EAE1]/50 text-left flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full border border-[#C5A880]/30 flex items-center justify-center bg-white text-[#C5A880] shrink-0">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-[11px] font-serif font-bold text-[#12372A] leading-none mb-1">{benefit.title}</h3>
+                    <p className="text-[8px] text-slate-600 font-light leading-snug">{benefit.desc}</p>
                   </div>
                 </div>
               );
@@ -1312,13 +1613,12 @@ export default function Home() {
                       <div className="absolute inset-0 bg-[url('/l13.png')] bg-contain bg-center bg-no-repeat opacity-25" />
                       <Image
                         src="/g33.png"
-                        alt="Dr. Priya"
+                        alt="Dr. Kajal"
                         fill
                         className="object-cover relative z-10"
                       />
                     </div>
-                  </div>
-                  
+                  </div>                  
                   {/* Floating Trust Badge */}
                   <div className="mt-2.5 bg-[#f4f7ed] rounded-xl p-1.5 border border-[#12372A]/10 flex items-center gap-1.5 shadow-xs">
                     <div className="w-5 h-5 shrink-0 rounded-full bg-[#12372A] text-white flex items-center justify-center">
@@ -1349,18 +1649,18 @@ export default function Home() {
                   </h3>
                   
                   <h4 className="text-sm font-serif text-[#b89b65] leading-tight">
-                    Dr. Priya
+                    Dr. Kajal
                   </h4>
 
                   <div className="inline-flex items-center gap-1 bg-[#f4f7ed] rounded-full px-2 py-0.5 mt-1 border border-[#12372A]/5">
                     <ShieldCheck className="w-2.5 h-2.5 text-[#12372A]" />
                     <span className="font-bold text-[7px] text-[#12372A]">
-                      BAMS, MD (AYURVEDA)
+                      BAMS | CERTIFIED AYURVEDA PRACTITIONER
                     </span>
                   </div>
 
                   <p className="text-[9px] text-gray-600 leading-relaxed font-light mt-2">
-                    Dedicated to helping patients achieve long-term wellness through authentic Ayurvedic treatments, lifestyle advice, and personalized care.
+                    Dr. Kajal is a certified Ayurveda practitioner dedicated to bringing balance, healing, and wellness into people's lives using time-tested Ayurvedic principles.
                   </p>
 
                   {/* Bullets grid (2x2) */}
@@ -1403,6 +1703,94 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Mobile Consultation Packages */}
+        <section className="py-6 px-4 bg-[#FAF6F0]/30 border-t border-b border-[#F4EAE1]/30">
+          <div className="text-center mb-4">
+            <span className="inline-flex items-center px-3 py-1 rounded-full border border-[#12372A]/20 text-[#12372A] font-semibold text-[8px] uppercase tracking-wider mb-2">
+              STRUCTURED PLANS
+            </span>
+            <h2 className="text-xl font-serif font-bold text-[#12372A] leading-tight">
+              Consultation Packages
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-4 max-w-sm mx-auto">
+            {/* Pack 1 */}
+            <div className="bg-white rounded-2xl p-4 border border-[#F4EAE1]/85 shadow-xs text-left">
+              <span className="text-[7px] uppercase tracking-wider text-[#b46d1b] font-bold bg-[#FAF0E4] px-2 py-1 rounded-full border border-[#f5dfc6] inline-block mb-2">
+                Introductory
+              </span>
+              <h3 className="text-xs font-serif font-bold text-[#12372A]">Introductory Wellness Consult</h3>
+              <p className="text-[8px] text-slate-500 font-light mt-1 mb-2">A comprehensive starting point for your Ayurvedic healing journey.</p>
+              <p className="text-sm font-serif font-bold text-[#b89b65] border-b border-slate-50 pb-2 mb-2">1 Hour Session</p>
+              <ul className="space-y-1 text-[8px] text-slate-600 font-medium">
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Basic health assessment</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Dosha analysis</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Initial recommendations</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Follow-up email notes</li>
+              </ul>
+              <a href="/user/dashboard" className="w-full inline-block mt-3">
+                <button className="w-full py-2 bg-[#FAF6F0] hover:bg-[#12372A] text-[#12372A] hover:text-white text-[9px] font-bold rounded-lg border border-[#F4EAE1]/80 transition">
+                  Book Consult
+                </button>
+              </a>
+            </div>
+
+            {/* Pack 2 */}
+            <div className="bg-white rounded-2xl p-4 border-2 border-[#C5A880] shadow-xs text-left relative">
+              <div className="absolute top-2 right-2 bg-[#C5A880] text-white font-bold text-[6px] uppercase tracking-wider py-0.5 px-2 rounded-full">
+                Recommended
+              </div>
+              <span className="text-[7px] uppercase tracking-wider text-[#12372A] font-bold bg-[#eef3e5] px-2 py-1 rounded-full border border-[#12372A]/10 inline-block mb-2">
+                Complete Journey
+              </span>
+              <h3 className="text-xs font-serif font-bold text-[#12372A]">3-Session Wellness Journey</h3>
+              <p className="text-[8px] text-slate-500 font-light mt-1 mb-2">Dr. Kajal's signature deep-dive program for sustained healing.</p>
+              <p className="text-sm font-serif font-bold text-[#b89b65] border-b border-slate-50 pb-2 mb-2">3 Sessions <span className="text-[8px] font-sans font-normal text-slate-400">/ 4-6 weeks</span></p>
+              <ul className="space-y-1 text-[8px] text-slate-600 font-medium">
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Three 45-minute sessions</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Full health analysis</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Custom diet & lifestyle plan</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Herbal & progress review</li>
+                <li className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-[#12372A]" /> Email/WhatsApp support</li>
+              </ul>
+              <a href="/user/dashboard" className="w-full inline-block mt-3">
+                <button className="w-full py-2 bg-[#12372A] hover:bg-[#0A1E17] text-white text-[9px] font-bold rounded-lg transition">
+                  Begin Journey
+                </button>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Mobile Location & Service Areas */}
+        <section className="py-6 px-4 bg-white text-center border-b border-[#F4EAE1]/30">
+          <div className="bg-[#FAF6F0]/60 border border-[#F4EAE1]/80 rounded-2xl p-4 max-w-sm mx-auto text-left">
+            <span className="inline-flex items-center px-2 py-1 rounded-full border border-[#12372A]/20 text-[#12372A] font-semibold text-[7px] bg-white uppercase">
+              GLOBAL REACH
+            </span>
+            <h3 className="text-md font-serif font-bold text-[#12372A] mt-2">Locations & Languages</h3>
+            <p className="text-[8px] text-slate-600 font-light leading-relaxed mt-1">
+              Ayurveechi is a global online Ayurveda practice. Consult from anywhere via video.
+            </p>
+
+            <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-200/50">
+              <div>
+                <h4 className="font-bold text-[#12372A] text-[7px] uppercase tracking-wide">Serving</h4>
+                <p className="text-[6px] text-slate-500 mt-0.5">India, US, UK, Canada, UAE, Australia, etc.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#12372A] text-[7px] uppercase tracking-wide">Languages</h4>
+                <p className="text-[6px] text-slate-500 mt-0.5">English, Malayalam.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#12372A] text-[7px] uppercase tracking-wide">Time-Zones</h4>
+                <p className="text-[6px] text-slate-500 mt-0.5">IST, PST, EST, GMT supported.</p>
               </div>
             </div>
           </div>
