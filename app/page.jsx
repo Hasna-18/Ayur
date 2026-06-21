@@ -1313,28 +1313,8 @@ export default function Home() {
         <div className="absolute top-0 left-0 right-0 h-[450px] bg-gradient-to-b from-[#F4EAE1]/40 to-transparent -z-10 pointer-events-none" />
 
         {/* Mobile Header / Navbar */}
-        <header className="sticky top-0 z-50 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#F4EAE1]/30 px-4 py-3 flex items-center justify-between shadow-[0_2px_15px_rgba(0,0,0,0.015)]">
-          <div className="flex items-center gap-2">
-            <div className="p-1 rounded-lg bg-[#12372A]/5 flex items-center justify-center">
-              <GiLotus className="w-6 h-6 text-[#C5A880]" />
-            </div>
-            <div>
-              <div className="flex items-baseline gap-0.5">
-                <span className="text-lg font-serif font-bold text-[#12372A] tracking-wide leading-none">
-                  Ayur
-                </span>
-                <span className="text-[#C5A880] font-bold text-md leading-none">.</span>
-              </div>
-              <p className="text-[7px] uppercase tracking-widest text-[#436850] font-bold leading-none">
-                Ancient Wisdom. Modern Care
-              </p>
-            </div>
-          </div>
-          
-          <button className="p-1.5 hover:bg-[#12372A]/5 rounded-lg transition" aria-label="Menu">
-            <Menu className="w-5 h-5 text-[#12372A]" />
-          </button>
-        </header>
+        <Navbar />
+
 
         {/* Mobile Hero Section */}
         <section className="px-4 pt-3 pb-3 text-center relative">

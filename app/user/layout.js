@@ -45,7 +45,6 @@ export default function UserLayout({ children }) {
     { name: "Book Appointment", href: "/user/book", icon: Calendar },
     { name: "Appointments", href: "/user/appointment-list", icon: ClipboardList },
     { name: "Prescriptions", href: "/user/prescriptions", icon: BookOpen },
-    { name: "Profile", href: "/user/profile", icon: User },
   ];
 
   return (
@@ -76,36 +75,38 @@ export default function UserLayout({ children }) {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-2 lg:gap-4">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
+              const LinkIcon = link.icon;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-sm tracking-wide font-semibold transition-all duration-200 py-1.5 relative ${
+                  className={`flex items-center gap-2 text-sm tracking-wide font-semibold transition-all duration-200 py-2 px-3.5 rounded-xl group ${
                     isActive
-                      ? "text-[#12372A] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[2px] after:bg-[#12372A] after:rounded-full"
-                      : "text-[#6b7a68] hover:text-[#12372A]"
+                      ? "text-[#12372A] bg-[#12372A]/8 shadow-xs"
+                      : "text-[#6b7a68] hover:text-[#12372A] hover:bg-[#12372A]/3"
                   }`}
                 >
-                  {link.name}
+                  <LinkIcon className={`w-4 h-4 transition-transform group-hover:scale-110 ${isActive ? 'text-[#12372A]' : 'text-[#C5A880]'}`} />
+                  <span>{link.name}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* Desktop User Info & Actions */}
-          <div className="hidden md:flex items-center gap-5">
+          <div className="hidden md:flex items-center gap-4">
             {user && (
-              <div className="flex items-center gap-3 border-r border-[#e8e4d9] pr-5">
+              <Link href="/user/profile" className="flex items-center gap-3 bg-white border border-[#e8e4d9]/80 rounded-full pl-2 pr-4 py-1.5 shadow-[0_2px_8px_rgba(18,55,42,0.02)] hover:bg-[#FAF8F5] transition active:scale-98 select-none">
                 <div className="relative">
-                  <div className="w-9 h-9 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase shadow-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-xs uppercase shadow-sm">
                     {user.name ? user.name.charAt(0).toLowerCase() : (user.email ? user.email.charAt(0).toLowerCase() : "u")}
                   </div>
                   {user.emailVerified && (
-                    <span className="absolute bottom-[-1px] left-[-1px] w-3.5 h-3.5 bg-emerald-600 rounded-full border border-[#faf8f5] flex items-center justify-center shadow-xs">
-                      <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                    <span className="absolute bottom-[-1px] left-[-1px] w-3 h-3 bg-emerald-600 rounded-full border border-white flex items-center justify-center shadow-xs">
+                      <svg className="w-1.5 h-1.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     </span>
@@ -113,46 +114,47 @@ export default function UserLayout({ children }) {
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-1">
-                    <p className="text-xs font-bold text-[#12372A] leading-tight max-w-[120px] truncate">
+                    <p className="text-xs font-bold text-[#12372A] leading-tight max-w-[100px] truncate">
                       {user.name || user.email?.split("@")[0]}
                     </p>
                     {user.emailVerified && (
                       <span className="text-emerald-600 shrink-0" title="Verified Account">
-                        <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                           <path d="M23 12l-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.7 3.1 5.52l.34 3.69L1 12l2.44 2.79-.34 3.69 3.61.82 1.89 3.2 3.4-1.46 3.4 1.46 1.89-3.2 3.61-.82-.34-3.69L23 12zm-12.91 4.72l-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z"/>
                         </svg>
                       </span>
                     )}
                   </div>
-                  <p className="text-[10px] text-[#6b7a68] font-medium leading-tight">Patient</p>
+                  <p className="text-[9px] text-[#6b7a68] font-bold uppercase tracking-wider leading-none mt-0.5">Patient</p>
                 </div>
-              </div>
+              </Link>
             )}
             
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-1.5 text-xs font-bold text-red-600 hover:text-red-700 transition-colors py-2 px-3.5 rounded-full hover:bg-red-50 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-bold text-red-600 hover:text-red-700 transition-colors py-2 px-3.5 rounded-full hover:bg-red-50 cursor-pointer border border-transparent hover:border-red-100"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
             </button>
           </div>
 
+
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
             {user && (
-              <div className="relative">
+              <Link href="/user/profile" className="relative active:scale-95 transition">
                 <div className="w-8 h-8 rounded-full bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-xs uppercase shadow-sm">
                   {user.name ? user.name.charAt(0).toLowerCase() : "u"}
                 </div>
                 {user.emailVerified && (
-                  <span className="absolute bottom-[-1px] left-[-1px] w-3 h-3 bg-emerald-600 rounded-full border border-[#faf8f5] flex items-center justify-center shadow-xs">
+                  <span className="absolute bottom-[-1px] left-[-1px] w-3 h-3 bg-emerald-600 rounded-full border border-white flex items-center justify-center shadow-xs">
                     <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </span>
                 )}
-              </div>
+              </Link>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -164,8 +166,12 @@ export default function UserLayout({ children }) {
         </div>
 
         {/* Mobile Menu Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[#e8e4d9] bg-[#faf8f5] px-6 py-4 flex flex-col gap-4 animate-in slide-in-from-top-4 duration-200">
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? "max-h-[400px] opacity-100 border-t border-[#e8e4d9]/70" : "max-h-0 opacity-0 pointer-events-none"
+          }`}
+        >
+          <div className="bg-[#faf8f5]/95 backdrop-blur-md px-6 py-5 flex flex-col gap-3.5 shadow-inner">
             {navLinks.map((link) => {
               const LinkIcon = link.icon;
               const isActive = pathname === link.href;
@@ -174,27 +180,30 @@ export default function UserLayout({ children }) {
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold transition-all ${
+                  className={`flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold transition-all duration-200 ${
                     isActive
-                      ? "bg-[#12372A] text-white"
-                      : "text-[#6b7a68] hover:bg-slate-50 hover:text-[#12372A]"
+                      ? "bg-[#12372A] text-white shadow-md shadow-[#12372A]/10"
+                      : "text-[#6b7a68] hover:bg-white hover:text-[#12372A]"
                   }`}
                 >
-                  <LinkIcon className="w-4 h-4" />
+                  <LinkIcon className="w-4 h-4 text-[#C5A880]" />
                   <span>{link.name}</span>
                 </Link>
               );
             })}
-            <hr className="border-[#e8e4d9] my-1" />
+            <hr className="border-[#e8e4d9]/50 my-1" />
             <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-all text-left w-full cursor-pointer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                handleLogout();
+              }}
+              className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-200 text-left w-full cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
             </button>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* Main Content */}

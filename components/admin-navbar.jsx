@@ -227,8 +227,12 @@ export function AdminNavbar() {
       </div>
 
       {/* Mobile Drawer Navigation */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#e8e4d9] bg-[#faf8f5] px-6 py-4 flex flex-col gap-4 animate-in slide-in-from-top-4 duration-200 shadow-inner">
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? "max-h-[600px] opacity-100 border-t border-[#e8e4d9]/70" : "max-h-0 opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="bg-[#faf8f5]/95 backdrop-blur-md px-6 py-5 flex flex-col gap-3.5 shadow-inner">
           <div className="flex items-center gap-3 px-2 py-1">
             <div className="w-9 h-9 rounded-full overflow-hidden border border-[#e8e4d9] relative bg-[#12372A] flex items-center justify-center text-[#faf8f5] font-bold text-sm uppercase shadow-sm">
               {profile.avatar ? (
@@ -260,10 +264,10 @@ export function AdminNavbar() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold transition-all ${
+                className={`flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold transition-all duration-200 ${
                   isActive
-                    ? "bg-[#12372A] text-white"
-                    : "text-[#6b7a68] hover:bg-white hover:text-[#12372A] shadow-sm hover:shadow"
+                    ? "bg-[#12372A] text-white shadow-md shadow-[#12372A]/10"
+                    : "text-[#6b7a68] hover:bg-white hover:text-[#12372A]"
                 }`}
               >
                 <LinkIcon className="w-4 h-4 text-[#C5A880]" />
@@ -277,7 +281,7 @@ export function AdminNavbar() {
           <Link
             href="/admin/profile"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-[#6b7a68] hover:bg-white hover:text-[#12372A]"
+            className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-[#6b7a68] hover:bg-white hover:text-[#12372A] transition-all duration-200"
           >
             <User className="w-4 h-4 text-[#C5A880]" />
             <span>Profile Settings</span>
@@ -288,13 +292,13 @@ export function AdminNavbar() {
               setMobileMenuOpen(false);
               handleLogout();
             }}
-            className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-all text-left w-full cursor-pointer"
+            className="flex items-center gap-3 p-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-200 text-left w-full cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>Log Out</span>
           </button>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
