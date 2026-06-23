@@ -1,10 +1,16 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { generateJitsiRoomName, getJitsiRoomExpiry, isJitsiRoomActive } from "@/lib/jitsi-utils";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 // GET all appointments
 export async function GET() {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const appointments = await prisma.appointment.findMany({
       orderBy: { time: "asc" },
     });

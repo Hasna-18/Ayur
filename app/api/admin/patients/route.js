@@ -1,8 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function GET(req) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = 20;

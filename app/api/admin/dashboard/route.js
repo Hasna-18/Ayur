@@ -1,7 +1,13 @@
 import prisma from "@/lib/prisma";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function GET() {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const now = new Date();
 
     const upcoming = await prisma.appointment.findMany({

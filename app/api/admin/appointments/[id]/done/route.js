@@ -1,8 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function POST(req, context) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { id } = await context.params;    // ← unwrap the Promise
     const numId = Number(id);               // convert to number
 

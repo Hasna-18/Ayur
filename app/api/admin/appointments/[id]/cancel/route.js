@@ -1,8 +1,14 @@
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";   // ← you forgot this
+import { NextResponse } from "next/server";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function POST(req, context) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { id } = await context.params;      // params is a Promise
     const numId = Number(id);
 

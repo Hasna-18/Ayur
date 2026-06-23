@@ -374,7 +374,7 @@ export default function AdminDashboard() {
             </div>
             <div className="relative bg-[#faf8f5] px-6 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-[#a1825b] font-serif-display select-none">
               <GiLotus className="w-5 h-5 text-[#12372A] animate-spin-slow" />
-              <span>AyurMedi Clinic</span>
+              <span>AyurVeechi Clinic</span>
             </div>
           </div>
           <p className="font-hand text-3xl text-[#12372A] text-center font-medium leading-none">

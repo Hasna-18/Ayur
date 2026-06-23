@@ -104,7 +104,7 @@ export default function AdminRegisterPage() {
 
       setSuccess("Admin registration successful! Redirecting...");
       console.log("✅ Admin registration complete, redirecting...");
-      
+
       setTimeout(() => {
         router.push("/admin");
       }, 1500);
@@ -131,7 +131,7 @@ export default function AdminRegisterPage() {
       <div className="absolute top-0 right-0 opacity-[0.85] pointer-events-none mix-blend-multiply rotate-[90deg] w-[280px] md:w-[360px] h-[280px] md:h-[360px] z-0 select-none">
         <Image src="/l12.png" alt="Leaf Decoration" layout="fill" objectFit="contain" />
       </div>
-      
+
       {/* BOTTOM RIGHT GOLD MANDALA DECORATION */}
       <div className="absolute bottom-0 right-0 opacity-[0.08] pointer-events-none mix-blend-multiply w-[360px] md:w-[480px] h-[360px] md:h-[480px] z-0 select-none translate-x-[15%] translate-y-[15%]">
         <Image src="/g1.png" alt="Mandala Decoration" layout="fill" objectFit="contain" />
@@ -144,13 +144,13 @@ export default function AdminRegisterPage() {
       {/* MAIN CONTAINER */}
       <div className="w-full max-w-md relative z-10">
         <Card className="w-full p-8 md:p-10 shadow-[0_15px_35px_rgba(43,58,47,0.03)] border border-[#e8e4d9]/85 bg-white/95 backdrop-blur-sm rounded-[32px] border-t-[8px] border-t-[#12372A]">
-          
+
           {/* Header section with lotus */}
           <div className="flex flex-col items-center mb-8 text-center">
             <div className="w-14 h-14 bg-[#eef3e5] border border-[#c1d0b5]/50 rounded-2xl flex items-center justify-center shadow-sm mb-3">
               <GiLotus className="w-9 h-9 text-[#C5A880]" />
             </div>
-            
+
             <p className="font-hand text-3xl text-emerald-800 font-medium leading-none mb-1">
               Practitioner Portal
             </p>

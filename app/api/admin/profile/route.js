@@ -1,8 +1,13 @@
 import prisma from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function GET() {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const profile = await prisma.adminProfile.findFirst();
     return Response.json(profile || {});
   } catch (err) {
@@ -11,9 +16,13 @@ export async function GET() {
 }
 
 export async function PUT(req) {
-  const data = await req.json();
-
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
+    const data = await req.json();
     const existing = await prisma.adminProfile.findFirst();
 
     if (existing) {

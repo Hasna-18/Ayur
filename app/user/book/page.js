@@ -51,6 +51,16 @@ export default function BookAppointment() {
   const [status, setStatus] = useState("");
   const [backendSlots, setBackendSlots] = useState([]);
 
+  // Get tomorrow's date in local YYYY-MM-DD format
+  const tomorrowDateStr = (() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const yyyy = tomorrow.getFullYear();
+    const mm = String(tomorrow.getMonth() + 1).padStart(2, "0");
+    const dd = String(tomorrow.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  })();
+
   // Verification States
   const [isVerified, setIsVerified] = useState(false);
   const [checkingVerification, setCheckingVerification] = useState(true);
@@ -166,6 +176,11 @@ export default function BookAppointment() {
         return;
       }
 
+      if (data.reason === "past-or-today") {
+        setStatus("❌ Appointments can only be booked for dates after today (tomorrow or later).");
+        return;
+      }
+
       if (data.reason === "off-date") {
         setStatus("❌ Doctor is unavailable on this date. Please choose another day.");
         return;
@@ -229,7 +244,7 @@ export default function BookAppointment() {
       className="min-h-screen lg:h-[calc(100vh-80px)] bg-cover bg-center relative flex items-center py-8 lg:py-0 px-4 md:px-12 bg-[#faf8f5]"
       style={{
         backgroundImage:
-          "url('https://res.cloudinary.com/dhgy1gxa6/image/upload/q_auto/f_auto/v1781263498/ayur_booking_hero_cnqmid.png')",
+          "url('/user/ayur_booking_hero_cnqmid.webp')",
       }}
     >
       {/* Overlay */}
@@ -435,7 +450,7 @@ export default function BookAppointment() {
                     <input
                       type="date"
                       value={date}
-                      min={new Date().toISOString().split("T")[0]} // Disable past dates
+                      min={tomorrowDateStr} // Only book days after today
                       onChange={(e) => setDate(e.target.value)}
                       className="w-full h-11 px-4 text-sm bg-white border border-[#e8e4d9] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#12372A] font-semibold text-[#12372A] cursor-pointer"
                       required

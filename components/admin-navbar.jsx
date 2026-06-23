@@ -80,6 +80,9 @@ export function AdminNavbar() {
 
   const handleLogout = async () => {
     try {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("isAdminVerified");
+      }
       await authClient.signOut();
       router.push("/admin/login");
     } catch (err) {
@@ -104,14 +107,14 @@ export function AdminNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
         
         {/* Logo Section */}
-        <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-95 transition group">
+        <Link href="/" className="flex items-center gap-2.5 hover:opacity-95 transition group">
           <div className="p-2 rounded-xl bg-[#12372A]/5 flex items-center justify-center group-hover:bg-[#12372A]/10 transition-colors">
             <GiLotus className="w-8 h-8 text-[#C5A880]" />
           </div>
           <div>
             <div className="flex items-baseline gap-0.5">
               <span className="text-2xl font-serif-display font-bold text-[#12372A] tracking-tight leading-none">
-                AyurAdmin
+                Ayurveechi
               </span>
               <span className="text-[#C5A880] font-bold text-lg leading-none">.</span>
             </div>

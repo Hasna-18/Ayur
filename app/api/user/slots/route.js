@@ -4,7 +4,18 @@ export async function GET(req) {
   const date = new URL(req.url).searchParams.get("date");
   if (!date) return Response.json({ slots: [] });
 
-  const picked = new Date(date);
+  const picked = new Date(date + "T00:00:00.000Z");
+
+  // FUTURE-ONLY DATE CHECK
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  if (picked <= today) {
+    return Response.json({
+      slots: [],
+      reason: "past-or-today"
+    });
+  }
 
   // WEEKLY OFF
   const weekday = picked.getUTCDay();
@@ -50,10 +61,10 @@ export async function GET(req) {
     cursor = new Date(cursor.getTime() + 30 * 60000);
   }
 
-  // TIME-OFF
+  // TIME-OFF (DOCTOR OFF TIMES)
   const timeOff = await prisma.timeOff.findMany({ where: { date: picked } });
 
-  const finalSlots = slots.filter((slot) => {
+  let finalSlots = slots.filter((slot) => {
     const t = new Date(date + "T" + slot + ":00.000Z");
 
     return !timeOff.some((block) => {
@@ -62,6 +73,20 @@ export async function GET(req) {
       return t >= start && t < end;
     });
   });
+
+  // EXCLUDE ALREADY BOOKED/SCHEDULED APPOINTMENTS FOR THIS DATE
+  const bookedAppointments = await prisma.appointment.findMany({
+    where: {
+      date: picked,
+      status: "SCHEDULED"
+    }
+  });
+
+  const bookedTimes = bookedAppointments.map(a => {
+    return a.time.toISOString().substring(11, 16);
+  });
+
+  finalSlots = finalSlots.filter((slot) => !bookedTimes.includes(slot));
 
   if (finalSlots.length === 0) {
     return Response.json({

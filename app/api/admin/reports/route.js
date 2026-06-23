@@ -1,24 +1,17 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import fs from "fs/promises";
 import path from "path";
-
-// Helper: get doctor name from session (no role check - consistent with other admin routes)
-async function getDoctorName(req) {
-  try {
-    const session = await auth.api.getSession({
-      headers: { cookie: req.headers.get("cookie") || "" },
-    });
-    return session?.user?.name || "Doctor";
-  } catch {
-    return "Doctor";
-  }
-}
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 // GET all reports (Admin)
 export async function GET() {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const reports = await prisma.consultationReport.findMany({
       orderBy: { createdAt: "desc" },
     });
@@ -33,7 +26,12 @@ export async function GET() {
 // POST create report with file upload
 export async function POST(req) {
   try {
-    const doctorName = await getDoctorName(req);
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
+    const doctorName = authResult.session?.user?.name || "Doctor";
 
     const formData = await req.formData();
     const appointmentIdStr = formData.get("appointmentId");

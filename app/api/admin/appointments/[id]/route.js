@@ -1,8 +1,14 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 export async function DELETE(_, context) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { id } = await context.params; // NEXT.JS 16 FIX
 
     await prisma.appointment.update({

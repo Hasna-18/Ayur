@@ -1,9 +1,15 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { verifyAdmin } from "@/lib/auth-helpers";
 
 // GET all weekly off days
 export async function GET() {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const weeklyOff = await prisma.weeklyOff.findMany({
       orderBy: { dayOfWeek: "asc" }
     });
@@ -20,6 +26,11 @@ export async function GET() {
 // POST - add weekly off day
 export async function POST(req) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { dayOfWeek } = await req.json();
 
     if (dayOfWeek === undefined || dayOfWeek < 0 || dayOfWeek > 6) {
@@ -58,6 +69,11 @@ export async function POST(req) {
 // DELETE - remove weekly off day
 export async function DELETE(req) {
   try {
+    const authResult = await verifyAdmin();
+    if (!authResult.authorized) {
+      return authResult.response;
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 

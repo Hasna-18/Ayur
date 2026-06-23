@@ -1,15 +1,17 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { generateJitsiRoomName, getJitsiRoomExpiry, isJitsiRoomActive } from "@/lib/jitsi-utils";
+import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 // --------------------- POST (BOOK APPOINTMENT) -----------------------
 export async function POST(req) {
   const session = await auth.api.getSession({
-    headers: { cookie: req.headers.get("cookie") || "" },
+    headers: await headers(),
   });
 
-  if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
@@ -17,11 +19,22 @@ export async function POST(req) {
     const { date: dateStr, time: timeStr, message } = body;
 
     if (!dateStr || !timeStr) {
-      return Response.json({ error: "Date and time are required" }, { status: 400 });
+      return NextResponse.json({ error: "Date and time are required" }, { status: 400 });
     }
 
     const picked = new Date(dateStr + "T00:00:00.000Z");
     const userTime = new Date(dateStr + "T" + timeStr + ":00.000Z");
+
+    // Future-only date check: Booking is only allowed for dates strictly after today (tomorrow or later)
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    if (picked <= today) {
+      return NextResponse.json(
+        { error: "Appointments can only be booked for dates after today (tomorrow or later)." },
+        { status: 400 }
+      );
+    }
 
     // Weekly off
     const weekday = picked.getUTCDay();
@@ -29,7 +42,7 @@ export async function POST(req) {
       where: { dayOfWeek: weekday }
     });
     if (weeklyOff) {
-      return Response.json({ error: "Clinic is closed on this day" }, { status: 400 });
+      return NextResponse.json({ error: "Clinic is closed on this day" }, { status: 400 });
     }
 
     // Off date
@@ -37,7 +50,7 @@ export async function POST(req) {
       where: { date: picked }
     });
     if (offDate) {
-      return Response.json({ error: "Clinic is closed on this date" }, { status: 400 });
+      return NextResponse.json({ error: "Clinic is closed on this date" }, { status: 400 });
     }
 
     // Time off
@@ -50,7 +63,7 @@ export async function POST(req) {
       return userTime >= start && userTime < end;
     });
     if (isTimeOff) {
-      return Response.json({ error: "This time slot is unavailable (Doctor Time Off)" }, { status: 400 });
+      return NextResponse.json({ error: "This time slot is unavailable (Doctor Time Off)" }, { status: 400 });
     }
 
     // Daily hours
@@ -63,14 +76,14 @@ export async function POST(req) {
       const end = new Date(dateStr + "T" + daily.end + ":00.000Z");
 
       if (userTime < start || userTime > end) {
-        return Response.json(
+        return NextResponse.json(
           { error: `Appointments allowed only between ${daily.start} - ${daily.end}` },
           { status: 400 }
         );
       }
     }
 
-    //double booking checking
+    // double booking checking (conflict check)
     const conflict = await prisma.appointment.findFirst({
       where: {
         time: userTime,
@@ -79,7 +92,7 @@ export async function POST(req) {
     });
 
     if (conflict) {
-      return Response.json(
+      return NextResponse.json(
         { error: "This time slot is already booked. Please choose another time." },
         { status: 400 }
       );
@@ -102,7 +115,7 @@ export async function POST(req) {
       data: { jitsiRoom },
     });
 
-    return Response.json({
+    return NextResponse.json({
       success: true,
       appointment: {
         ...updatedAppointment,
@@ -116,7 +129,7 @@ export async function POST(req) {
     });
 
   } catch (err) {
-    return Response.json({ error: "Failed to book", details: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to book", details: err.message }, { status: 500 });
   }
 }
 
@@ -124,11 +137,11 @@ export async function POST(req) {
 // ----------------------- GET (SHOW USER APPOINTMENTS) -----------------------
 export async function GET(req) {
   const session = await auth.api.getSession({
-    headers: { cookie: req.headers.get("cookie") || "" },
+    headers: await headers(),
   });
 
-  if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
@@ -136,7 +149,10 @@ export async function GET(req) {
 
     const appointments = await prisma.appointment.findMany({
       where: { email },
-      orderBy: { createdAt: "desc" },
+      orderBy: [
+        { date: "desc" },
+        { time: "desc" }
+      ],
     });
 
     const enriched = await Promise.all(
@@ -164,9 +180,9 @@ export async function GET(req) {
       })
     );
 
-    return Response.json(enriched);
+    return NextResponse.json(enriched);
 
   } catch (err) {
-    return Response.json({ error: "Failed to fetch appointments" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch appointments" }, { status: 500 });
   }
 }

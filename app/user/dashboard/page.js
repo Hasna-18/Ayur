@@ -171,6 +171,10 @@ export default function Dashboard() {
             </div>
             {/* Next Appointment Card (Torn Paper look) */}
             <div className="mt-10 paper-texture rounded-sm p-6 relative w-80 transform -rotate-2 border border-[#e8e4d9] overflow-hidden">
+              <div
+                className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none select-none z-0 opacity-55"
+                style={{ backgroundImage: "url('/user/d3.png')" }}
+              ></div>
               {loadingAppts ? (
                 <div className="py-4 text-center text-sm text-[#6b7a68]">Checking appointments...</div>
               ) : nextAppointment ? (
@@ -205,13 +209,8 @@ export default function Dashboard() {
                     </a>
                   </div>
                 </div>
-
               )}
             </div>
-            <div
-              className="hidden lg:block absolute top-0 right-0 w-[50%] h-[450px] rounded-[30px] bg-cover bg-center shadow-sm"
-              style={{ backgroundImage: "url('/user/d5.png')" }}
-            ></div>
           </div>
 
           {/* Right side background image - simulating the tea/plant scene */}
