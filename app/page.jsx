@@ -473,7 +473,7 @@ export default function Home() {
                   {/* Image Circle Container */}
                   <div className="bg-[#e8ede4] rounded-full overflow-hidden aspect-square relative flex items-end justify-center shadow-inner">
                     <Image
-                      src="/g33.png"
+                      src="https://res.cloudinary.com/dhgy1gxa6/image/upload/v1782295720/dre_opr5jb.png"
                       alt="Doctor"
                       fill
                       className="object-cover object-top scale-110 translate-y-4"
@@ -1462,7 +1462,7 @@ export default function Home() {
             {/* Doctor portrait image */}
             <div className="absolute inset-2 flex items-end justify-center rounded-full overflow-hidden">
               <Image
-                src="/g33.png"
+                src="https://res.cloudinary.com/dhgy1gxa6/image/upload/v1782295720/dre_opr5jb.png"
                 alt="Doctor"
                 width={220}
                 height={220}
@@ -1684,7 +1684,7 @@ export default function Home() {
                     <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#fbf9f4]">
                       <div className="absolute inset-0 bg-[url('/l13.png')] bg-contain bg-center bg-no-repeat opacity-25" />
                       <Image
-                        src="/g33.png"
+                        src="https://res.cloudinary.com/dhgy1gxa6/image/upload/v1782295720/dre_opr5jb.png"
                         alt="Dr. Kajal"
                         fill
                         className="object-cover relative z-10"
