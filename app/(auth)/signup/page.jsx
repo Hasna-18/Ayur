@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
+import { GiLotus } from "react-icons/gi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, EyeOff, Eye, Leaf, Users, ShieldCheck, User } from "lucide-react";
@@ -70,13 +70,22 @@ export default function SignupPage() {
 
               {/* LOGO */}
               <div className="flex justify-center mb-6">
-                <Image
-                  src="/login/login3.png"
-                  alt="Asyur Logo"
-                  width={140}
-                  height={140}
-                  className="object-contain"
-                />
+                <a href="/">
+                  <div className="flex items-center gap-2 hover:opacity-95 transition">
+                    <GiLotus className="w-8 h-8 text-brand-gold" />
+                    <div>
+                      <div className="flex items-baseline gap-0.5">
+                        <span className="text-xl sm:text-2xl font-serif font-bold text-brand-green tracking-wide leading-none">
+                          Ayurveechi
+                        </span>
+                        <span className="text-brand-gold font-bold text-base leading-none">.</span>
+                      </div>
+                      <p className="text-[8px] sm:text-[9px] uppercase tracking-widest text-brand-sage font-semibold leading-none mt-0.5 sm:mt-1">
+                        Ancient Wisdom • Modern Care
+                      </p>
+                    </div>
+                  </div>
+                </a>
               </div>
 
               <Button
