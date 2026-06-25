@@ -1460,7 +1460,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-[url('/l13.png')] bg-contain bg-center bg-no-repeat opacity-15" />
 
             {/* Doctor portrait image */}
-            <div className="absolute inset-2 flex items-end justify-center rounded-full overflow-hidden">
+            <div className="absolute inset-2 flex items-start justify-center rounded-full overflow-hidden">
               <Image
                 src="https://res.cloudinary.com/dhgy1gxa6/image/upload/v1782295720/dre_opr5jb.png"
                 alt="Doctor"
@@ -1489,7 +1489,7 @@ export default function Home() {
               </div>
               <div className="text-left">
                 <p className="text-[7px] text-[#436850] font-bold uppercase tracking-wider leading-none">Experienced</p>
-                <p className="font-bold text-[9px] text-[#12372A] mt-0.5 leading-none">10+ Years</p>
+                <p className="font-bold text-[9px] text-[#12372A] mt-0.5 leading-none">5+ Years</p>
               </div>
             </div>
           </div>
@@ -1687,7 +1687,7 @@ export default function Home() {
                         src="https://res.cloudinary.com/dhgy1gxa6/image/upload/v1782295720/dre_opr5jb.png"
                         alt="Dr. Kajal"
                         fill
-                        className="object-cover relative z-10"
+                        className="object-cover object-top relative z-10"
                       />
                     </div>
                   </div>

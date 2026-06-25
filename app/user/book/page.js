@@ -62,8 +62,25 @@ export default function BookAppointment() {
   })();
 
   // Verification States
-  const [isVerified, setIsVerified] = useState(false);
-  const [checkingVerification, setCheckingVerification] = useState(true);
+  const [isVerified, setIsVerified] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_user");
+      if (cached) {
+        try {
+          const parsedObj = JSON.parse(cached);
+          if (parsedObj.emailVerified) return true;
+        } catch (e) {}
+      }
+    }
+    return false;
+  });
+  const [checkingVerification, setCheckingVerification] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_user");
+      if (cached) return false;
+    }
+    return true;
+  });
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
@@ -78,6 +95,9 @@ export default function BookAppointment() {
           const data = await res.json();
           if (data?.user?.emailVerified) {
             setIsVerified(true);
+          }
+          if (data?.user) {
+            sessionStorage.setItem("ayur_user", JSON.stringify(data.user));
           }
         }
       } catch (err) {

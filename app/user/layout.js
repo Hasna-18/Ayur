@@ -10,7 +10,13 @@ import { Leaf, LogOut, Menu, X, Calendar, BookOpen, ClipboardList, User } from "
 
 export default function UserLayout({ children }) {
   const pathname = usePathname();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_user");
+      return cached ? JSON.parse(cached) : null;
+    }
+    return null;
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -26,6 +32,11 @@ export default function UserLayout({ children }) {
           session?.user ||
           null;
         setUser(userData);
+        if (userData) {
+          sessionStorage.setItem("ayur_user", JSON.stringify(userData));
+        } else {
+          sessionStorage.removeItem("ayur_user");
+        }
       } catch (err) {
         console.error("Error loading session in layout:", err);
       }
@@ -45,6 +56,9 @@ export default function UserLayout({ children }) {
 
   const handleLogout = async () => {
     try {
+      if (typeof window !== "undefined") {
+        sessionStorage.clear();
+      }
       await authClient.signOut();
       window.location.href = "/login";
     } catch (err) {

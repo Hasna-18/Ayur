@@ -20,10 +20,33 @@ import { GiLotus, GiHerbsBundle } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 
 export default function UserPrescriptions() {
-  const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [reports, setReports] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_reports");
+      return cached ? JSON.parse(cached) : [];
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_reports");
+      return cached ? false : true;
+    }
+    return true;
+  });
   const [error, setError] = useState("");
-  const [expandedReport, setExpandedReport] = useState(null);
+  const [expandedReport, setExpandedReport] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_reports");
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (parsed.length > 0) return parsed[0].id;
+        } catch (e) {}
+      }
+    }
+    return null;
+  });
 
   useEffect(() => {
     async function fetchReports() {
@@ -34,6 +57,7 @@ export default function UserPrescriptions() {
         }
         const data = await res.json();
         setReports(data);
+        sessionStorage.setItem("ayur_reports", JSON.stringify(data));
         if (data.length > 0) {
           setExpandedReport(data[0].id); // Expand the latest one by default
         }

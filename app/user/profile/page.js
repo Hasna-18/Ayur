@@ -7,8 +7,20 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState({ name: "", email: "", age: "", gender: "", emailVerified: false });
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_profile");
+      return cached ? JSON.parse(cached) : { name: "", email: "", age: "", gender: "", emailVerified: false };
+    }
+    return { name: "", email: "", age: "", gender: "", emailVerified: false };
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_profile");
+      return cached ? false : true;
+    }
+    return true;
+  });
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
 
@@ -21,13 +33,15 @@ export default function ProfilePage() {
       const res = await fetch("/api/user/profile");
       if (!res.ok) throw new Error("Failed to fetch profile");
       const data = await res.json();
-      setProfile({
+      const profileData = {
         name: data.name || "",
         email: data.email || "",
         age: data.age !== null && data.age !== undefined ? data.age.toString() : "",
         gender: data.gender || "",
         emailVerified: data.emailVerified || false,
-      });
+      };
+      setProfile(profileData);
+      sessionStorage.setItem("ayur_profile", JSON.stringify(profileData));
     } catch (error) {
       console.error(error);
       setMessage({ text: "Error loading profile details.", type: "error" });

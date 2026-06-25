@@ -42,10 +42,33 @@ const YogaIcon = () => (
 );
 
 export default function AppointmentList() {
-  const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [appointments, setAppointments] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_appointments");
+      return cached ? JSON.parse(cached) : [];
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_appointments");
+      return cached ? false : true;
+    }
+    return true;
+  });
   const [activeCall, setActiveCall] = useState(null);
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cachedUser = sessionStorage.getItem("ayur_user");
+      if (cachedUser) {
+        try {
+          const userObj = JSON.parse(cachedUser);
+          if (userObj.name) return userObj.name;
+        } catch (e) {}
+      }
+    }
+    return "";
+  });
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -67,6 +90,7 @@ export default function AppointmentList() {
         if (!res.ok) throw new Error("Failed to fetch appointments");
         const data = await res.json();
         setAppointments(data);
+        sessionStorage.setItem("ayur_appointments", JSON.stringify(data));
 
         // Get user name from first appointment or from session
         if (data.length > 0) {

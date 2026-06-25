@@ -26,8 +26,20 @@ import { GiLotus } from "react-icons/gi";
 import Image from "next/image";
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null);
-  const [nextAppointment, setNextAppointment] = useState(null);
+  const [user, setUser] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_user");
+      return cached ? JSON.parse(cached) : null;
+    }
+    return null;
+  });
+  const [nextAppointment, setNextAppointment] = useState(() => {
+    if (typeof window !== "undefined") {
+      const cached = sessionStorage.getItem("ayur_next_appointment");
+      return cached ? JSON.parse(cached) : null;
+    }
+    return null;
+  });
   const [loadingAppts, setLoadingAppts] = useState(true);
   const router = useRouter();
 
@@ -47,6 +59,7 @@ export default function Dashboard() {
           router.push("/login");
         } else {
           setUser(userData);
+          sessionStorage.setItem("ayur_user", JSON.stringify(userData));
         }
       } catch (err) {
         console.error("Error getting session:", err);
@@ -72,7 +85,13 @@ export default function Dashboard() {
           const upcoming = data
             .filter(a => a.status === "SCHEDULED" && !a.meetingExpired)
             .sort((a, b) => new Date(a.time) - new Date(b.time))[0];
-          setNextAppointment(upcoming || null);
+          const nextAppt = upcoming || null;
+          setNextAppointment(nextAppt);
+          if (nextAppt) {
+            sessionStorage.setItem("ayur_next_appointment", JSON.stringify(nextAppt));
+          } else {
+            sessionStorage.removeItem("ayur_next_appointment");
+          }
         }
       } catch (err) {
         console.error("Error fetching appointments:", err);
